@@ -27,6 +27,9 @@ import static com.demoblaze.pageobject.SignUpModal.SIGNUP_BUTTON_LOCATOR;
 import static com.demoblaze.pageobject.SignUpModal.SIGNUP_MODAL_LOCATOR;
 import static com.demoblaze.pageobject.SignUpModal.SIGNUP_PASSWORD_LOCATOR;
 import static com.demoblaze.pageobject.SignUpModal.SIGNUP_USERNAME_LOCATOR;
+import static com.demoblaze.pageobject.SignUpModal.SIGNUP_TITLE_LOCATOR;
+import static com.demoblaze.pageobject.SignUpModal.SIGNUP_X_LOCATOR;
+import static com.demoblaze.pageobject.SignUpModal.SIGNUP_CLOSE_LOCATOR;
 
 public class SignUpTest {
     WebDriver driver;
@@ -50,7 +53,7 @@ public class SignUpTest {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(1000)); // Apply 1s delay;
         WebElement signUpModal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(SIGNUP_MODAL_LOCATOR)));
         WebElement usernameInput = signUpModal.findElement(By.xpath(SIGNUP_USERNAME_LOCATOR));  // Get Username input;
-        usernameInput.sendKeys(uniqueUsernameGC);                                     // Set new Username;
+        usernameInput.sendKeys(uniqueUsernameGC);                                   // Set new Username;
         WebElement passwordInput = signUpModal.findElement(By.xpath(SIGNUP_PASSWORD_LOCATOR));  // Get Password input;
         passwordInput.sendKeys(password);                                                       // Set Password;
         WebElement signUpButton = signUpModal.findElement(By.xpath(SIGNUP_BUTTON_LOCATOR));     // Get SignUp button;
@@ -66,7 +69,7 @@ public class SignUpTest {
         } catch (NoAlertPresentException e) {                   // There is no alert present;
             System.out.println("The browser alert is missing");
         }
-        Thread.sleep(3000);
+        Thread.sleep(1000);
         driver.quit();
         System.out.println("TEST USER DATA:");
         System.out.println("  Username: " + uniqueUsernameGC);
@@ -87,7 +90,7 @@ public class SignUpTest {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(1000)); // Apply 1s delay;
         WebElement signUpModal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(SIGNUP_MODAL_LOCATOR)));
         WebElement usernameInput = signUpModal.findElement(By.xpath(SIGNUP_USERNAME_LOCATOR));  // Get Username input;
-        usernameInput.sendKeys(uniqueUsernameGC);                                                 // Set Username in use ;
+        usernameInput.sendKeys(uniqueUsernameGC);                                               // Set Username in use ;
         WebElement passwordInput = signUpModal.findElement(By.xpath(SIGNUP_PASSWORD_LOCATOR));  // Get Password input;
         passwordInput.sendKeys(password);                                                       // Set Password;
         WebElement signUpButton = signUpModal.findElement(By.xpath(SIGNUP_BUTTON_LOCATOR));     // Get SignUp button;
@@ -103,7 +106,7 @@ public class SignUpTest {
         } catch (NoAlertPresentException e) {                   // There is no alert present;
             System.out.println("The browser alert is missing");
         }
-        Thread.sleep(3000);
+        Thread.sleep(1000);
         driver.quit();
         System.out.println("TEST USER DATA:");
         System.out.println("  Username: " + uniqueUsernameGC);
@@ -139,7 +142,7 @@ public class SignUpTest {
         } catch (NoAlertPresentException e) {                   // There is no alert present;
             System.out.println("The browser alert is missing");
         }
-        Thread.sleep(3000);
+        Thread.sleep(1000);
         driver.quit();
         System.out.println("TEST USER DATA:");
         System.out.println("  Username: (no data)");
@@ -160,7 +163,7 @@ public class SignUpTest {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(1000)); // Apply 1s delay;
         WebElement signUpModal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(SIGNUP_MODAL_LOCATOR)));
         WebElement usernameInput = signUpModal.findElement(By.xpath(SIGNUP_USERNAME_LOCATOR));  // Get Username input;
-        usernameInput.sendKeys(uniqueUsernameGC + "1");                               // Set Username;
+        usernameInput.sendKeys(uniqueUsernameGC + "1");                             // Set Username;
         // Skip Password entering
         WebElement signUpButton = signUpModal.findElement(By.xpath(SIGNUP_BUTTON_LOCATOR));     // Get SignUp button;
         signUpButton.click();                                                                   // Click on the button;
@@ -175,12 +178,75 @@ public class SignUpTest {
         } catch (NoAlertPresentException e) {                   // There is no alert present;
             System.out.println("The browser alert is missing");
         }
-        Thread.sleep(3000);
+        Thread.sleep(1000);
         driver.quit();
         System.out.println("TEST USER DATA:");
         System.out.println("  Username: " + uniqueUsernameGC + "1");
         System.out.println("  Password: (no data)");
         System.out.println();
+    }
+
+    // CHECK SIGNUP DISCARD AFTER INPUTS FILLING - BY "CLOSE" BUTTON (CHROME BROWSER)
+    @Test (testName = "TC005_Discard_by_Close_SignUp_GC")
+    public void discardByCloseButtonSignUpChrome() throws MalformedURLException, InterruptedException {
+        ChromeOptions options = new ChromeOptions();                // New instance for GC browser;
+        driver = new RemoteWebDriver(new URL(gridUrl), options);    // Driver initialization on SeleniumGrid using GC;
+        driver.get(baseUrl);                                        // Open web page by URL;
+        var homePage = new HomePage(driver);                        // Create instance of the Home Page;
+        WebElement navButtonSignUp = homePage.getNavButtonSignUp(); // Get element Sign Up button;
+        Actions actions = new Actions(driver);                      // Create instance of the Actions class;
+        actions.moveToElement(navButtonSignUp).click().perform();   // Perform mouse click on the SignUp button;
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(1000)); // Apply 1s delay;
+        WebElement signUpModal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(SIGNUP_MODAL_LOCATOR)));
+        WebElement usernameInput = signUpModal.findElement(By.xpath(SIGNUP_USERNAME_LOCATOR));  // Get Username input;
+        usernameInput.sendKeys(uniqueUsernameGC);                                   // Set Username;
+        WebElement passwordInput = signUpModal.findElement(By.xpath(SIGNUP_PASSWORD_LOCATOR));  // Get Password input;
+        passwordInput.sendKeys(password);                                           // Set Password;
+        WebElement closeButton = signUpModal.findElement(By.xpath(SIGNUP_CLOSE_LOCATOR));       // Get Close button;
+        closeButton.click();                                                                    // Click on the button;
+        Thread.sleep(500);
+        Assert.assertFalse(signUpModal.isDisplayed(), "Sign Up modal still displayed after \"Close\" click");
+        Thread.sleep(1000);
+        driver.quit();
+    }
+
+    // CHECK SIGNUP DISCARD BEFORE INPUTS FILLING - BY "X" BUTTON (CHROME BROWSER)
+    @Test (testName = "TC006_Discard_by_X_SignUp_GC")
+    public void discardByXButtonSignUpChrome() throws MalformedURLException, InterruptedException {
+        ChromeOptions options = new ChromeOptions();                // New instance for GC browser;
+        driver = new RemoteWebDriver(new URL(gridUrl), options);    // Driver initialization on SeleniumGrid using GC;
+        driver.get(baseUrl);                                        // Open web page by URL;
+        var homePage = new HomePage(driver);                        // Create instance of the Home Page;
+        WebElement navButtonSignUp = homePage.getNavButtonSignUp(); // Get element Sign Up button;
+        Actions actions = new Actions(driver);                      // Create instance of the Actions class;
+        actions.moveToElement(navButtonSignUp).click().perform();   // Perform mouse click on the SignUp button;
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(1000)); // Apply 1s delay;
+        WebElement signUpModal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(SIGNUP_MODAL_LOCATOR)));
+        WebElement xButton = signUpModal.findElement(By.xpath(SIGNUP_X_LOCATOR));           // Get X button;
+        xButton.click();                                                                    // Click on the button;
+        Thread.sleep(500);
+        Assert.assertFalse(signUpModal.isDisplayed(), "Sign Up modal still displayed after \"X\" click");
+        Thread.sleep(1000);
+        driver.quit();
+    }
+
+    // CHECK SIGNUP TITLE (CHROME BROWSER)
+    @Test (testName = "TC007_Title_SignUp_GC")
+    public void titleSignUpChrome() throws MalformedURLException, InterruptedException {
+        ChromeOptions options = new ChromeOptions();                // New instance for GC browser;
+        driver = new RemoteWebDriver(new URL(gridUrl), options);    // Driver initialization on SeleniumGrid using GC;
+        driver.get(baseUrl);                                        // Open web page by URL;
+        var homePage = new HomePage(driver);                        // Create instance of the Home Page;
+        WebElement navButtonSignUp = homePage.getNavButtonSignUp(); // Get element Sign Up button;
+        Actions actions = new Actions(driver);                      // Create instance of the Actions class;
+        actions.moveToElement(navButtonSignUp).click().perform();   // Perform mouse click on the SignUp button;
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(1000)); // Apply 1s delay;
+        WebElement signUpModal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(SIGNUP_MODAL_LOCATOR)));
+        WebElement titleSignUp = signUpModal.findElement(By.xpath(SIGNUP_TITLE_LOCATOR));       // Get the modal's title;
+        Assert.assertEquals(titleSignUp.getText(), "Sign up",
+                "Expect title \"Sign up\" but get " + titleSignUp.getText());
+        Thread.sleep(1000);
+        driver.quit();
     }
 
     // CHECK SUCCESSFUL SIGNUP (FIREFOX BROWSER)
@@ -212,7 +278,7 @@ public class SignUpTest {
         } catch (NoAlertPresentException e) {                   // There is no alert present;
             System.out.println("The browser alert is missing");
         }
-        Thread.sleep(3000);
+        Thread.sleep(1000);
         driver.quit();
         System.out.println("TEST USER DATA:");
         System.out.println("  Username: " + uniqueUsernameFF);
@@ -233,7 +299,7 @@ public class SignUpTest {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(1000)); // Apply 1s delay;
         WebElement signUpModal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(SIGNUP_MODAL_LOCATOR)));
         WebElement usernameInput = signUpModal.findElement(By.xpath(SIGNUP_USERNAME_LOCATOR));  // Get Username input;
-        usernameInput.sendKeys(uniqueUsernameFF);                                                 // Set Username in use ;
+        usernameInput.sendKeys(uniqueUsernameFF);                                               // Set Username in use ;
         WebElement passwordInput = signUpModal.findElement(By.xpath(SIGNUP_PASSWORD_LOCATOR));  // Get Password input;
         passwordInput.sendKeys(password);                                                       // Set Password;
         WebElement signUpButton = signUpModal.findElement(By.xpath(SIGNUP_BUTTON_LOCATOR));     // Get SignUp button;
@@ -249,7 +315,7 @@ public class SignUpTest {
         } catch (NoAlertPresentException e) {                   // There is no alert present;
             System.out.println("The browser alert is missing");
         }
-        Thread.sleep(3000);
+        Thread.sleep(1000);
         driver.quit();
         System.out.println("TEST USER DATA:");
         System.out.println("  Username: " + uniqueUsernameFF);
@@ -285,7 +351,7 @@ public class SignUpTest {
         } catch (NoAlertPresentException e) {                   // There is no alert present;
             System.out.println("The browser alert is missing");
         }
-        Thread.sleep(3000);
+        Thread.sleep(1000);
         driver.quit();
         System.out.println("TEST USER DATA:");
         System.out.println("  Username: (no data)");
@@ -321,11 +387,74 @@ public class SignUpTest {
         } catch (NoAlertPresentException e) {                   // There is no alert present;
             System.out.println("The browser alert is missing");
         }
-        Thread.sleep(3000);
+        Thread.sleep(1000);
         driver.quit();
         System.out.println("TEST USER DATA:");
         System.out.println("  Username: " + uniqueUsernameFF + "1");
         System.out.println("  Password: (no data)");
         System.out.println();
+    }
+
+    // CHECK SIGNUP DISCARD AFTER INPUTS FILLING - BY "CLOSE" BUTTON (FIREFOX BROWSER)
+    @Test (testName = "TC005a_Discard_by_Close_SignUp_FF")
+    public void discardByCloseButtonSignUpFirefox() throws MalformedURLException, InterruptedException {
+        FirefoxOptions options = new FirefoxOptions();              // New instance for FF browser;
+        driver = new RemoteWebDriver(new URL(gridUrl), options);    // Driver initialization on SeleniumGrid using FF;
+        driver.get(baseUrl);                                        // Open web page by URL;
+        var homePage = new HomePage(driver);                        // Create instance of the Home Page;
+        WebElement navButtonSignUp = homePage.getNavButtonSignUp(); // Get element Sign Up button;
+        Actions actions = new Actions(driver);                      // Create instance of the Actions class;
+        actions.moveToElement(navButtonSignUp).click().perform();   // Perform mouse click on the SignUp button;
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(1000)); // Apply 1s delay;
+        WebElement signUpModal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(SIGNUP_MODAL_LOCATOR)));
+        WebElement usernameInput = signUpModal.findElement(By.xpath(SIGNUP_USERNAME_LOCATOR));  // Get Username input;
+        usernameInput.sendKeys(uniqueUsernameGC);                                               // Set Username;
+        WebElement passwordInput = signUpModal.findElement(By.xpath(SIGNUP_PASSWORD_LOCATOR));  // Get Password input;
+        passwordInput.sendKeys(password);                                                       // Set Password;
+        WebElement closeButton = signUpModal.findElement(By.xpath(SIGNUP_CLOSE_LOCATOR));       // Get Close button;
+        closeButton.click();                                                                    // Click on the button;
+        Thread.sleep(500);
+        Assert.assertFalse(signUpModal.isDisplayed(), "Sign Up modal still displayed after \"Close\" click");
+        Thread.sleep(1000);
+        driver.quit();
+    }
+
+    // CHECK SIGNUP DISCARD BEFORE INPUTS FILLING - BY "X" BUTTON (FIREFOX BROWSER)
+    @Test (testName = "TC006a_Discard_by_X_SignUp_FF")
+    public void discardByXButtonSignUpFirefox() throws MalformedURLException, InterruptedException {
+        FirefoxOptions options = new FirefoxOptions();              // New instance for FF browser;
+        driver = new RemoteWebDriver(new URL(gridUrl), options);    // Driver initialization on SeleniumGrid using FF;
+        driver.get(baseUrl);                                        // Open web page by URL;
+        var homePage = new HomePage(driver);                        // Create instance of the Home Page;
+        WebElement navButtonSignUp = homePage.getNavButtonSignUp(); // Get element Sign Up button;
+        Actions actions = new Actions(driver);                      // Create instance of the Actions class;
+        actions.moveToElement(navButtonSignUp).click().perform();   // Perform mouse click on the SignUp button;
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(1000)); // Apply 1s delay;
+        WebElement signUpModal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(SIGNUP_MODAL_LOCATOR)));
+        WebElement xButton = signUpModal.findElement(By.xpath(SIGNUP_X_LOCATOR));           // Get X button;
+        xButton.click();                                                                    // Click on the button;
+        Thread.sleep(500);
+        Assert.assertFalse(signUpModal.isDisplayed(), "Sign Up modal still displayed after \"X\" click");
+        Thread.sleep(1000);
+        driver.quit();
+    }
+
+    // CHECK SIGNUP TITLE (FIREFOX BROWSER)
+    @Test (testName = "TC007a_Title_SignUp_FF")
+    public void titleSignUpFirefox() throws MalformedURLException, InterruptedException {
+        FirefoxOptions options = new FirefoxOptions();              // New instance for FF browser;
+        driver = new RemoteWebDriver(new URL(gridUrl), options);    // Driver initialization on SeleniumGrid using FF;
+        driver.get(baseUrl);                                        // Open web page by URL;
+        var homePage = new HomePage(driver);                        // Create instance of the Home Page;
+        WebElement navButtonSignUp = homePage.getNavButtonSignUp(); // Get element Sign Up button;
+        Actions actions = new Actions(driver);                      // Create instance of the Actions class;
+        actions.moveToElement(navButtonSignUp).click().perform();   // Perform mouse click on the SignUp button;
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(1000)); // Apply 1s delay;
+        WebElement signUpModal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(SIGNUP_MODAL_LOCATOR)));
+        WebElement titleSignUp = signUpModal.findElement(By.xpath(SIGNUP_TITLE_LOCATOR));       // Get the modal's title;
+        Assert.assertEquals(titleSignUp.getText(), "Sign up",
+                "Expect title \"Sign up\" but get " + titleSignUp.getText());
+        Thread.sleep(1000);
+        driver.quit();
     }
 }
