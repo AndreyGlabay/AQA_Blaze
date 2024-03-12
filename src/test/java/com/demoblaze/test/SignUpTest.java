@@ -38,7 +38,7 @@ public class SignUpTest {
     public String username = "John";
     public String password = "Test-12345";
 
-    // CHECK SUCCESS LOGIN
+    // CHECK SUCCESSFUL SIGNUP
     @Test (testName = "TC001_Success_SignUp_GC")
     public void successSignUpChrome() throws MalformedURLException, InterruptedException {
         ChromeOptions options = new ChromeOptions();                // New instance for GC browser;
@@ -48,36 +48,137 @@ public class SignUpTest {
         WebElement navButtonSignUp = homePage.getNavButtonSignUp(); // Get element Sign Up button;
         Actions actions = new Actions(driver);                      // Create instance of the Actions class;
         actions.moveToElement(navButtonSignUp).click().perform();   // Perform mouse click on the SignUp button;
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(500)); // Apply 0.5s delay;
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(1000)); // Apply 1s delay;
         WebElement signUpModal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(SIGNUP_MODAL_LOCATOR)));
         WebElement usernameInput = signUpModal.findElement(By.xpath(SIGNUP_USERNAME_LOCATOR));  // Get Username input;
-        usernameInput.sendKeys(uniqueUsername);                                     // Set Username;
+        usernameInput.sendKeys(uniqueUsername);                                     // Set new Username;
         WebElement passwordInput = signUpModal.findElement(By.xpath(SIGNUP_PASSWORD_LOCATOR));  // Get Password input;
         passwordInput.sendKeys(password);                                                       // Set Password;
         WebElement signUpButton = signUpModal.findElement(By.xpath(SIGNUP_BUTTON_LOCATOR));     // Get SignUp button;
         signUpButton.click();                                                                   // Click on the button;
-
-        Alert alert = null;                             // Create var for Browser Alert and assign it to null value;
+        wait.until(ExpectedConditions.alertIsPresent());                                        // Wait alert appearance;
         try {
-            alert = driver.switchTo().alert();          // Move driver focus to the Browser Alert;
-            String alertText = alert.getText();         // Get text from a Browser Alert and put it to the var;
-            if (alertText.contains("Sign up successful.")) {
-                System.out.println("Sign up successful.");
-            } else if (alertText.contains("This user already exist.")) {
-                System.out.println("This user already exist.");
-            } else {
-                System.out.println("Unexpected data");
-            }
-            alert.accept();                             // Accept the alert (click [OK] button);
-        } catch (NoAlertPresentException e) {           // There is no alert present;
+            Alert alert = driver.switchTo().alert();            // Move driver focus to the Browser Alert;
+            String alertText = alert.getText();                 // Get text from a Browser Alert and put it to the var;
+            System.out.println("ALERT TEXT: " + alertText);     // Print out alert's content text;
+            Assert.assertTrue(alertText.contains("Sign up successful"), "\"Sign up successful\" alert is missing");
+            alert.accept();                                     // Accept the alert (click [OK] button);
+        } catch (NoAlertPresentException e) {                   // There is no alert present;
+            System.out.println("The browser alert is missing");
         }
-
-        Thread.sleep(5000);
+        Thread.sleep(3000);
         driver.quit();
         System.out.println("TEST USER DATA:");
-        System.out.println("Username: " + uniqueUsername);
-        System.out.println("Password: " + password);
+        System.out.println("  Username: " + uniqueUsername);
+        System.out.println("  Password: " + password);
+        System.out.println();
     }
 
+    // CHECK UNSUCCESSFUL SIGNUP - USERNAME ALREADY REGISTERED
+    @Test (testName = "TC002_User_Already_Exists_SignUp_GC")
+    public void userAlreadyExistsSignUpChrome() throws MalformedURLException, InterruptedException {
+        ChromeOptions options = new ChromeOptions();                // New instance for GC browser;
+        driver = new RemoteWebDriver(new URL(gridUrl), options);    // Driver initialization on SeleniumGrid using GC;
+        driver.get(baseUrl);                                        // Open web page by URL;
+        var homePage = new HomePage(driver);                        // Create instance of the Home Page;
+        WebElement navButtonSignUp = homePage.getNavButtonSignUp(); // Get element Sign Up button;
+        Actions actions = new Actions(driver);                      // Create instance of the Actions class;
+        actions.moveToElement(navButtonSignUp).click().perform();   // Perform mouse click on the SignUp button;
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(1000)); // Apply 1s delay;
+        WebElement signUpModal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(SIGNUP_MODAL_LOCATOR)));
+        WebElement usernameInput = signUpModal.findElement(By.xpath(SIGNUP_USERNAME_LOCATOR));  // Get Username input;
+        usernameInput.sendKeys(uniqueUsername);                                                 // Set Username in use ;
+        WebElement passwordInput = signUpModal.findElement(By.xpath(SIGNUP_PASSWORD_LOCATOR));  // Get Password input;
+        passwordInput.sendKeys(password);                                                       // Set Password;
+        WebElement signUpButton = signUpModal.findElement(By.xpath(SIGNUP_BUTTON_LOCATOR));     // Get SignUp button;
+        signUpButton.click();                                                                   // Click on the button;
+        wait.until(ExpectedConditions.alertIsPresent());                                        // Wait alert appearance;
+        try {
+            Alert alert = driver.switchTo().alert();            // Move driver focus to the Browser Alert;
+            String alertText = alert.getText();                 // Get text from a Browser Alert and put it to the var;
+            System.out.println("ALERT TEXT: " + alertText);     // Print out alert's content text;
+            Assert.assertTrue(alertText.contains("user already exist"), "\"User already exist\" alert is missing");
+            alert.accept();                                     // Accept the alert (click [OK] button);
+        } catch (NoAlertPresentException e) {                   // There is no alert present;
+            System.out.println("The browser alert is missing");
+        }
+        Thread.sleep(3000);
+        driver.quit();
+        System.out.println("TEST USER DATA:");
+        System.out.println("  Username: " + uniqueUsername);
+        System.out.println("  Password: " + password);
+        System.out.println();
+    }
 
+    // CHECK UNSUCCESSFUL SIGNUP - USERNAME INPUT LEFT EMPTY
+    @Test (testName = "TC003_Missing_Username_SignUp_GC")
+    public void missingUsernameSignUpChrome() throws MalformedURLException, InterruptedException {
+        ChromeOptions options = new ChromeOptions();                // New instance for GC browser;
+        driver = new RemoteWebDriver(new URL(gridUrl), options);    // Driver initialization on SeleniumGrid using GC;
+        driver.get(baseUrl);                                        // Open web page by URL;
+        var homePage = new HomePage(driver);                        // Create instance of the Home Page;
+        WebElement navButtonSignUp = homePage.getNavButtonSignUp(); // Get element Sign Up button;
+        Actions actions = new Actions(driver);                      // Create instance of the Actions class;
+        actions.moveToElement(navButtonSignUp).click().perform();   // Perform mouse click on the SignUp button;
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(1000)); // Apply 1s delay;
+        WebElement signUpModal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(SIGNUP_MODAL_LOCATOR)));
+        // Skip Username entering
+        WebElement passwordInput = signUpModal.findElement(By.xpath(SIGNUP_PASSWORD_LOCATOR));  // Get Password input;
+        passwordInput.sendKeys(password + "1");                                     // Set Password;
+        WebElement signUpButton = signUpModal.findElement(By.xpath(SIGNUP_BUTTON_LOCATOR));     // Get SignUp button;
+        signUpButton.click();                                                                   // Click on the button;
+        wait.until(ExpectedConditions.alertIsPresent());                                        // Wait alert appearance;
+        try {
+            Alert alert = driver.switchTo().alert();            // Move driver focus to the Browser Alert;
+            String alertText = alert.getText();                 // Get text from a Browser Alert and put it to the var;
+            System.out.println("ALERT TEXT: " + alertText);     // Print out alert's content text;
+            Assert.assertTrue(alertText.contains("fill out Username and Password"),
+                    "\"Username/Password missing\" alert is missing");
+            alert.accept();                                     // Accept the alert (click [OK] button);
+        } catch (NoAlertPresentException e) {                   // There is no alert present;
+            System.out.println("The browser alert is missing");
+        }
+        Thread.sleep(3000);
+        driver.quit();
+        System.out.println("TEST USER DATA:");
+        System.out.println("  Username: (no data)");
+        System.out.println("  Password: " + password + "1");
+        System.out.println();
+    }
+
+    // CHECK UNSUCCESSFUL SIGNUP - PASSWORD INPUT LEFT EMPTY
+    @Test (testName = "TC004_Missing_Password_SignUp_GC")
+    public void missingPasswordSignUpChrome() throws MalformedURLException, InterruptedException {
+        ChromeOptions options = new ChromeOptions();                // New instance for GC browser;
+        driver = new RemoteWebDriver(new URL(gridUrl), options);    // Driver initialization on SeleniumGrid using GC;
+        driver.get(baseUrl);                                        // Open web page by URL;
+        var homePage = new HomePage(driver);                        // Create instance of the Home Page;
+        WebElement navButtonSignUp = homePage.getNavButtonSignUp(); // Get element Sign Up button;
+        Actions actions = new Actions(driver);                      // Create instance of the Actions class;
+        actions.moveToElement(navButtonSignUp).click().perform();   // Perform mouse click on the SignUp button;
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(1000)); // Apply 1s delay;
+        WebElement signUpModal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(SIGNUP_MODAL_LOCATOR)));
+        WebElement usernameInput = signUpModal.findElement(By.xpath(SIGNUP_USERNAME_LOCATOR));  // Get Username input;
+        usernameInput.sendKeys(uniqueUsername + "1");                               // Set Username;
+        // Skip Password entering
+        WebElement signUpButton = signUpModal.findElement(By.xpath(SIGNUP_BUTTON_LOCATOR));     // Get SignUp button;
+        signUpButton.click();                                                                   // Click on the button;
+        wait.until(ExpectedConditions.alertIsPresent());                                        // Wait alert appearance;
+        try {
+            Alert alert = driver.switchTo().alert();            // Move driver focus to the Browser Alert;
+            String alertText = alert.getText();                 // Get text from a Browser Alert and put it to the var;
+            System.out.println("ALERT TEXT: " + alertText);     // Print out alert's content text;
+            Assert.assertTrue(alertText.contains("fill out Username and Password"),
+                    "\"Username/Password missing\" alert is missing");
+            alert.accept();                                     // Accept the alert (click [OK] button);
+        } catch (NoAlertPresentException e) {                   // There is no alert present;
+            System.out.println("The browser alert is missing");
+        }
+        Thread.sleep(3000);
+        driver.quit();
+        System.out.println("TEST USER DATA:");
+        System.out.println("  Username: " + uniqueUsername + "1");
+        System.out.println("  Password: (no data)");
+        System.out.println();
+    }
 }
