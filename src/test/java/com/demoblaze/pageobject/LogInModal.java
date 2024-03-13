@@ -1,11 +1,11 @@
 package com.demoblaze.pageobject;
 
-public class SignUpModal {
-    public static final String SIGNUP_MODAL_LOCATOR = "//*[@id=\"signInModal\"]/div";
-    public static final String SIGNUP_TITLE_LOCATOR = "//*[@id=\"signInModalLabel\"]";
-    public static final String SIGNUP_X_LOCATOR = "//*[@id=\"signInModal\"]/div/div/div[1]/button/span";
-    public static final String SIGNUP_USERNAME_LOCATOR = "//*[@id=\"sign-username\"]";
-    public static final String SIGNUP_PASSWORD_LOCATOR = "//*[@id=\"sign-password\"]";
-    public static final String SIGNUP_BUTTON_LOCATOR = "//*[@id=\"signInModal\"]/div/div/div[3]/button[2]";
-    public static final String SIGNUP_CLOSE_LOCATOR = "//*[@id=\"signInModal\"]/div/div/div[3]/button[1]";
+public class LogInModal {
+    public static final String LOGIN_MODAL_LOCATOR = "//*[@id=\"logInModal\"]/div";
+    public static final String LOGIN_TITLE_LOCATOR = "//*[@id=\"logInModalLabel\"]";
+    public static final String LOGIN_X_LOCATOR = "//*[@id=\"logInModal\"]/div/div/div[1]/button/span";
+    public static final String LOGIN_USERNAME_LOCATOR = "//*[@id=\"loginusername\"]";
+    public static final String LOGIN_PASSWORD_LOCATOR = "//*[@id=\"loginpassword\"]";
+    public static final String LOGIN_BUTTON_LOCATOR = "//*[@id=\"logInModal\"]/div/div/div[3]/button[2]";
+    public static final String LOGIN_CLOSE_LOCATOR = "//*[@id=\"logInModal\"]/div/div/div[3]/button[1]";
 }
