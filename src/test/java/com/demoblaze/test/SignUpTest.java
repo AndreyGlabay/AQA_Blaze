@@ -41,7 +41,7 @@ public class SignUpTest {
     public String password = "Test-12345";
 
     // CHECK SUCCESSFUL SIGNUP (CHROME BROWSER)
-    @Test (testName = "TC001_Success_SignUp_GC")
+    @Test (testName = "TC001_Success_SignUp_GC", groups = {"groupGC"}, priority = 1)
     public void successSignUpChrome() throws MalformedURLException, InterruptedException {
         ChromeOptions options = new ChromeOptions();                // New instance for GC browser;
         driver = new RemoteWebDriver(new URL(gridUrl), options);    // Driver initialization on SeleniumGrid using GC;
@@ -78,7 +78,7 @@ public class SignUpTest {
     }
 
     // CHECK UNSUCCESSFUL SIGNUP - USERNAME ALREADY REGISTERED (CHROME BROWSER)
-    @Test (testName = "TC002_User_Already_Exists_SignUp_GC")
+    @Test (testName = "TC002_User_Already_Exists_SignUp_GC", groups = {"groupGC"}, priority = 2)
     public void userAlreadyExistsSignUpChrome() throws MalformedURLException, InterruptedException {
         ChromeOptions options = new ChromeOptions();                // New instance for GC browser;
         driver = new RemoteWebDriver(new URL(gridUrl), options);    // Driver initialization on SeleniumGrid using GC;
@@ -115,7 +115,7 @@ public class SignUpTest {
     }
 
     // CHECK UNSUCCESSFUL SIGNUP - USERNAME INPUT LEFT EMPTY (CHROME BROWSER)
-    @Test (testName = "TC003_Missing_Username_SignUp_GC")
+    @Test (testName = "TC003_Missing_Username_SignUp_GC", groups = {"groupGC"}, priority = 3)
     public void missingUsernameSignUpChrome() throws MalformedURLException, InterruptedException {
         ChromeOptions options = new ChromeOptions();                // New instance for GC browser;
         driver = new RemoteWebDriver(new URL(gridUrl), options);    // Driver initialization on SeleniumGrid using GC;
@@ -151,7 +151,7 @@ public class SignUpTest {
     }
 
     // CHECK UNSUCCESSFUL SIGNUP - PASSWORD INPUT LEFT EMPTY (CHROME BROWSER)
-    @Test (testName = "TC004_Missing_Password_SignUp_GC")
+    @Test (testName = "TC004_Missing_Password_SignUp_GC", groups = {"groupGC"}, priority = 3)
     public void missingPasswordSignUpChrome() throws MalformedURLException, InterruptedException {
         ChromeOptions options = new ChromeOptions();                // New instance for GC browser;
         driver = new RemoteWebDriver(new URL(gridUrl), options);    // Driver initialization on SeleniumGrid using GC;
@@ -187,7 +187,7 @@ public class SignUpTest {
     }
 
     // CHECK SIGNUP DISCARD AFTER INPUTS FILLING - BY "CLOSE" BUTTON (CHROME BROWSER)
-    @Test (testName = "TC005_Discard_by_Close_SignUp_GC")
+    @Test (testName = "TC005_Discard_by_Close_SignUp_GC", groups = {"groupGC"}, priority = 4)
     public void discardByCloseButtonSignUpChrome() throws MalformedURLException, InterruptedException {
         ChromeOptions options = new ChromeOptions();                // New instance for GC browser;
         driver = new RemoteWebDriver(new URL(gridUrl), options);    // Driver initialization on SeleniumGrid using GC;
@@ -211,7 +211,7 @@ public class SignUpTest {
     }
 
     // CHECK SIGNUP DISCARD BEFORE INPUTS FILLING - BY "X" BUTTON (CHROME BROWSER)
-    @Test (testName = "TC006_Discard_by_X_SignUp_GC")
+    @Test (testName = "TC006_Discard_by_X_SignUp_GC", groups = {"groupGC"}, priority = 4)
     public void discardByXButtonSignUpChrome() throws MalformedURLException, InterruptedException {
         ChromeOptions options = new ChromeOptions();                // New instance for GC browser;
         driver = new RemoteWebDriver(new URL(gridUrl), options);    // Driver initialization on SeleniumGrid using GC;
@@ -231,7 +231,7 @@ public class SignUpTest {
     }
 
     // CHECK SIGNUP TITLE (CHROME BROWSER)
-    @Test (testName = "TC007_Title_SignUp_GC")
+    @Test (testName = "TC007_Title_SignUp_GC", groups = {"groupGC"}, priority = 5)
     public void titleSignUpChrome() throws MalformedURLException, InterruptedException {
         ChromeOptions options = new ChromeOptions();                // New instance for GC browser;
         driver = new RemoteWebDriver(new URL(gridUrl), options);    // Driver initialization on SeleniumGrid using GC;
@@ -250,7 +250,7 @@ public class SignUpTest {
     }
 
     // CHECK SUCCESSFUL SIGNUP (FIREFOX BROWSER)
-    @Test (testName = "TC001a_Success_SignUp_FF")
+    @Test (testName = "TC001a_Success_SignUp_FF", groups = {"groupFF"}, priority = 1)
     public void successSignUpFirefox() throws MalformedURLException, InterruptedException {
         FirefoxOptions options = new FirefoxOptions();              // New instance for FF browser;
         driver = new RemoteWebDriver(new URL(gridUrl), options);    // Driver initialization on SeleniumGrid using FF;
@@ -287,7 +287,7 @@ public class SignUpTest {
     }
 
     // CHECK UNSUCCESSFUL SIGNUP - USERNAME ALREADY REGISTERED (FIREFOX BROWSER)
-    @Test (testName = "TC002a_User_Already_Exists_SignUp_FF")
+    @Test (testName = "TC002a_User_Already_Exists_SignUp_FF", groups = {"groupFF"}, priority = 2)
     public void userAlreadyExistsSignUpFirefox() throws MalformedURLException, InterruptedException {
         FirefoxOptions options = new FirefoxOptions();              // New instance for FF browser;
         driver = new RemoteWebDriver(new URL(gridUrl), options);    // Driver initialization on SeleniumGrid using FF;
@@ -324,7 +324,7 @@ public class SignUpTest {
     }
 
     // CHECK UNSUCCESSFUL SIGNUP - USERNAME INPUT LEFT EMPTY (FIREFOX BROWSER)
-    @Test (testName = "TC003a_Missing_Username_SignUp_FF")
+    @Test (testName = "TC003a_Missing_Username_SignUp_FF", groups = {"groupFF"}, priority = 3)
     public void missingUsernameSignUpFirefox() throws MalformedURLException, InterruptedException {
         FirefoxOptions options = new FirefoxOptions();              // New instance for FF browser;
         driver = new RemoteWebDriver(new URL(gridUrl), options);    // Driver initialization on SeleniumGrid using FF;
@@ -360,7 +360,7 @@ public class SignUpTest {
     }
 
     // CHECK UNSUCCESSFUL SIGNUP - PASSWORD INPUT LEFT EMPTY (FIREFOX BROWSER)
-    @Test (testName = "TC004a_Missing_Password_SignUp_FF")
+    @Test (testName = "TC004a_Missing_Password_SignUp_FF", groups = {"groupFF"}, priority = 3)
     public void missingPasswordSignUpFirefox() throws MalformedURLException, InterruptedException {
         FirefoxOptions options = new FirefoxOptions();              // New instance for FF browser;
         driver = new RemoteWebDriver(new URL(gridUrl), options);    // Driver initialization on SeleniumGrid using FF;
@@ -396,7 +396,7 @@ public class SignUpTest {
     }
 
     // CHECK SIGNUP DISCARD AFTER INPUTS FILLING - BY "CLOSE" BUTTON (FIREFOX BROWSER)
-    @Test (testName = "TC005a_Discard_by_Close_SignUp_FF")
+    @Test (testName = "TC005a_Discard_by_Close_SignUp_FF", groups = {"groupFF"}, priority = 4)
     public void discardByCloseButtonSignUpFirefox() throws MalformedURLException, InterruptedException {
         FirefoxOptions options = new FirefoxOptions();              // New instance for FF browser;
         driver = new RemoteWebDriver(new URL(gridUrl), options);    // Driver initialization on SeleniumGrid using FF;
@@ -420,7 +420,7 @@ public class SignUpTest {
     }
 
     // CHECK SIGNUP DISCARD BEFORE INPUTS FILLING - BY "X" BUTTON (FIREFOX BROWSER)
-    @Test (testName = "TC006a_Discard_by_X_SignUp_FF")
+    @Test (testName = "TC006a_Discard_by_X_SignUp_FF", groups = {"groupFF"}, priority = 4)
     public void discardByXButtonSignUpFirefox() throws MalformedURLException, InterruptedException {
         FirefoxOptions options = new FirefoxOptions();              // New instance for FF browser;
         driver = new RemoteWebDriver(new URL(gridUrl), options);    // Driver initialization on SeleniumGrid using FF;
@@ -440,7 +440,7 @@ public class SignUpTest {
     }
 
     // CHECK SIGNUP TITLE (FIREFOX BROWSER)
-    @Test (testName = "TC007a_Title_SignUp_FF")
+    @Test (testName = "TC007a_Title_SignUp_FF", groups = {"groupFF"}, priority = 5)
     public void titleSignUpFirefox() throws MalformedURLException, InterruptedException {
         FirefoxOptions options = new FirefoxOptions();              // New instance for FF browser;
         driver = new RemoteWebDriver(new URL(gridUrl), options);    // Driver initialization on SeleniumGrid using FF;
