@@ -186,8 +186,43 @@ public class SignUpTest {
         System.out.println();
     }
 
+    // CHECK UNSUCCESSFUL SIGNUP - USERNAME AND PASSWORD INPUTS LEFT EMPTY (CHROME BROWSER)
+    @Test (testName = "TC005_Missing_Password_SignUp_GC", groups = {"groupGC"}, priority = 3)
+    public void missingUsernameAndPasswordSignUpChrome() throws MalformedURLException, InterruptedException {
+        ChromeOptions options = new ChromeOptions();                // New instance for GC browser;
+        driver = new RemoteWebDriver(new URL(gridUrl), options);    // Driver initialization on SeleniumGrid using GC;
+        driver.get(baseUrl);                                        // Open web page by URL;
+        var homePage = new HomePage(driver);                        // Create instance of the Home Page;
+        WebElement navButtonSignUp = homePage.getNavButtonSignUp(); // Get element Sign Up button;
+        Actions actions = new Actions(driver);                      // Create instance of the Actions class;
+        actions.moveToElement(navButtonSignUp).click().perform();   // Perform mouse click on the SignUp button;
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(1000)); // Apply 1s delay;
+        WebElement signUpModal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(SIGNUP_MODAL_LOCATOR)));
+        // Skip Username entering
+        // Skip Password entering
+        WebElement signUpButton = signUpModal.findElement(By.xpath(SIGNUP_BUTTON_LOCATOR));     // Get SignUp button;
+        signUpButton.click();                                                                   // Click on the button;
+        wait.until(ExpectedConditions.alertIsPresent());                                        // Wait alert appearance;
+        try {
+            Alert alert = driver.switchTo().alert();            // Move driver focus to the Browser Alert;
+            String alertText = alert.getText();                 // Get text from a Browser Alert and put it to the var;
+            System.out.println("ALERT TEXT: " + alertText);     // Print out alert's content text;
+            Assert.assertTrue(alertText.contains("fill out Username and Password"),
+                    "\"Username/Password missing\" alert is missing");
+            alert.accept();                                     // Accept the alert (click [OK] button);
+        } catch (NoAlertPresentException e) {                   // There is no alert present;
+            System.out.println("The browser alert is missing");
+        }
+        Thread.sleep(1000);
+        driver.quit();
+        System.out.println("TEST USER DATA:");
+        System.out.println("  Username: " + uniqueUsernameGC + "1");
+        System.out.println("  Password: (no data)");
+        System.out.println();
+    }
+
     // CHECK SIGNUP DISCARD AFTER INPUTS FILLING - BY "CLOSE" BUTTON (CHROME BROWSER)
-    @Test (testName = "TC005_Discard_by_Close_SignUp_GC", groups = {"groupGC"}, priority = 4)
+    @Test (testName = "TC006_Discard_by_Close_SignUp_GC", groups = {"groupGC"}, priority = 4)
     public void discardByCloseButtonSignUpChrome() throws MalformedURLException, InterruptedException {
         ChromeOptions options = new ChromeOptions();                // New instance for GC browser;
         driver = new RemoteWebDriver(new URL(gridUrl), options);    // Driver initialization on SeleniumGrid using GC;
@@ -211,7 +246,7 @@ public class SignUpTest {
     }
 
     // CHECK SIGNUP DISCARD BEFORE INPUTS FILLING - BY "X" BUTTON (CHROME BROWSER)
-    @Test (testName = "TC006_Discard_by_X_SignUp_GC", groups = {"groupGC"}, priority = 4)
+    @Test (testName = "TC007_Discard_by_X_SignUp_GC", groups = {"groupGC"}, priority = 4)
     public void discardByXButtonSignUpChrome() throws MalformedURLException, InterruptedException {
         ChromeOptions options = new ChromeOptions();                // New instance for GC browser;
         driver = new RemoteWebDriver(new URL(gridUrl), options);    // Driver initialization on SeleniumGrid using GC;
@@ -231,7 +266,7 @@ public class SignUpTest {
     }
 
     // CHECK SIGNUP TITLE (CHROME BROWSER)
-    @Test (testName = "TC007_Title_SignUp_GC", groups = {"groupGC"}, priority = 5)
+    @Test (testName = "TC008_Title_SignUp_GC", groups = {"groupGC"}, priority = 5)
     public void titleSignUpChrome() throws MalformedURLException, InterruptedException {
         ChromeOptions options = new ChromeOptions();                // New instance for GC browser;
         driver = new RemoteWebDriver(new URL(gridUrl), options);    // Driver initialization on SeleniumGrid using GC;
@@ -395,8 +430,44 @@ public class SignUpTest {
         System.out.println();
     }
 
+    // CHECK UNSUCCESSFUL SIGNUP - USERNAME AND PASSWORD INPUTS LEFT EMPTY (CHROME BROWSER)
+    @Test (testName = "TC005a_Missing_Password_SignUp_GC", groups = {"groupFF"}, priority = 3)
+    public void missingUsernameAndPasswordSignUpFirefox() throws MalformedURLException, InterruptedException {
+        FirefoxOptions options = new FirefoxOptions();              // New instance for FF browser;
+        driver = new RemoteWebDriver(new URL(gridUrl), options);    // Driver initialization on SeleniumGrid using FF;
+        driver.get(baseUrl);                                        // Open web page by URL;
+        var homePage = new HomePage(driver);                        // Create instance of the Home Page;
+        WebElement navButtonSignUp = homePage.getNavButtonSignUp(); // Get element Sign Up button;
+        Actions actions = new Actions(driver);                      // Create instance of the Actions class;
+        actions.moveToElement(navButtonSignUp).click().perform();   // Perform mouse click on the SignUp button;
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(1000)); // Apply 1s delay;
+        WebElement signUpModal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(SIGNUP_MODAL_LOCATOR)));
+        // Skip Username entering
+        // Skip Password entering
+        WebElement signUpButton = signUpModal.findElement(By.xpath(SIGNUP_BUTTON_LOCATOR));     // Get SignUp button;
+        signUpButton.click();                                                                   // Click on the button;
+        wait.until(ExpectedConditions.alertIsPresent());                                        // Wait alert appearance;
+        try {
+            Alert alert = driver.switchTo().alert();            // Move driver focus to the Browser Alert;
+            String alertText = alert.getText();                 // Get text from a Browser Alert and put it to the var;
+            System.out.println("ALERT TEXT: " + alertText);     // Print out alert's content text;
+            Assert.assertTrue(alertText.contains("fill out Username and Password"),
+                    "\"Username/Password missing\" alert is missing");
+            alert.accept();                                     // Accept the alert (click [OK] button);
+        } catch (NoAlertPresentException e) {                   // There is no alert present;
+            System.out.println("The browser alert is missing");
+        }
+        Thread.sleep(1000);
+        driver.quit();
+        System.out.println("TEST USER DATA:");
+        System.out.println("  Username: " + uniqueUsernameGC + "1");
+        System.out.println("  Password: (no data)");
+        System.out.println();
+    }
+
+
     // CHECK SIGNUP DISCARD AFTER INPUTS FILLING - BY "CLOSE" BUTTON (FIREFOX BROWSER)
-    @Test (testName = "TC005a_Discard_by_Close_SignUp_FF", groups = {"groupFF"}, priority = 4)
+    @Test (testName = "TC006a_Discard_by_Close_SignUp_FF", groups = {"groupFF"}, priority = 4)
     public void discardByCloseButtonSignUpFirefox() throws MalformedURLException, InterruptedException {
         FirefoxOptions options = new FirefoxOptions();              // New instance for FF browser;
         driver = new RemoteWebDriver(new URL(gridUrl), options);    // Driver initialization on SeleniumGrid using FF;
@@ -420,7 +491,7 @@ public class SignUpTest {
     }
 
     // CHECK SIGNUP DISCARD BEFORE INPUTS FILLING - BY "X" BUTTON (FIREFOX BROWSER)
-    @Test (testName = "TC006a_Discard_by_X_SignUp_FF", groups = {"groupFF"}, priority = 4)
+    @Test (testName = "TC007a_Discard_by_X_SignUp_FF", groups = {"groupFF"}, priority = 4)
     public void discardByXButtonSignUpFirefox() throws MalformedURLException, InterruptedException {
         FirefoxOptions options = new FirefoxOptions();              // New instance for FF browser;
         driver = new RemoteWebDriver(new URL(gridUrl), options);    // Driver initialization on SeleniumGrid using FF;
@@ -440,7 +511,7 @@ public class SignUpTest {
     }
 
     // CHECK SIGNUP TITLE (FIREFOX BROWSER)
-    @Test (testName = "TC007a_Title_SignUp_FF", groups = {"groupFF"}, priority = 5)
+    @Test (testName = "TC008a_Title_SignUp_FF", groups = {"groupFF"}, priority = 5)
     public void titleSignUpFirefox() throws MalformedURLException, InterruptedException {
         FirefoxOptions options = new FirefoxOptions();              // New instance for FF browser;
         driver = new RemoteWebDriver(new URL(gridUrl), options);    // Driver initialization on SeleniumGrid using FF;
