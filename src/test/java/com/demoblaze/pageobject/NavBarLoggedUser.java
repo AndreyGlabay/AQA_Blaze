@@ -15,7 +15,7 @@ public class NavBarLoggedUser {
     public static final String LOGOUT_BUTTON_LOCATOR = "//*[@id=\"logout2\"]";
     public static final String WELCOME_BUTTON_LOCATOR = "//*[@id=\"nameofuser\"]";
 
-    private WebElement navBar;
+    private WebElement navBarLoggedUser;
     private WebElement navButtonHome;
     private WebElement navButtonContact;
     private WebElement navButtonAboutUs;
@@ -23,6 +23,10 @@ public class NavBarLoggedUser {
     private WebElement navButtonLogOut;
     private WebElement navButtonWelcome;
 
+
+    public WebElement getNavBarLoggedUser() {
+        return navButtonHome;
+    }
 
     public WebElement getNavButtonHome() {
         return navButtonHome;
@@ -48,7 +52,7 @@ public class NavBarLoggedUser {
         return navButtonWelcome;
     }
 
-    public void navBarLoggedUser(WebDriver driver) {
+    public NavBarLoggedUser(WebDriver driver) {
         this.driver = driver;
         navButtonHome = driver.findElement(By.xpath(HOME_BUTTON_LOCATOR));
         navButtonContact = driver.findElement(By.xpath(CONTACT_BUTTON_LOCATOR));
@@ -60,7 +64,7 @@ public class NavBarLoggedUser {
 
     // Methods for check are web elements present in the Nav Bar menu
     public boolean isNavBarLoggedUserDisplayed() {
-        return navBar.isDisplayed();
+        return navBarLoggedUser.isDisplayed();
     }
 
     public boolean isNavButtonHomeDisplayed() {
