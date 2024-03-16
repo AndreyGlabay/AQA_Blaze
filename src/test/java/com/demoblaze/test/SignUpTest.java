@@ -2,6 +2,7 @@ package com.demoblaze.test;
 
 import com.demoblaze.pageobject.HomePage;
 import com.demoblaze.pageobject.SignUpModal;
+import com.demoblaze.testdata.TestData;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoAlertPresentException;
@@ -31,14 +32,19 @@ import static com.demoblaze.pageobject.SignUpModal.SIGNUP_TITLE_LOCATOR;
 import static com.demoblaze.pageobject.SignUpModal.SIGNUP_X_LOCATOR;
 import static com.demoblaze.pageobject.SignUpModal.SIGNUP_CLOSE_LOCATOR;
 
+import static com.demoblaze.testdata.TestData.PASSWORD;
+
 public class SignUpTest {
     WebDriver driver;
     public String gridUrl = "http://192.168.0.102:4444";
     public String baseUrl = "https://demoblaze.com/";
-    public String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
-    public String uniqueUsernameGC = "GC-user-" + timestamp;
+    public static String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+    public static String uniqueUsernameGC = "GC-user-" + timestamp;
     public String uniqueUsernameFF = "FF-user-" + timestamp;
-    public String password = "Test-12345";
+
+    public static String getUniqueUsernameGC() {
+        return uniqueUsernameGC;
+    }
 
     // CHECK SUCCESSFUL SIGNUP (CHROME BROWSER)
     @Test (testName = "TC001_Success_SignUp_GC", groups = {"groupGC"}, priority = 1)
@@ -53,11 +59,12 @@ public class SignUpTest {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(1000)); // Apply 1s delay;
         WebElement signUpModal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(SIGNUP_MODAL_LOCATOR)));
         WebElement usernameInput = signUpModal.findElement(By.xpath(SIGNUP_USERNAME_LOCATOR));  // Get Username input;
-        usernameInput.sendKeys(uniqueUsernameGC);                                   // Set new Username;
+        usernameInput.sendKeys(uniqueUsernameGC);                                               // Set new Username;
         WebElement passwordInput = signUpModal.findElement(By.xpath(SIGNUP_PASSWORD_LOCATOR));  // Get Password input;
-        passwordInput.sendKeys(password);                                                       // Set Password;
+        passwordInput.sendKeys(PASSWORD);                                                       // Set Password;
         WebElement signUpButton = signUpModal.findElement(By.xpath(SIGNUP_BUTTON_LOCATOR));     // Get SignUp button;
         signUpButton.click();                                                                   // Click on the button;
+        TestData.setUniqueUsernameGC(uniqueUsernameGC);
         wait.until(ExpectedConditions.alertIsPresent());                                        // Wait alert appearance;
         try {
             Alert alert = driver.switchTo().alert();            // Move driver focus to the Browser Alert;
@@ -73,7 +80,7 @@ public class SignUpTest {
         driver.quit();
         System.out.println("TEST USER DATA:");
         System.out.println("  Username: " + uniqueUsernameGC);
-        System.out.println("  Password: " + password);
+        System.out.println("  Password: " + PASSWORD);
         System.out.println();
     }
 
@@ -92,7 +99,7 @@ public class SignUpTest {
         WebElement usernameInput = signUpModal.findElement(By.xpath(SIGNUP_USERNAME_LOCATOR));  // Get Username input;
         usernameInput.sendKeys(uniqueUsernameGC);                                               // Set Username in use ;
         WebElement passwordInput = signUpModal.findElement(By.xpath(SIGNUP_PASSWORD_LOCATOR));  // Get Password input;
-        passwordInput.sendKeys(password);                                                       // Set Password;
+        passwordInput.sendKeys(PASSWORD);                                                       // Set Password;
         WebElement signUpButton = signUpModal.findElement(By.xpath(SIGNUP_BUTTON_LOCATOR));     // Get SignUp button;
         signUpButton.click();                                                                   // Click on the button;
         wait.until(ExpectedConditions.alertIsPresent());                                        // Wait alert appearance;
@@ -110,7 +117,7 @@ public class SignUpTest {
         driver.quit();
         System.out.println("TEST USER DATA:");
         System.out.println("  Username: " + uniqueUsernameGC);
-        System.out.println("  Password: " + password);
+        System.out.println("  Password: " + PASSWORD);
         System.out.println();
     }
 
@@ -128,7 +135,7 @@ public class SignUpTest {
         WebElement signUpModal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(SIGNUP_MODAL_LOCATOR)));
         // Skip Username entering
         WebElement passwordInput = signUpModal.findElement(By.xpath(SIGNUP_PASSWORD_LOCATOR));  // Get Password input;
-        passwordInput.sendKeys(password + "1");                                     // Set Password;
+        passwordInput.sendKeys(PASSWORD + "1");                                     // Set Password;
         WebElement signUpButton = signUpModal.findElement(By.xpath(SIGNUP_BUTTON_LOCATOR));     // Get SignUp button;
         signUpButton.click();                                                                   // Click on the button;
         wait.until(ExpectedConditions.alertIsPresent());                                        // Wait alert appearance;
@@ -146,7 +153,7 @@ public class SignUpTest {
         driver.quit();
         System.out.println("TEST USER DATA:");
         System.out.println("  Username: (no data)");
-        System.out.println("  Password: " + password + "1");
+        System.out.println("  Password: " + PASSWORD + "1");
         System.out.println();
     }
 
@@ -236,7 +243,7 @@ public class SignUpTest {
         WebElement usernameInput = signUpModal.findElement(By.xpath(SIGNUP_USERNAME_LOCATOR));  // Get Username input;
         usernameInput.sendKeys(uniqueUsernameGC);                                   // Set Username;
         WebElement passwordInput = signUpModal.findElement(By.xpath(SIGNUP_PASSWORD_LOCATOR));  // Get Password input;
-        passwordInput.sendKeys(password);                                           // Set Password;
+        passwordInput.sendKeys(PASSWORD);                                           // Set Password;
         WebElement closeButton = signUpModal.findElement(By.xpath(SIGNUP_CLOSE_LOCATOR));       // Get Close button;
         closeButton.click();                                                                    // Click on the button;
         Thread.sleep(500);
@@ -299,7 +306,7 @@ public class SignUpTest {
         WebElement usernameInput = signUpModal.findElement(By.xpath(SIGNUP_USERNAME_LOCATOR));  // Get Username input;
         usernameInput.sendKeys(uniqueUsernameFF);                                               // Set new Username;
         WebElement passwordInput = signUpModal.findElement(By.xpath(SIGNUP_PASSWORD_LOCATOR));  // Get Password input;
-        passwordInput.sendKeys(password);                                                       // Set Password;
+        passwordInput.sendKeys(PASSWORD);                                                       // Set Password;
         WebElement signUpButton = signUpModal.findElement(By.xpath(SIGNUP_BUTTON_LOCATOR));     // Get SignUp button;
         signUpButton.click();                                                                   // Click on the button;
         wait.until(ExpectedConditions.alertIsPresent());                                        // Wait alert appearance;
@@ -317,7 +324,7 @@ public class SignUpTest {
         driver.quit();
         System.out.println("TEST USER DATA:");
         System.out.println("  Username: " + uniqueUsernameFF);
-        System.out.println("  Password: " + password);
+        System.out.println("  Password: " + PASSWORD);
         System.out.println();
     }
 
@@ -336,7 +343,7 @@ public class SignUpTest {
         WebElement usernameInput = signUpModal.findElement(By.xpath(SIGNUP_USERNAME_LOCATOR));  // Get Username input;
         usernameInput.sendKeys(uniqueUsernameFF);                                               // Set Username in use ;
         WebElement passwordInput = signUpModal.findElement(By.xpath(SIGNUP_PASSWORD_LOCATOR));  // Get Password input;
-        passwordInput.sendKeys(password);                                                       // Set Password;
+        passwordInput.sendKeys(PASSWORD);                                                       // Set Password;
         WebElement signUpButton = signUpModal.findElement(By.xpath(SIGNUP_BUTTON_LOCATOR));     // Get SignUp button;
         signUpButton.click();                                                                   // Click on the button;
         wait.until(ExpectedConditions.alertIsPresent());                                        // Wait alert appearance;
@@ -354,7 +361,7 @@ public class SignUpTest {
         driver.quit();
         System.out.println("TEST USER DATA:");
         System.out.println("  Username: " + uniqueUsernameFF);
-        System.out.println("  Password: " + password);
+        System.out.println("  Password: " + PASSWORD);
         System.out.println();
     }
 
@@ -372,7 +379,7 @@ public class SignUpTest {
         WebElement signUpModal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(SIGNUP_MODAL_LOCATOR)));
         // Skip Username entering
         WebElement passwordInput = signUpModal.findElement(By.xpath(SIGNUP_PASSWORD_LOCATOR));  // Get Password input;
-        passwordInput.sendKeys(password + "1");                                     // Set Password;
+        passwordInput.sendKeys(PASSWORD + "1");                                     // Set Password;
         WebElement signUpButton = signUpModal.findElement(By.xpath(SIGNUP_BUTTON_LOCATOR));     // Get SignUp button;
         signUpButton.click();                                                                   // Click on the button;
         wait.until(ExpectedConditions.alertIsPresent());                                        // Wait alert appearance;
@@ -390,7 +397,7 @@ public class SignUpTest {
         driver.quit();
         System.out.println("TEST USER DATA:");
         System.out.println("  Username: (no data)");
-        System.out.println("  Password: " + password + "1");
+        System.out.println("  Password: " + PASSWORD + "1");
         System.out.println();
     }
 
@@ -481,7 +488,7 @@ public class SignUpTest {
         WebElement usernameInput = signUpModal.findElement(By.xpath(SIGNUP_USERNAME_LOCATOR));  // Get Username input;
         usernameInput.sendKeys(uniqueUsernameGC);                                               // Set Username;
         WebElement passwordInput = signUpModal.findElement(By.xpath(SIGNUP_PASSWORD_LOCATOR));  // Get Password input;
-        passwordInput.sendKeys(password);                                                       // Set Password;
+        passwordInput.sendKeys(PASSWORD);                                                       // Set Password;
         WebElement closeButton = signUpModal.findElement(By.xpath(SIGNUP_CLOSE_LOCATOR));       // Get Close button;
         closeButton.click();                                                                    // Click on the button;
         Thread.sleep(500);
