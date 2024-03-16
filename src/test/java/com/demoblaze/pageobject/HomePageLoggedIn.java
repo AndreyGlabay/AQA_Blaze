@@ -6,14 +6,7 @@ import org.openqa.selenium.WebElement;
 
 // Create the test class and implement Page Object for the Home Page after success Sign Up
 public class HomePageLoggedIn {
-    private WebDriver driver;
-    private NavBarLoggedUser navBarLoggedUser;
-    private WebElement navButtonHome;
-    private WebElement navButtonContact;
-    private WebElement navButtonAboutUs;
-    private WebElement navButtonCart;
-    private WebElement navButtonLogOut;
-    private WebElement navButtonWelcome;
+    private final NavBarLoggedUser navBarLoggedUser;
     public static final String BRAND_LOCATOR = "//*[@id=\"nava\"]";
     public static final String LOGO_LOCATOR = "//*[@id=\"nava\"]/img";
     public static final String CAROUSEL_LOCATOR = "//*[@id=\"contcar\"]";
@@ -46,33 +39,11 @@ public class HomePageLoggedIn {
     private WebElement footerLogo;
     private WebElement footerCopyright;
 
-    public NavBarLoggedUser getNavBarLoggedUser() {
+    public NavBarLoggedUser getNavBarLoggedUser(WebDriver driver) {
         return navBarLoggedUser;
     }
 
-    public WebElement getNavButtonHome() {
-        return navButtonHome;
-    }
 
-    public WebElement getNavButtonContact() {
-        return navButtonContact;
-    }
-
-    public WebElement getNavButtonAboutUs() {
-        return navButtonAboutUs;
-    }
-
-    public WebElement getNavButtonCart() {
-        return navButtonCart;
-    }
-
-    public WebElement getNavButtonLogOut() {
-        return navButtonLogOut;
-    }
-
-    public WebElement getNavButtonWelcome() {
-        return navButtonWelcome;
-    }
 
     public WebElement getCategoryMenuPhones() {
         return categoryMenuPhones;
@@ -95,9 +66,7 @@ public class HomePageLoggedIn {
     }
 
     public HomePageLoggedIn(WebDriver driver) {
-        this.driver = driver;
-        navBarLoggedUser = new NavBarLoggedUser(driver);
-
+        this.navBarLoggedUser = new NavBarLoggedUser(driver);
         headerBrand = driver.findElement(By.xpath(BRAND_LOCATOR));
         headerLogo = driver.findElement(By.xpath(LOGO_LOCATOR));
         carousel = driver.findElement(By.xpath(CAROUSEL_LOCATOR));
@@ -115,7 +84,6 @@ public class HomePageLoggedIn {
         footerCopyright = driver.findElement(By.xpath(FOOTER_COPYRIGHT_LOCATOR));
     }
 
-
     // Methods for check are web elements present on the page
     public boolean isHeaderBrandDisplayed() {
         return headerBrand.isDisplayed();
@@ -125,33 +93,7 @@ public class HomePageLoggedIn {
         return headerLogo.isDisplayed();
     }
 
-    public boolean isNavBarLoggedUserDisplayed() {
-        return navBarLoggedUser.isNavBarLoggedUserDisplayed();
-    }
 
-    public boolean isNavButtonHomeDisplayed() {
-        return navButtonHome.isDisplayed();
-    }
-
-    public boolean isNavButtonContactDisplayed() {
-        return navButtonContact.isDisplayed();
-    }
-
-    public boolean isNavButtonAboutUsDisplayed() {
-        return navButtonAboutUs.isDisplayed();
-    }
-
-    public boolean isNavButtonCartDisplayed() {
-        return navButtonCart.isDisplayed();
-    }
-
-    public boolean isNavButtonLogOutDisplayed() {
-        return navButtonLogOut.isDisplayed();
-    }
-
-    public boolean isNavButtonWelcomeDisplayed() {
-        return navButtonWelcome.isDisplayed();
-    }
 
     public boolean isCarouselDisplayed() {
         return carousel.isDisplayed();
