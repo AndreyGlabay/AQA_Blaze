@@ -43,8 +43,6 @@ public class HomePageLoggedIn {
         return navBarLoggedUser;
     }
 
-
-
     public WebElement getCategoryMenuPhones() {
         return categoryMenuPhones;
     }
@@ -92,8 +90,6 @@ public class HomePageLoggedIn {
     public boolean isHeaderLogoDisplayed() {
         return headerLogo.isDisplayed();
     }
-
-
 
     public boolean isCarouselDisplayed() {
         return carousel.isDisplayed();
