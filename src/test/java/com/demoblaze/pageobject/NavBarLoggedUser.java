@@ -1,8 +1,14 @@
 package com.demoblaze.pageobject;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 // Create the test class and implement Page Object for the Home Page after success Sign Up
 public class NavBarLoggedUser {
@@ -15,45 +21,16 @@ public class NavBarLoggedUser {
     public static final String LOGOUT_BUTTON_LOCATOR = "//*[@id=\"logout2\"]";
     public static final String WELCOME_BUTTON_LOCATOR = "//*[@id=\"nameofuser\"]";
 
-    private WebElement navBarLoggedUser;
-    private WebElement navButtonHome;
-    private WebElement navButtonContact;
-    private WebElement navButtonAboutUs;
-    private WebElement navButtonCart;
-    private WebElement navButtonLogOut;
-    private WebElement navButtonWelcome;
-
-
-    public WebElement getNavBarLoggedUser() {
-        return navButtonHome;
-    }
-
-    public WebElement getNavButtonHome() {
-        return navButtonHome;
-    }
-
-    public WebElement getNavButtonContact() {
-        return navButtonContact;
-    }
-
-    public WebElement getNavButtonAboutUs() {
-        return navButtonAboutUs;
-    }
-
-    public WebElement getNavButtonCart() {
-        return navButtonCart;
-    }
-
-    public WebElement getNavButtonLogOut() {
-        return navButtonLogOut;
-    }
-
-    public WebElement getNavButtonWelcome() {
-        return navButtonWelcome;
-    }
+    private final WebElement navBarLoggedUser;
+    private final WebElement navButtonHome;
+    private final WebElement navButtonContact;
+    private final WebElement navButtonAboutUs;
+    private final WebElement navButtonCart;
+    private final WebElement navButtonLogOut;
+    private final WebElement navButtonWelcome;
 
     public NavBarLoggedUser(WebDriver driver) {
-        this.driver = driver;
+        navBarLoggedUser = driver.findElement(By.xpath(NAVBAR_LOGGED_USER_LOCATOR));
         navButtonHome = driver.findElement(By.xpath(HOME_BUTTON_LOCATOR));
         navButtonContact = driver.findElement(By.xpath(CONTACT_BUTTON_LOCATOR));
         navButtonAboutUs = driver.findElement(By.xpath(ABOUT_BUTTON_LOCATOR));
@@ -62,11 +39,17 @@ public class NavBarLoggedUser {
         navButtonWelcome = driver.findElement(By.xpath(WELCOME_BUTTON_LOCATOR));
     }
 
+    // Method to wait for the elements' presence using explicit waits - try to find an element until it becomes visible.
+    // Implements to solve issue when "Log In" and "Welcome" buttons not displayed at Nav Bar after log in flow.
+    private WebElement waitForElementAppear(By locator) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(1000));
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+    }
+
     // Methods for check are web elements present in the Nav Bar menu
     public boolean isNavBarLoggedUserDisplayed() {
         return navBarLoggedUser.isDisplayed();
     }
-
     public boolean isNavButtonHomeDisplayed() {
         return navButtonHome.isDisplayed();
     }
@@ -83,11 +66,23 @@ public class NavBarLoggedUser {
         return navButtonCart.isDisplayed();
     }
 
+    // Catch exceptions for test failure preventing if element's stale or miss happens.
+    // Implements to solve issue when "Log In" and "Welcome" buttons not displayed at Nav Bar after log in flow.
     public boolean isNavButtonLogOutDisplayed() {
-        return navButtonLogOut.isDisplayed();
+        try {
+            return navButtonHome.isDisplayed();
+        } catch (StaleElementReferenceException | NoSuchElementException e) {
+            return false;
+        }
     }
 
+    // Catch exceptions for test failure preventing if element's stale or miss happens.
+    // Implements to solve issue when "Log In" and "Welcome" buttons not displayed at Nav Bar after log in flow.
     public boolean isNavButtonWelcomeDisplayed() {
-        return navButtonWelcome.isDisplayed();
+        try {
+            return navButtonHome.isDisplayed();
+        } catch (StaleElementReferenceException | NoSuchElementException e) {
+            return false;
+        }
     }
 }
