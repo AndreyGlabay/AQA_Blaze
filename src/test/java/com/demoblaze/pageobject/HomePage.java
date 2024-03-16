@@ -38,6 +38,20 @@ public class HomePage {
     private WebElement navButtonAboutUs;
     private WebElement navButtonCart;
     private WebElement navButtonLogIn;
+    private WebElement navButtonSignUp;
+    private WebElement carousel;
+    private WebElement categoryMenuArea;
+    private WebElement categoryMenuTitle;
+    private WebElement categoryMenuPhones;
+    private WebElement categoryMenuLaptops;
+    private WebElement categoryMenuMonitors;
+    private WebElement contentArea;
+    private WebElement previousButton;
+    private WebElement nextButton;
+    private WebElement footerAbout;
+    private WebElement footerContacts;
+    private WebElement footerLogo;
+    private WebElement footerCopyright;
 
     public WebElement getNavButtonHome() {
         return navButtonHome;
@@ -82,21 +96,6 @@ public class HomePage {
     public WebElement getNextButton() {
         return nextButton;
     }
-
-    private WebElement navButtonSignUp;
-    private WebElement carousel;
-    private WebElement categoryMenuArea;
-    private WebElement categoryMenuTitle;
-    private WebElement categoryMenuPhones;
-    private WebElement categoryMenuLaptops;
-    private WebElement categoryMenuMonitors;
-    private WebElement contentArea;
-    private WebElement previousButton;
-    private WebElement nextButton;
-    private WebElement footerAbout;
-    private WebElement footerContacts;
-    private WebElement footerLogo;
-    private WebElement footerCopyright;
 
     public HomePage(WebDriver driver) {
         this.driver = driver;
@@ -212,26 +211,4 @@ public class HomePage {
     public boolean isFooterCopyrightDisplayed() {
         return footerCopyright.isDisplayed();
     }
-
-
-
-
-
-
-//    // Login flow.
-//    public void login(String username, String password) {
-//        inputUsername.sendKeys(username);
-//        inputPassword.sendKeys(password);
-//        buttonLogin.click();
-//    }
-//
-//    // Get and check Error Message.
-//    public boolean checkMessage(String str) {
-//        messageError = driver.findElement(By.xpath(MESSAGE_LOCATOR));
-//        return (messageError.getText().contains(str));
-//    }
-
-
-
-
 }
