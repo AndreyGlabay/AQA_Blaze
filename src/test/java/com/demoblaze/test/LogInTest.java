@@ -43,6 +43,7 @@ import static com.demoblaze.pageobject.SignUpModal.SIGNUP_PASSWORD_LOCATOR;
 import static com.demoblaze.pageobject.SignUpModal.SIGNUP_USERNAME_LOCATOR;
 
 import static com.demoblaze.testdata.TestData.PASSWORD;
+import static com.demoblaze.testdata.TestData.PASSWORD_WRONG;
 
 public class LogInTest {
     WebDriver driver;
@@ -69,6 +70,7 @@ public class LogInTest {
         driver.quit();
     }
 
+    // CHECK SUCCESSFUL LOGIN - CHECK THAT AFTER LOGIN HOME PAGE HAS APPROPRIATE WEB ELEMENTS;
     @Test(testName = "TC101_Success_LogIn_Check_Elements", priority = 1)
     public void successLogInCheckElements() {
         HomePage homePage = new HomePage(driver);                           // Create an instance of Home page;
@@ -86,7 +88,7 @@ public class LogInTest {
         WebElement logInButton = logInModal.findElement(By.xpath(LOGIN_BUTTON_LOCATOR)); // Find the LogIn button;
         logInButton.click();                                                             // Click on the button.
 
-        System.out.println("LOGGED IN WITH CREDENTIALS:");
+        System.out.println("TC101 - LOGGED IN WITH CREDENTIALS:");
         System.out.println("  Logged with Username: " + TestData.getUniqueUsernameGC());
         System.out.println("  Logged with Password: " + PASSWORD);
         System.out.println();
@@ -122,7 +124,7 @@ public class LogInTest {
         softAssert.assertAll();
     }
 
-
+    // CHECK SUCCESSFUL LOGIN - CHECK THAT AFTER LOGIN CORRECT USERNAME DISPLAYED AT THE "WELCOME" BUTTON
     @Test(testName = "TC102_Success_LogIn_Check_Username", priority = 2)
     public void successLogInCheckUsername() {
         HomePage homePage = new HomePage(driver);                           // Create an instance of Home page;
@@ -140,7 +142,7 @@ public class LogInTest {
         WebElement logInButton = logInModal.findElement(By.xpath(LOGIN_BUTTON_LOCATOR)); // Find the LogIn button;
         logInButton.click();                                                             // Click on the button.
 
-        System.out.println("LOGGED IN WITH CREDENTIALS:");
+        System.out.println("TC102 - LOGGED IN WITH CREDENTIALS:");
         System.out.println("  Logged with Username: " + TestData.getUniqueUsernameGC());
         System.out.println("  Logged with Password: " + PASSWORD);
         System.out.println();
@@ -152,6 +154,7 @@ public class LogInTest {
         Assert.assertEquals(actualText, "Welcome " + expectedText, "Welcome Button: wrong username");
     }
 
+    // CHECK SUCCESSFUL LOGOUT - CHECK THAT AFTER LOGOUT HOME PAGE HAS APPROPRIATE WEB ELEMENTS;
     @Test(testName = "TC103_Success_LogOut_Check_Elements", priority = 2)
     public void successLogOutCheckElements() {
         HomePage homePage = new HomePage(driver);                           // Create an instance of Home page;
@@ -169,7 +172,7 @@ public class LogInTest {
         WebElement logInButton = logInModal.findElement(By.xpath(LOGIN_BUTTON_LOCATOR)); // Find the LogIn button;
         logInButton.click();                                                             // Click on the button.
 
-        System.out.println("LOGGED IN WITH CREDENTIALS:");
+        System.out.println("TC103 - LOGGED IN WITH CREDENTIALS:");
         System.out.println("  Logged with Username: " + TestData.getUniqueUsernameGC());
         System.out.println("  Logged with Password: " + PASSWORD);
         System.out.println();
@@ -190,6 +193,43 @@ public class LogInTest {
         softAssert.assertTrue(homePageAfterLogout.isNavButtonLogInDisplayed(), "Nav Button Log In is missing");
         softAssert.assertTrue(homePageAfterLogout.isNavButtonSignUpDisplayed(), "Nav Button Sign Up is missing");
         softAssert.assertAll();
+    }
+
+    // CHECK UNSUCCESSFUL LOGIN - VALID USERNAME && WRONG PASSWORD
+    @Test (testName = "TC104-A_Unsuccessful_Login_Wrong_Password", priority = 3)
+    public void unsuccessfulLoginWrongPassword() throws MalformedURLException, InterruptedException {
+        HomePage homePage = new HomePage(driver);                           // Create an instance of Home page;
+        WebElement navButtonLogIn = homePage.getNavButtonLogIn();           // Get the Login button from the Home page;
+        navButtonLogIn.click();                                             // Click on the Login button.
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(1000)); // Initialize WebDriverWait object;
+        WebElement logInModal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(LOGIN_MODAL_LOCATOR)));
+
+        WebElement usernameInput = logInModal.findElement(By.xpath(LOGIN_USERNAME_LOCATOR));// Find the Username input;
+        String uniqueUsernameGC = TestData.getUniqueUsernameGC();                           // Get VALID Username;
+        usernameInput.sendKeys(uniqueUsernameGC);                                           // Send VALID username.
+        WebElement passwordInput = logInModal.findElement(By.xpath(LOGIN_PASSWORD_LOCATOR));// Find the Password input;
+        passwordInput.sendKeys(TestData.PASSWORD_WRONG);                                    // Send the WRONG password.
+        WebElement logInButton = logInModal.findElement(By.xpath(LOGIN_BUTTON_LOCATOR));    // Find the LogIn button;
+        logInButton.click();                                                                // Click on the button.
+
+        System.out.println("TC104 - LOGGED IN WITH CREDENTIALS:");
+        System.out.println("  Logged with Username: " + TestData.getUniqueUsernameGC());
+        System.out.println("  Logged with Password: " + PASSWORD_WRONG);
+        System.out.println();
+
+        wait.until(ExpectedConditions.alertIsPresent());        // Wait alert appearance;
+        try {
+            Alert alert = driver.switchTo().alert();            // Move driver focus to the Browser Alert;
+            String alertText = alert.getText();                 // Get text from a Browser Alert and put it to the var;
+            System.out.println("ALERT TEXT: " + alertText);     // Print out alert's content text;
+            Assert.assertTrue(alertText.contains("Wrong password"),
+                    "\"Wrong password\" alert is missing");
+            alert.accept();                                     // Accept the alert (click [OK] button);
+        } catch (NoAlertPresentException e) {                   // There is no alert present;
+            System.out.println("The browser alert is missing");
+        }
+
     }
 
 
