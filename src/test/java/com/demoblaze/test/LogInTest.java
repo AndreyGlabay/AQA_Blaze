@@ -38,8 +38,10 @@ import static com.demoblaze.pageobject.NavBarLoggedUser.LOGOUT_BUTTON_LOCATOR;
 import static com.demoblaze.pageobject.NavBarLoggedUser.NAVBAR_LOGGED_USER_LOCATOR;
 import static com.demoblaze.pageobject.NavBarLoggedUser.WELCOME_BUTTON_LOCATOR;
 import static com.demoblaze.pageobject.SignUpModal.SIGNUP_BUTTON_LOCATOR;
+import static com.demoblaze.pageobject.SignUpModal.SIGNUP_CLOSE_LOCATOR;
 import static com.demoblaze.pageobject.SignUpModal.SIGNUP_MODAL_LOCATOR;
 import static com.demoblaze.pageobject.SignUpModal.SIGNUP_PASSWORD_LOCATOR;
+import static com.demoblaze.pageobject.SignUpModal.SIGNUP_TITLE_LOCATOR;
 import static com.demoblaze.pageobject.SignUpModal.SIGNUP_USERNAME_LOCATOR;
 
 import static com.demoblaze.testdata.TestData.PASSWORD;
@@ -198,7 +200,7 @@ public class LogInTest {
 
     // CHECK UNSUCCESSFUL LOGIN - VALID USERNAME && WRONG PASSWORD
     @Test (testName = "TC104-A_Unsuccessful_Login_Wrong_Password", priority = 3)
-    public void unsuccessfulLoginWrongPassword() throws MalformedURLException, InterruptedException {
+    public void unsuccessfulLoginWrongPassword() {
         HomePage homePage = new HomePage(driver);                           // Create an instance of Home page;
         WebElement navButtonLogIn = homePage.getNavButtonLogIn();           // Get the Login button from the Home page;
         navButtonLogIn.click();                                             // Click on the Login button.
@@ -234,7 +236,7 @@ public class LogInTest {
 
     // CHECK UNSUCCESSFUL LOGIN - WRONG USERNAME && VALID PASSWORD
     @Test (testName = "TC104-B_Unsuccessful_Login_Wrong_Username", priority = 4)
-    public void unsuccessfulLoginWrongUsername() throws MalformedURLException, InterruptedException {
+    public void unsuccessfulLoginWrongUsername() {
         HomePage homePage = new HomePage(driver);                           // Create an instance of Home page;
         WebElement navButtonLogIn = homePage.getNavButtonLogIn();           // Get the Login button from the Home page;
         navButtonLogIn.click();                                             // Click on the Login button.
@@ -269,7 +271,7 @@ public class LogInTest {
 
     // CHECK UNSUCCESSFUL LOGIN - WRONG USERNAME && WRONG PASSWORD
     @Test (testName = "TC104-C_Unsuccessful_Login_Wrong_Username_and_Password", priority = 4)
-    public void unsuccessfulLoginWrongUsernameAndPassword() throws MalformedURLException, InterruptedException {
+    public void unsuccessfulLoginWrongUsernameAndPassword() {
         HomePage homePage = new HomePage(driver);                           // Create an instance of Home page;
         WebElement navButtonLogIn = homePage.getNavButtonLogIn();           // Get the Login button from the Home page;
         navButtonLogIn.click();                                             // Click on the Login button.
@@ -304,7 +306,7 @@ public class LogInTest {
 
     // CHECK UNSUCCESSFUL LOGIN - VALID USERNAME && MISSING PASSWORD
     @Test (testName = "TC104-D_Unsuccessful_Login_Missing_Password", priority = 5)
-    public void unsuccessfulLoginMissingPassword() throws MalformedURLException, InterruptedException {
+    public void unsuccessfulLoginMissingPassword() {
         HomePage homePage = new HomePage(driver);                           // Create an instance of Home page;
         WebElement navButtonLogIn = homePage.getNavButtonLogIn();           // Get the Login button from the Home page;
         navButtonLogIn.click();                                             // Click on the Login button.
@@ -339,7 +341,7 @@ public class LogInTest {
 
     // CHECK UNSUCCESSFUL LOGIN - MISSING USERNAME && VALID PASSWORD
     @Test (testName = "TC104-E_Unsuccessful_Login_Missing_Password", priority = 5)
-    public void unsuccessfulLoginMissingUsername() throws MalformedURLException, InterruptedException {
+    public void unsuccessfulLoginMissingUsername() {
         HomePage homePage = new HomePage(driver);                           // Create an instance of Home page;
         WebElement navButtonLogIn = homePage.getNavButtonLogIn();           // Get the Login button from the Home page;
         navButtonLogIn.click();                                             // Click on the Login button.
@@ -373,7 +375,7 @@ public class LogInTest {
 
     // CHECK UNSUCCESSFUL LOGIN - MISSING USERNAME && MISSING PASSWORD
     @Test (testName = "TC104-F_Unsuccessful_Login_Missing_Username_And_Password", priority = 5)
-    public void unsuccessfulLoginMissingUsernameAndPassword() throws MalformedURLException, InterruptedException {
+    public void unsuccessfulLoginMissingUsernameAndPassword() {
         HomePage homePage = new HomePage(driver);                           // Create an instance of Home page;
         WebElement navButtonLogIn = homePage.getNavButtonLogIn();           // Get the Login button from the Home page;
         navButtonLogIn.click();                                             // Click on the Login button.
@@ -404,6 +406,62 @@ public class LogInTest {
         }
     }
 
+    // CHECK LOGIN DISCARD AFTER INPUTS FILLING - BY "CLOSE" BUTTON
+    @Test (testName = "TC105-A_Discard_by_Close_LogIn", priority = 6)
+    public void discardByCloseButtonLogIn() throws InterruptedException {
+        HomePage homePage = new HomePage(driver);                           // Create an instance of Home page;
+        WebElement navButtonLogIn = homePage.getNavButtonLogIn();           // Get the Login button from the Home page;
+        navButtonLogIn.click();                                             // Click on the Login button.
 
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(1000)); // Initialize WebDriverWait object;
+        WebElement logInModal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(LOGIN_MODAL_LOCATOR)));
 
+        WebElement usernameInput = logInModal.findElement(By.xpath(LOGIN_USERNAME_LOCATOR));// Find the Username input;
+        String uniqueUsernameGC = TestData.getUniqueUsernameGC();                           // Get Username;
+        usernameInput.sendKeys(uniqueUsernameGC);                                           // Send username.
+        WebElement passwordInput = logInModal.findElement(By.xpath(LOGIN_PASSWORD_LOCATOR));// Find the Password input;
+        passwordInput.sendKeys(TestData.PASSWORD);                                          // Send the password.
+        WebElement closeButton = logInModal.findElement(By.xpath(LOGIN_CLOSE_LOCATOR));     // Get "Close" button;
+        closeButton.click();                                                                // Click on the button;
+
+        Thread.sleep(500);
+        Assert.assertFalse(logInModal.isDisplayed(), "Log In modal still displayed after \"Close\" click");
+    }
+
+    // CHECK LOGIN DISCARD AFTER INPUTS FILLING - BY "X" BUTTON
+    @Test (testName = "TC105-B_Discard_by_X_LogIn", priority = 6)
+    public void discardByXButtonLogIn() throws InterruptedException {
+        HomePage homePage = new HomePage(driver);                           // Create an instance of Home page;
+        WebElement navButtonLogIn = homePage.getNavButtonLogIn();           // Get the Login button from the Home page;
+        navButtonLogIn.click();                                             // Click on the Login button.
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(1000)); // Initialize WebDriverWait object;
+        WebElement logInModal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(LOGIN_MODAL_LOCATOR)));
+
+        WebElement usernameInput = logInModal.findElement(By.xpath(LOGIN_USERNAME_LOCATOR));// Find the Username input;
+        String uniqueUsernameGC = TestData.getUniqueUsernameGC();                           // Get Username;
+        usernameInput.sendKeys(uniqueUsernameGC);                                           // Send username.
+        WebElement passwordInput = logInModal.findElement(By.xpath(LOGIN_PASSWORD_LOCATOR));// Find the Password input;
+        passwordInput.sendKeys(TestData.PASSWORD);                                          // Send the password.
+        WebElement xButton = logInModal.findElement(By.xpath(LOGIN_X_LOCATOR));             // Get "X" button;
+        xButton.click();                                                                    // Click on the button;
+
+        Thread.sleep(500);
+        Assert.assertFalse(logInModal.isDisplayed(), "Log In modal still displayed after \"X\" click");
+    }
+
+    // CHECK LOGIN TITLE
+    @Test (testName = "TC106_Check_LogIn_modal_title", priority = 7)
+    public void checkLogInTitle() {
+        HomePage homePage = new HomePage(driver);                           // Create an instance of Home page;
+        WebElement navButtonLogIn = homePage.getNavButtonLogIn();           // Get the Login button from the Home page;
+        navButtonLogIn.click();                                             // Click on the Login button.
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(1000)); // Initialize WebDriverWait object;
+        WebElement logInModal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(LOGIN_MODAL_LOCATOR)));
+
+        WebElement titleLogIn = logInModal.findElement(By.xpath(LOGIN_TITLE_LOCATOR));       // Get the modal's title;
+        Assert.assertEquals(titleLogIn.getText(), "Log in",
+                "Expect title \"SLog in\" but get " + titleLogIn.getText());
+    }
 }
