@@ -44,6 +44,7 @@ import static com.demoblaze.pageobject.SignUpModal.SIGNUP_USERNAME_LOCATOR;
 
 import static com.demoblaze.testdata.TestData.PASSWORD;
 import static com.demoblaze.testdata.TestData.PASSWORD_WRONG;
+import static com.demoblaze.testdata.TestData.USERNAME_WRONG;
 
 public class LogInTest {
     WebDriver driver;
@@ -213,7 +214,7 @@ public class LogInTest {
         WebElement logInButton = logInModal.findElement(By.xpath(LOGIN_BUTTON_LOCATOR));    // Find the LogIn button;
         logInButton.click();                                                                // Click on the button.
 
-        System.out.println("TC104 - LOGGED IN WITH CREDENTIALS:");
+        System.out.println("TC104-A - LOGGED IN WITH CREDENTIALS:");
         System.out.println("  Logged with Username: " + TestData.getUniqueUsernameGC());
         System.out.println("  Logged with Password: " + PASSWORD_WRONG);
         System.out.println();
@@ -229,8 +230,180 @@ public class LogInTest {
         } catch (NoAlertPresentException e) {                   // There is no alert present;
             System.out.println("The browser alert is missing");
         }
-
     }
+
+    // CHECK UNSUCCESSFUL LOGIN - WRONG USERNAME && VALID PASSWORD
+    @Test (testName = "TC104-B_Unsuccessful_Login_Wrong_Username", priority = 4)
+    public void unsuccessfulLoginWrongUsername() throws MalformedURLException, InterruptedException {
+        HomePage homePage = new HomePage(driver);                           // Create an instance of Home page;
+        WebElement navButtonLogIn = homePage.getNavButtonLogIn();           // Get the Login button from the Home page;
+        navButtonLogIn.click();                                             // Click on the Login button.
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(1000)); // Initialize WebDriverWait object;
+        WebElement logInModal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(LOGIN_MODAL_LOCATOR)));
+
+        WebElement usernameInput = logInModal.findElement(By.xpath(LOGIN_USERNAME_LOCATOR));// Find the Username input;
+        usernameInput.sendKeys(USERNAME_WRONG);                                             // Send the WRONG username.
+        WebElement passwordInput = logInModal.findElement(By.xpath(LOGIN_PASSWORD_LOCATOR));// Find the Password input;
+        passwordInput.sendKeys(TestData.PASSWORD);                                          // Send the VALID password.
+        WebElement logInButton = logInModal.findElement(By.xpath(LOGIN_BUTTON_LOCATOR));    // Find the LogIn button;
+        logInButton.click();                                                                // Click on the button.
+
+        System.out.println("TC104-B - LOGGED IN WITH CREDENTIALS:");
+        System.out.println("  Logged with Username: " + USERNAME_WRONG);
+        System.out.println("  Logged with Password: " + PASSWORD);
+        System.out.println();
+
+        wait.until(ExpectedConditions.alertIsPresent());        // Wait alert appearance;
+        try {
+            Alert alert = driver.switchTo().alert();            // Move driver focus to the Browser Alert;
+            String alertText = alert.getText();                 // Get text from a Browser Alert and put it to the var;
+            System.out.println("ALERT TEXT: " + alertText);     // Print out alert's content text;
+            Assert.assertTrue(alertText.contains("User does not exist"),
+                    "\"User does not exist\" alert is missing");
+            alert.accept();                                     // Accept the alert (click [OK] button);
+        } catch (NoAlertPresentException e) {                   // There is no alert present;
+            System.out.println("The browser alert is missing");
+        }
+    }
+
+    // CHECK UNSUCCESSFUL LOGIN - WRONG USERNAME && WRONG PASSWORD
+    @Test (testName = "TC104-C_Unsuccessful_Login_Wrong_Username_and_Password", priority = 4)
+    public void unsuccessfulLoginWrongUsernameAndPassword() throws MalformedURLException, InterruptedException {
+        HomePage homePage = new HomePage(driver);                           // Create an instance of Home page;
+        WebElement navButtonLogIn = homePage.getNavButtonLogIn();           // Get the Login button from the Home page;
+        navButtonLogIn.click();                                             // Click on the Login button.
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(1000)); // Initialize WebDriverWait object;
+        WebElement logInModal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(LOGIN_MODAL_LOCATOR)));
+
+        WebElement usernameInput = logInModal.findElement(By.xpath(LOGIN_USERNAME_LOCATOR));// Find the Username input;
+        usernameInput.sendKeys(USERNAME_WRONG);                                             // Send the WRONG username.
+        WebElement passwordInput = logInModal.findElement(By.xpath(LOGIN_PASSWORD_LOCATOR));// Find the Password input;
+        passwordInput.sendKeys(PASSWORD_WRONG);                                             // Send the WRONG password.
+        WebElement logInButton = logInModal.findElement(By.xpath(LOGIN_BUTTON_LOCATOR));    // Find the LogIn button;
+        logInButton.click();                                                                // Click on the button.
+
+        System.out.println("TC104-B - LOGGED IN WITH CREDENTIALS:");
+        System.out.println("  Logged with Username: " + USERNAME_WRONG);
+        System.out.println("  Logged with Password: " + PASSWORD_WRONG);
+        System.out.println();
+
+        wait.until(ExpectedConditions.alertIsPresent());        // Wait alert appearance;
+        try {
+            Alert alert = driver.switchTo().alert();            // Move driver focus to the Browser Alert;
+            String alertText = alert.getText();                 // Get text from a Browser Alert and put it to the var;
+            System.out.println("ALERT TEXT: " + alertText);     // Print out alert's content text;
+            Assert.assertTrue(alertText.contains("User does not exist"),
+                    "\"User does not exist\" alert is missing");
+            alert.accept();                                     // Accept the alert (click [OK] button);
+        } catch (NoAlertPresentException e) {                   // There is no alert present;
+            System.out.println("The browser alert is missing");
+        }
+    }
+
+    // CHECK UNSUCCESSFUL LOGIN - VALID USERNAME && MISSING PASSWORD
+    @Test (testName = "TC104-D_Unsuccessful_Login_Missing_Password", priority = 5)
+    public void unsuccessfulLoginMissingPassword() throws MalformedURLException, InterruptedException {
+        HomePage homePage = new HomePage(driver);                           // Create an instance of Home page;
+        WebElement navButtonLogIn = homePage.getNavButtonLogIn();           // Get the Login button from the Home page;
+        navButtonLogIn.click();                                             // Click on the Login button.
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(1000)); // Initialize WebDriverWait object;
+        WebElement logInModal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(LOGIN_MODAL_LOCATOR)));
+
+        WebElement usernameInput = logInModal.findElement(By.xpath(LOGIN_USERNAME_LOCATOR));// Find the Username input;
+        String uniqueUsernameGC = TestData.getUniqueUsernameGC();                           // Get VALID Username;
+        usernameInput.sendKeys(uniqueUsernameGC);                                           // Send VALID username.
+        // Skip Password entering
+        WebElement logInButton = logInModal.findElement(By.xpath(LOGIN_BUTTON_LOCATOR));    // Find the LogIn button;
+        logInButton.click();                                                                // Click on the button.
+
+        System.out.println("TC104-D - LOGGED IN WITH CREDENTIALS:");
+        System.out.println("  Logged with Username: " + TestData.getUniqueUsernameGC());
+        System.out.println("  Logged with Password: (no data)");
+        System.out.println();
+
+        wait.until(ExpectedConditions.alertIsPresent());        // Wait alert appearance;
+        try {
+            Alert alert = driver.switchTo().alert();            // Move driver focus to the Browser Alert;
+            String alertText = alert.getText();                 // Get text from a Browser Alert and put it to the var;
+            System.out.println("ALERT TEXT: " + alertText);     // Print out alert's content text;
+            Assert.assertTrue(alertText.contains("fill out Username and Password"),
+                    "\"fill out Username and Password\" alert is missing");
+            alert.accept();                                     // Accept the alert (click [OK] button);
+        } catch (NoAlertPresentException e) {                   // There is no alert present;
+            System.out.println("The browser alert is missing");
+        }
+    }
+
+    // CHECK UNSUCCESSFUL LOGIN - MISSING USERNAME && VALID PASSWORD
+    @Test (testName = "TC104-E_Unsuccessful_Login_Missing_Password", priority = 5)
+    public void unsuccessfulLoginMissingUsername() throws MalformedURLException, InterruptedException {
+        HomePage homePage = new HomePage(driver);                           // Create an instance of Home page;
+        WebElement navButtonLogIn = homePage.getNavButtonLogIn();           // Get the Login button from the Home page;
+        navButtonLogIn.click();                                             // Click on the Login button.
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(1000)); // Initialize WebDriverWait object;
+        WebElement logInModal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(LOGIN_MODAL_LOCATOR)));
+
+        // Skip Username entering
+        WebElement passwordInput = logInModal.findElement(By.xpath(LOGIN_PASSWORD_LOCATOR));// Find the Password input;
+        passwordInput.sendKeys(TestData.PASSWORD);                                          // Send the VALID password.
+        WebElement logInButton = logInModal.findElement(By.xpath(LOGIN_BUTTON_LOCATOR));    // Find the LogIn button;
+        logInButton.click();                                                                // Click on the button.
+
+        System.out.println("TC104-E - LOGGED IN WITH CREDENTIALS:");
+        System.out.println("  Logged with Username: (no data)");
+        System.out.println("  Logged with Password: " + PASSWORD);
+        System.out.println();
+
+        wait.until(ExpectedConditions.alertIsPresent());        // Wait alert appearance;
+        try {
+            Alert alert = driver.switchTo().alert();            // Move driver focus to the Browser Alert;
+            String alertText = alert.getText();                 // Get text from a Browser Alert and put it to the var;
+            System.out.println("ALERT TEXT: " + alertText);     // Print out alert's content text;
+            Assert.assertTrue(alertText.contains("fill out Username and Password"),
+                    "\"fill out Username and Password\" alert is missing");
+            alert.accept();                                     // Accept the alert (click [OK] button);
+        } catch (NoAlertPresentException e) {                   // There is no alert present;
+            System.out.println("The browser alert is missing");
+        }
+    }
+
+    // CHECK UNSUCCESSFUL LOGIN - MISSING USERNAME && MISSING PASSWORD
+    @Test (testName = "TC104-F_Unsuccessful_Login_Missing_Username_And_Password", priority = 5)
+    public void unsuccessfulLoginMissingUsernameAndPassword() throws MalformedURLException, InterruptedException {
+        HomePage homePage = new HomePage(driver);                           // Create an instance of Home page;
+        WebElement navButtonLogIn = homePage.getNavButtonLogIn();           // Get the Login button from the Home page;
+        navButtonLogIn.click();                                             // Click on the Login button.
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(1000)); // Initialize WebDriverWait object;
+        WebElement logInModal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(LOGIN_MODAL_LOCATOR)));
+
+        // Skip Username entering
+        // Skip Password entering
+        WebElement logInButton = logInModal.findElement(By.xpath(LOGIN_BUTTON_LOCATOR));    // Find the LogIn button;
+        logInButton.click();                                                                // Click on the button.
+
+        System.out.println("TC104-F - LOGGED IN WITH CREDENTIALS:");
+        System.out.println("  Logged with Username: (no data)");
+        System.out.println("  Logged with Password: (no data)");
+        System.out.println();
+
+        wait.until(ExpectedConditions.alertIsPresent());        // Wait alert appearance;
+        try {
+            Alert alert = driver.switchTo().alert();            // Move driver focus to the Browser Alert;
+            String alertText = alert.getText();                 // Get text from a Browser Alert and put it to the var;
+            System.out.println("ALERT TEXT: " + alertText);     // Print out alert's content text;
+            Assert.assertTrue(alertText.contains("fill out Username and Password"),
+                    "\"fill out Username and Password\" alert is missing");
+            alert.accept();                                     // Accept the alert (click [OK] button);
+        } catch (NoAlertPresentException e) {                   // There is no alert present;
+            System.out.println("The browser alert is missing");
+        }
+    }
+
 
 
 }
