@@ -1,0 +1,35 @@
+ITEMS' DATA:
+
+------------------------------------------------------------------------------------------------------------------------
+
+ITEM NAME: Samsung galaxy s7
+ALERT: Product added.
+URL: https://api.demoblaze.com/addtocart
+Method: POST
+Status: 200 OK
+Content-Type: application/json
+
+Request Payload:
+{id: "6bbeed25-5145-c6f1-431d-80f9cca5793e", cookie: "R0MtdXNlci0yMDI0MDMxOTE1MTA1MzE3MTE0NTM=",…}
+cookie: "R0MtdXNlci0yMDI0MDMxOTE1MTA1MzE3MTE0NTM="
+flag: true
+id: "6bbeed25-5145-c6f1-431d-80f9cca5793e"
+prod_id: 4
+
+------------------------------------------------------------------------------------------------------------------------
+
+ITEM NAME: Iphone 6 32gb
+ALERT: Product added.
+URL: https://api.demoblaze.com/addtocart
+Method: POST
+Status: 200 OK
+Content-Type: application/json
+
+Request Payload:
+{id: "1001ef84-083a-9f30-4e6c-dba3362edb6c", cookie: "R0MtdXNlci0yMDI0MDMxOTE1MTA1MzE3MTE0NTM=",…}
+cookie: "R0MtdXNlci0yMDI0MDMxOTE1MTA1MzE3MTE0NTM="
+flag: true
+id: "1001ef84-083a-9f30-4e6c-dba3362edb6c"
+prod_id: 5
+
+------------------------------------------------------------------------------------------------------------------------
