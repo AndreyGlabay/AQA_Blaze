@@ -9,4 +9,14 @@ Scenario: after successful login check all web elements are present
   And and click login button
   Then the user is on the logged user home page
 
+  Scenario: after successful login check correct Username is displayed
+    Given the user on the home page
+    When the user click login button
+    And enter valid username
+    And enter valid password
+    And and click login button
+    Then the correct username is displayed
+
+
+
 

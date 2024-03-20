@@ -16,6 +16,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
 
 import java.net.MalformedURLException;
@@ -26,6 +27,10 @@ import static com.demoblaze.pageobject.LogInModal.LOGIN_BUTTON_LOCATOR;
 import static com.demoblaze.pageobject.LogInModal.LOGIN_MODAL_LOCATOR;
 import static com.demoblaze.pageobject.LogInModal.LOGIN_PASSWORD_LOCATOR;
 import static com.demoblaze.pageobject.LogInModal.LOGIN_USERNAME_LOCATOR;
+import static com.demoblaze.pageobject.NavBarLoggedUser.WELCOME_BUTTON_LOCATOR;
+import static com.demoblaze.testdata.TestData.PASSWORD;
+import static com.demoblaze.testdata.TestData.USERNAME;
+import static com.demoblaze.testdata.TestData.USERNAME_WRONG;
 
 public class LogInStepDefinitions {
     WebDriver driver;
@@ -56,7 +61,7 @@ public class LogInStepDefinitions {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(10000)); // Initialize WebDriverWait object;
         WebElement logInModal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(LOGIN_MODAL_LOCATOR)));
         WebElement usernameInput = logInModal.findElement(By.xpath(LOGIN_USERNAME_LOCATOR)); // Find the Username input;
-        usernameInput.sendKeys(TestData.USERNAME);                                       // Send the username to the input.
+        usernameInput.sendKeys(USERNAME);                                       // Send the username to the input.
     }
 
     @And("enter valid password")
@@ -73,6 +78,10 @@ public class LogInStepDefinitions {
         WebElement logInModal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(LOGIN_MODAL_LOCATOR)));
         WebElement logInButton = logInModal.findElement(By.xpath(LOGIN_BUTTON_LOCATOR)); // Find the LogIn button;
         logInButton.click();                                                             // Click on the button.
+        System.out.println("LOGGED IN WITH CREDENTIALS:");
+        System.out.println("  Logged with Username: " + USERNAME);
+        System.out.println("  Logged with Password: " + PASSWORD);
+        System.out.println();
     }
 
     @Then("the user is on the logged user home page")
@@ -100,4 +109,12 @@ public class LogInStepDefinitions {
         softAssert.assertAll();
     }
 
+    @Then("the correct username is displayed")
+    public void theCorrectUsernameIsDisplayed() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(10000)); // Initialize WebDriverWait object;
+        WebElement welcomeButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(WELCOME_BUTTON_LOCATOR)));
+        String expectedText = USERNAME;
+        String actualText = welcomeButton.getText();
+        Assert.assertEquals(actualText, "Welcome " + expectedText, "Welcome Button: wrong username");
+    }
 }
