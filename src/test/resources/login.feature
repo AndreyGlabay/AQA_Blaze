@@ -17,6 +17,7 @@ Scenario: after successful login check all web elements are present
     And and click login button
     Then the correct username is displayed
 
-
-
-
+  Scenario: check the title in login modal
+    Given the user on the home page
+    When the user click login button
+    Then the correct title is displayed

@@ -26,19 +26,17 @@ import java.time.Duration;
 import static com.demoblaze.pageobject.LogInModal.LOGIN_BUTTON_LOCATOR;
 import static com.demoblaze.pageobject.LogInModal.LOGIN_MODAL_LOCATOR;
 import static com.demoblaze.pageobject.LogInModal.LOGIN_PASSWORD_LOCATOR;
+import static com.demoblaze.pageobject.LogInModal.LOGIN_TITLE_LOCATOR;
 import static com.demoblaze.pageobject.LogInModal.LOGIN_USERNAME_LOCATOR;
 import static com.demoblaze.pageobject.NavBarLoggedUser.WELCOME_BUTTON_LOCATOR;
 import static com.demoblaze.testdata.TestData.PASSWORD;
 import static com.demoblaze.testdata.TestData.USERNAME;
-import static com.demoblaze.testdata.TestData.USERNAME_WRONG;
 
 public class LogInStepDefinitions {
     WebDriver driver;
     public String gridUrl = "http://192.168.0.102:4444";
     public String baseUrl = "https://demoblaze.com/";
     SignUpTest signUp = new SignUpTest();
-
-
 
     @Given("the user on the home page")
     public void theUserOnTheHomePage() throws MalformedURLException {
@@ -47,7 +45,6 @@ public class LogInStepDefinitions {
         driver.get(baseUrl);                                        // Open web page by URL;
         HomePage homePage = new HomePage(driver);                           // Create an instance of Home page;
     }
-
 
     @When("the user click login button")
     public void theUserClickLoginButton() {
@@ -116,5 +113,14 @@ public class LogInStepDefinitions {
         String expectedText = USERNAME;
         String actualText = welcomeButton.getText();
         Assert.assertEquals(actualText, "Welcome " + expectedText, "Welcome Button: wrong username");
+    }
+
+    @Then("the correct title is displayed")
+    public void theCorrectTitleIsDisplayed() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(1000)); // Initialize WebDriverWait object;
+        WebElement logInModal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(LOGIN_MODAL_LOCATOR)));
+        WebElement titleLogIn = logInModal.findElement(By.xpath(LOGIN_TITLE_LOCATOR));       // Get the modal's title;
+        Assert.assertEquals(titleLogIn.getText(), "Log in",
+                "Expect title \"Log in\" but get " + titleLogIn.getText());
     }
 }
