@@ -32,7 +32,6 @@ import static com.demoblaze.pageobject.LogInModal.LOGIN_PASSWORD_LOCATOR;
 import static com.demoblaze.pageobject.LogInModal.LOGIN_BUTTON_LOCATOR;
 import static com.demoblaze.pageobject.LogInModal.LOGIN_CLOSE_LOCATOR;
 import static com.demoblaze.pageobject.NavBarLoggedUser.LOGOUT_BUTTON_LOCATOR;
-import static com.demoblaze.pageobject.NavBarLoggedUser.NAVBAR_LOGGED_USER_LOCATOR;
 import static com.demoblaze.pageobject.NavBarLoggedUser.WELCOME_BUTTON_LOCATOR;
 
 import static com.demoblaze.testdata.TestData.PASSWORD;
@@ -48,7 +47,6 @@ public class LogInTest {
     @BeforeClass
     public void signUpInstance() throws MalformedURLException, InterruptedException {
         signUp.successSignUpChrome();                               // Call the signup method before each test method
-
     }
 
     @BeforeMethod
@@ -453,6 +451,6 @@ public class LogInTest {
 
         WebElement titleLogIn = logInModal.findElement(By.xpath(LOGIN_TITLE_LOCATOR));       // Get the modal's title;
         Assert.assertEquals(titleLogIn.getText(), "Log in",
-                "Expect title \"SLog in\" but get " + titleLogIn.getText());
+                "Expect title \"Log in\" but get " + titleLogIn.getText());
     }
 }
