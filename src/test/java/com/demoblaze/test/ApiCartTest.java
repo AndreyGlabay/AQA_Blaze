@@ -11,7 +11,7 @@ import org.testng.annotations.Test;
 
 import java.io.IOException;
 
-public class CartTest {
+public class ApiCartTest {
     public String addToCartUrl = "https://api.demoblaze.com/addtocart";
     public String viewCartUrl = "https://api.demoblaze.com/viewcart";
 
