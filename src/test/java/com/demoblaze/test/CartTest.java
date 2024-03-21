@@ -49,4 +49,32 @@ public class CartTest {
     public void addItem_5_toCart() {
         addItemToCart(ApiCallData.ID_5, ApiCallData.PROD_ID_5, ApiCallData.FLAG); // Get data for "id", "prodId", "flag";
     }
+
+    // USING API CALL - CHECK ITEMS PRESENT IN THE CART
+    @Test (testName = "API_check_Item_4_and_Item_5_are_in_cart")
+    public void checkItem_4_andItem_5_areInCart() throws IOException {
+        OkHttpClient client = new OkHttpClient();
+        String cookie = ApiCallData.COOKIE;
+
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+        String jsonRequestBody = String.format("{\"cookie\": \"%s\", \"flag\": true}", cookie);
+        RequestBody requestBody = RequestBody.create(JSON, jsonRequestBody);
+
+        Request request = new Request.Builder()
+                .url("https://api.demoblaze.com/viewcart")
+                .method("POST", requestBody)
+                .header("Content-Type", "application/json")
+                .build();
+
+        try(Response response = client.newCall(request).execute()) {
+            Assert.assertEquals(response.code(), 200, "Response code expected 200, but get :" + response.code());
+            assert response.body() != null;
+            String responseBody = response.body().string();
+            System.out.println("Response body :" + responseBody);
+            Assert.assertTrue(responseBody.contains(ApiCallData.ID_4), "Item with ID=4 is not in the cart");
+            Assert.assertTrue(responseBody.contains(ApiCallData.ID_5), "Item with ID=5 is not in the cart");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
