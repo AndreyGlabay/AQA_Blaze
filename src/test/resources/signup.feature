@@ -1,11 +1,13 @@
 Feature: signup
-  The user can successfully signup, if they enter username and password,
-  and if not - get notification about unsuccessful signup.
+  The user can successfully signup, if they enter username and password.
+  The user cannot signup, if a username has been registered before, as well as username and/or password missing.
+  The user can discard discard signup flow.
+  Signup modal has correct title.
 
 Background: the user open Sign Up modal
   Given new user on the home page
   When new user click nav bar signup button
-  Then sinup modal appeared
+  Then signup modal appeared
 
   Scenario: successful signup
     When new user enter username

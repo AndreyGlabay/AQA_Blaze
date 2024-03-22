@@ -57,8 +57,8 @@ public class SignUpStepDefinitions {
         actions.moveToElement(navButtonSignUp).click().perform();   // Perform mouse click on the SignUp button;
     }
 
-    @Then("sinup modal appeared")
-    public void sinupModalAppeared() {
+    @Then("signup modal appeared")
+    public void signupModalAppeared() {
         wait = new WebDriverWait(driver, Duration.ofMillis(1000)); // Apply 1s delay;
         signUpModal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(SIGNUP_MODAL_LOCATOR)));
     }
