@@ -32,3 +32,18 @@ Background: the user open Sign Up modal
   Scenario: unsuccessful signup - skip username and password inputs
     When new user click modal signup button
     Then alert fill out Username and Password appear
+
+  Scenario: discard signup by close button
+    When new user enter username
+    And new user enter password
+    And new user click modal close button
+    Then signup modal is not displaying
+
+  Scenario: discard signup by cross button
+    When new user enter username
+    And new user enter password
+    And new user click modal cross button
+    Then signup modal is not displaying
+
+  Scenario: check the title of signup modal
+    Then check the title of signup modal

@@ -25,9 +25,12 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import static com.demoblaze.pageobject.SignUpModal.SIGNUP_BUTTON_LOCATOR;
+import static com.demoblaze.pageobject.SignUpModal.SIGNUP_CLOSE_LOCATOR;
 import static com.demoblaze.pageobject.SignUpModal.SIGNUP_MODAL_LOCATOR;
 import static com.demoblaze.pageobject.SignUpModal.SIGNUP_PASSWORD_LOCATOR;
+import static com.demoblaze.pageobject.SignUpModal.SIGNUP_TITLE_LOCATOR;
 import static com.demoblaze.pageobject.SignUpModal.SIGNUP_USERNAME_LOCATOR;
+import static com.demoblaze.pageobject.SignUpModal.SIGNUP_X_LOCATOR;
 import static com.demoblaze.testdata.TestData.BASE_URL;
 import static com.demoblaze.testdata.TestData.GRID_URL;
 import static com.demoblaze.testdata.TestData.PASSWORD;
@@ -150,5 +153,35 @@ public class SignUpStepDefinitions {
     public void newUserEnterNewestUsername() {
         WebElement usernameInput = signUpModal.findElement(By.xpath(SIGNUP_USERNAME_LOCATOR));  // Get Username input;
         usernameInput.sendKeys(uniqueUsernameGC + "1");                             // Set newest Username;
+    }
+
+    @And("new user click modal close button")
+    public void newUserClickModalCloseButton() throws InterruptedException {
+        WebElement closeButton = signUpModal.findElement(By.xpath(SIGNUP_CLOSE_LOCATOR));       // Get Close button;
+        closeButton.click();                                                                    // Click on the button;
+        Thread.sleep(500);
+    }
+
+    @And("new user click modal cross button")
+    public void newUserClickModalCrossButton() throws InterruptedException {
+        WebElement xButton = signUpModal.findElement(By.xpath(SIGNUP_X_LOCATOR));           // Get X button;
+        xButton.click();                                                                    // Click on the button
+        Thread.sleep(500);
+    }
+
+    @Then("signup modal is not displaying")
+    public void signupModalIsNotDisplaying() throws InterruptedException {
+        Assert.assertFalse(signUpModal.isDisplayed(), "Sign Up modal still displayed after close");
+        Thread.sleep(1000);
+        driver.quit();
+    }
+
+    @Then("check the title of signup modal")
+    public void checkTheTitleOfSignupModal() throws InterruptedException {
+        WebElement titleSignUp = signUpModal.findElement(By.xpath(SIGNUP_TITLE_LOCATOR));       // Get the modal's title;
+        Assert.assertEquals(titleSignUp.getText(), "Sign up",
+                "Expect title \"Sign up\" but get " + titleSignUp.getText());
+        Thread.sleep(1000);
+        driver.quit();
     }
 }
