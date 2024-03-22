@@ -28,23 +28,22 @@ import static com.demoblaze.pageobject.SignUpModal.SIGNUP_BUTTON_LOCATOR;
 import static com.demoblaze.pageobject.SignUpModal.SIGNUP_MODAL_LOCATOR;
 import static com.demoblaze.pageobject.SignUpModal.SIGNUP_PASSWORD_LOCATOR;
 import static com.demoblaze.pageobject.SignUpModal.SIGNUP_USERNAME_LOCATOR;
+import static com.demoblaze.testdata.TestData.BASE_URL;
+import static com.demoblaze.testdata.TestData.GRID_URL;
 import static com.demoblaze.testdata.TestData.PASSWORD;
 
 public class SignUpStepDefinitions {
     WebDriver driver;
     WebDriverWait wait;
     WebElement signUpModal;
-    public String gridUrl = "http://192.168.0.102:4444";
-    public String baseUrl = "https://demoblaze.com/";
     public static String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
     public static String uniqueUsernameGC = "GC-user-" + timestamp;
 
     @Given("new user on the home page")
     public void newUserOnTheHomePage() throws MalformedURLException {
         ChromeOptions options = new ChromeOptions();                // New instance for GC browser;
-        driver = new RemoteWebDriver(new URL(gridUrl), options);    // Driver initialization on SeleniumGrid using GC;
-        driver.get(baseUrl);                                        // Open web page by URL;
-        var homePage = new HomePage(driver);                        // Create instance of the Home Page;
+        driver = new RemoteWebDriver(new URL(GRID_URL), options);    // Driver initialization on SeleniumGrid using GC;
+        driver.get(BASE_URL);                                        // Open web page by URL;
     }
 
     @When("new user click nav bar signup button")
