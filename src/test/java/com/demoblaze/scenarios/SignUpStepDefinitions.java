@@ -99,4 +99,30 @@ public class SignUpStepDefinitions {
         System.out.println("  Password: " + PASSWORD);
         System.out.println();
     }
+
+    @When("new user enter already registered username")
+    public void newUserEnterAlreadyRegisteredUsername() {
+        WebElement usernameInput = signUpModal.findElement(By.xpath(SIGNUP_USERNAME_LOCATOR));  // Get Username input;
+        usernameInput.sendKeys(uniqueUsernameGC);                                               // Set new Username;
+    }
+
+    @Then("alert user already exist appear")
+    public void alertUserAlreadyExistAppear() throws InterruptedException {
+        try {
+            Alert alert = driver.switchTo().alert();            // Move driver focus to the Browser Alert;
+            String alertText = alert.getText();                 // Get text from a Browser Alert and put it to the var;
+            System.out.println("ALERT TEXT: " + alertText);     // Print out alert's content text;
+            Assert.assertTrue(alertText.contains("user already exist"),
+                    "\"User already exist\" alert is missing");
+            alert.accept();                                     // Accept the alert (click [OK] button);
+        } catch (NoAlertPresentException e) {                   // There is no alert present;
+            System.out.println("The browser alert is missing");
+        }
+        Thread.sleep(1000);
+        driver.quit();
+        System.out.println("TEST USER DATA:");
+        System.out.println("  Username: " + uniqueUsernameGC);
+        System.out.println("  Password: " + PASSWORD);
+        System.out.println();
+    }
 }

@@ -7,8 +7,14 @@ Feature: signup
     When new user click nav bar signup button
     Then sinup modal appeared
 
-    Scenario: successful signup
-      When new user enter username
-      And new user enter password
-      And new user click modal signup button
-      Then alert signup successful appear
+  Scenario: successful signup
+    When new user enter username
+    And new user enter password
+    And new user click modal signup button
+    Then alert signup successful appear
+
+  Scenario: unsuccessful signup - username already registered
+    When new user enter already registered username
+    And new user enter password
+    And new user click modal signup button
+    Then alert user already exist appear
