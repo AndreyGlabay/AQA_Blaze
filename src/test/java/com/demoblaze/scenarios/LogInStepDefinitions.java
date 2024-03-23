@@ -29,9 +29,12 @@ import static com.demoblaze.pageobject.LogInModal.LOGIN_PASSWORD_LOCATOR;
 import static com.demoblaze.pageobject.LogInModal.LOGIN_TITLE_LOCATOR;
 import static com.demoblaze.pageobject.LogInModal.LOGIN_USERNAME_LOCATOR;
 import static com.demoblaze.pageobject.NavBarLoggedUser.WELCOME_BUTTON_LOCATOR;
+import static com.demoblaze.pageobject.SignUpModal.SIGNUP_PASSWORD_LOCATOR;
+import static com.demoblaze.pageobject.SignUpModal.SIGNUP_USERNAME_LOCATOR;
 import static com.demoblaze.testdata.TestData.BASE_URL;
 import static com.demoblaze.testdata.TestData.GRID_URL;
 import static com.demoblaze.testdata.TestData.PASSWORD;
+
 
 public class LogInStepDefinitions {
     WebDriver driver;
@@ -55,14 +58,14 @@ public class LogInStepDefinitions {
 
     @Then("login modal appeared")
     public void loginModalAppeared() {
-        wait = new WebDriverWait(driver, Duration.ofMillis(10000)); // Initialize WebDriverWait object;
+        wait = new WebDriverWait(driver, Duration.ofMillis(10000));         // Initialize WebDriverWait object;
         logInModal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(LOGIN_MODAL_LOCATOR)));
     }
 
     @When("registered user enter valid username")
     public void registeredUserEnterValidUsername() {
         WebElement usernameInput = logInModal.findElement(By.xpath(LOGIN_USERNAME_LOCATOR)); // Find the Username input;
-        usernameInput.sendKeys(SignUpStepDefinitions.uniqueUsernameGC);                // Send the username to the input.
+        usernameInput.sendKeys(TestData.getValidUsername());                                 // Input username.
     }
 
     @And("registered user enter valid password")
@@ -76,7 +79,7 @@ public class LogInStepDefinitions {
         WebElement logInButton = logInModal.findElement(By.xpath(LOGIN_BUTTON_LOCATOR)); // Find the LogIn button;
         logInButton.click();                                                             // Click on the button.
         System.out.println("LOGGED IN WITH CREDENTIALS:");
-        System.out.println("  Logged with Username: " + SignUpStepDefinitions.uniqueUsernameGC);
+        System.out.println("  Logged with Username: " + TestData.getValidUsername());
         System.out.println("  Logged with Password: " + PASSWORD);
         System.out.println();
     }
@@ -112,7 +115,7 @@ public class LogInStepDefinitions {
     public void theCorrectUsernameIsDisplayedInNavBar() throws InterruptedException {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(10000)); // Initialize WebDriverWait object;
         WebElement welcomeButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(WELCOME_BUTTON_LOCATOR)));
-        String expectedText = SignUpStepDefinitions.uniqueUsernameGC;
+        String expectedText = TestData.getValidUsername();
         String actualText = welcomeButton.getText();
         Assert.assertEquals(actualText, "Welcome " + expectedText, "Welcome Button has wrong username");
         Thread.sleep(1000);
