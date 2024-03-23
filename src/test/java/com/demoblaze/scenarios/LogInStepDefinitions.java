@@ -13,6 +13,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -29,60 +30,63 @@ import static com.demoblaze.pageobject.LogInModal.LOGIN_PASSWORD_LOCATOR;
 import static com.demoblaze.pageobject.LogInModal.LOGIN_TITLE_LOCATOR;
 import static com.demoblaze.pageobject.LogInModal.LOGIN_USERNAME_LOCATOR;
 import static com.demoblaze.pageobject.NavBarLoggedUser.WELCOME_BUTTON_LOCATOR;
+import static com.demoblaze.testdata.TestData.BASE_URL;
+import static com.demoblaze.testdata.TestData.GRID_URL;
 import static com.demoblaze.testdata.TestData.PASSWORD;
+import static com.demoblaze.testdata.TestData.getUniqueUsernameGC;
 import static com.demoblaze.testdata.TestData.USERNAME;
 
 public class LogInStepDefinitions {
     WebDriver driver;
-    public String gridUrl = "http://192.168.0.102:4444";
-    public String baseUrl = "https://demoblaze.com/";
-    SignUpTest signUp = new SignUpTest();
+    WebDriverWait wait;
+    WebElement logInModal;
 
-    @Given("the user on the home page")
-    public void theUserOnTheHomePage() throws MalformedURLException {
+    @Given("registered user on the home page")
+    public void registeredUserOnTheHomePage() throws MalformedURLException {
         ChromeOptions options = new ChromeOptions();                // New instance for GC browser;
-        driver = new RemoteWebDriver(new URL(gridUrl), options);    // Driver initialization on SeleniumGrid using GC;
-        driver.get(baseUrl);                                        // Open web page by URL;
-        HomePage homePage = new HomePage(driver);                           // Create an instance of Home page;
+        driver = new RemoteWebDriver(new URL(GRID_URL), options);    // Driver initialization on SeleniumGrid using GC;
+        driver.get(BASE_URL);                                        // Open web page by URL;
     }
 
-    @When("the user click login button")
-    public void theUserClickLoginButton() {
+    @When("registered user click nav bar login button")
+    public void registeredUserClickNavBarLoginButton() {
         HomePage homePage = new HomePage(driver);                           // Create an instance of Home page;
         WebElement navButtonLogIn = homePage.getNavButtonLogIn();           // Get the Login button from the Home page;
-        navButtonLogIn.click();                                             // Click on the Login button.
+        Actions actions = new Actions(driver);                              // Create instance of the Actions class;
+        actions.moveToElement(navButtonLogIn).click().perform();            // Perform mouse click on the LogIn button;
     }
 
-    @And("enter valid username")
-    public void enterValidUsername() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(10000)); // Initialize WebDriverWait object;
-        WebElement logInModal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(LOGIN_MODAL_LOCATOR)));
+    @Then("login modal appeared")
+    public void loginModalAppeared() {
+        wait = new WebDriverWait(driver, Duration.ofMillis(10000)); // Initialize WebDriverWait object;
+        logInModal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(LOGIN_MODAL_LOCATOR)));
+    }
+
+    @When("registered user enter valid username")
+    public void registeredUserEnterValidUsername() {
+        System.out.println("USERNAME : " + TestData.getUniqueUsernameGC());
         WebElement usernameInput = logInModal.findElement(By.xpath(LOGIN_USERNAME_LOCATOR)); // Find the Username input;
-        usernameInput.sendKeys(USERNAME);                                       // Send the username to the input.
+        usernameInput.sendKeys(getUniqueUsernameGC());                // Send the username to the input.
     }
 
-    @And("enter valid password")
-    public void enterValidPassword() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(10000)); // Initialize WebDriverWait object;
-        WebElement logInModal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(LOGIN_MODAL_LOCATOR)));
+    @And("registered user enter valid password")
+    public void registeredUserEnterValidPassword() {
         WebElement passwordInput = logInModal.findElement(By.xpath(LOGIN_PASSWORD_LOCATOR)); // Find the Password input;
         passwordInput.sendKeys(TestData.PASSWORD);                                      // Send the password to the input.
     }
 
-    @And("and click login button")
-    public void andClickLoginButton() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(10000)); // Initialize WebDriverWait object;
-        WebElement logInModal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(LOGIN_MODAL_LOCATOR)));
+    @And("registered user click modal login button")
+    public void registeredUserClickModalLoginButton() {
         WebElement logInButton = logInModal.findElement(By.xpath(LOGIN_BUTTON_LOCATOR)); // Find the LogIn button;
         logInButton.click();                                                             // Click on the button.
         System.out.println("LOGGED IN WITH CREDENTIALS:");
-        System.out.println("  Logged with Username: " + USERNAME);
+        System.out.println("  Logged with Username: " + TestData.getUniqueUsernameGC());
         System.out.println("  Logged with Password: " + PASSWORD);
         System.out.println();
     }
 
-    @Then("the user is on the logged user home page")
-    public void theUserIsOnTheLoggedUserHomePage() {
+    @Then("authorized user come to logged in home page")
+    public void authorizedUserComeToLoggedInHomePage() throws InterruptedException {
         HomePageLoggedIn homePageLoggedIn = new HomePageLoggedIn(driver); // Initialize the object for logged-in home page;
         NavBarLoggedUser navBarLoggedUser = homePageLoggedIn.getNavBarLoggedUser(driver); // Get NavBar from the page.
         SoftAssert softAssert = new SoftAssert(); // Add Soft Assertion (too many assertions);
@@ -104,23 +108,29 @@ public class LogInStepDefinitions {
         softAssert.assertTrue(homePageLoggedIn.isCategoryMenuLaptopsDisplayed(), "Category Laptops is missing");
         softAssert.assertTrue(homePageLoggedIn.isCategoryMenuMonitorsDisplayed(), "Category Monitors is missing");
         softAssert.assertAll();
+        Thread.sleep(1000);
+        driver.quit();
     }
 
-    @Then("the correct username is displayed")
-    public void theCorrectUsernameIsDisplayed() {
+    @Then("the correct username is displayed in nav bar")
+    public void theCorrectUsernameIsDisplayedInNavBar() throws InterruptedException {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(10000)); // Initialize WebDriverWait object;
         WebElement welcomeButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(WELCOME_BUTTON_LOCATOR)));
-        String expectedText = USERNAME;
+        String expectedText = TestData.getUniqueUsernameGC();
         String actualText = welcomeButton.getText();
-        Assert.assertEquals(actualText, "Welcome " + expectedText, "Welcome Button: wrong username");
+        Assert.assertEquals(actualText, "Welcome " + expectedText, "Welcome Button has wrong username");
+        Thread.sleep(1000);
+        driver.quit();
     }
 
-    @Then("the correct title is displayed")
-    public void theCorrectTitleIsDisplayed() {
+    @Then("check the title of login modal")
+    public void checkTheTitleOfLoginModal() throws InterruptedException {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(1000)); // Initialize WebDriverWait object;
         WebElement logInModal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(LOGIN_MODAL_LOCATOR)));
         WebElement titleLogIn = logInModal.findElement(By.xpath(LOGIN_TITLE_LOCATOR));       // Get the modal's title;
         Assert.assertEquals(titleLogIn.getText(), "Log in",
                 "Expect title \"Log in\" but get " + titleLogIn.getText());
+        Thread.sleep(1000);
+        driver.quit();
     }
 }
