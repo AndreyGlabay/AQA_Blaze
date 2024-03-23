@@ -24,11 +24,11 @@ public class TestData {
     public static final String PASSWORD_WRONG = "WrongPassword";
 
     // VAR AND ACCESSORS FOR UNIQUE USERNAME VALUE (USING TIMESTAMP)
-    public static String uniqueUsernameGC;
+    public static String uniqueUsername;
     public static String getUniqueUsernameGC() {
-        return uniqueUsernameGC;
+        return uniqueUsername;
     }
     public static void setUniqueUsernameGC(String username) {
-        uniqueUsernameGC = username;
+        uniqueUsername = username;
     }
 }
