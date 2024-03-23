@@ -1,5 +1,8 @@
 package com.demoblaze.testdata;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class TestData {
     // URL CONSTANTS
     public static final String GRID_URL = "http://192.168.0.102:4444";
@@ -23,12 +26,25 @@ public class TestData {
     public static final String PASSWORD_5 = "vIq3YCdNxi"; // Generated with www.random.org
     public static final String PASSWORD_WRONG = "WrongPassword";
 
-    // VAR AND ACCESSORS FOR UNIQUE USERNAME VALUE (USING TIMESTAMP)
-    public static String uniqueUsername;
+    // UI TESTS - VAR AND ACCESSORS FOR UNIQUE USERNAME VALUE
+    public static String uniqueUsernameGC;
+
     public static String getUniqueUsernameGC() {
-        return uniqueUsername;
+        return uniqueUsernameGC;
     }
+
     public static void setUniqueUsernameGC(String username) {
-        uniqueUsername = username;
+        uniqueUsernameGC = username;
+    }
+
+    // CUCUMBER TESTS - VAR AND ACCESSORS FOR UNIQUE USERNAME VALUE
+    public static String validUsername;
+
+    public static String getValidUsername() {
+        return validUsername;
+    }
+
+    public static void setValidUsername(String username) {
+        validUsername = username;
     }
 }
