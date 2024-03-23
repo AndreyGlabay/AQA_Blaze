@@ -40,7 +40,7 @@ public class SignUpStepDefinitions {
     WebDriverWait wait;
     WebElement signUpModal;
     public static String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
-    public static String uniqueUsernameGC = "GC-user-" + timestamp;
+    public static String uniqueUsername = "User-" + timestamp;
 
     @Given("new user on the home page")
     public void newUserOnTheHomePage() throws MalformedURLException {
@@ -66,8 +66,8 @@ public class SignUpStepDefinitions {
     @When("new user enter username")
     public void newUserEnterUsername() {
         WebElement usernameInput = signUpModal.findElement(By.xpath(SIGNUP_USERNAME_LOCATOR));  // Get Username input;
-        TestData.setUniqueUsernameGC(uniqueUsernameGC);                             // Put Username value to Test Data;
-        usernameInput.sendKeys(TestData.getUniqueUsernameGC());  // Get Username value from Test Data for set it to input;
+        TestData.setValidUsername(uniqueUsername);                                         // Send Username to TestData;
+        usernameInput.sendKeys(uniqueUsername);                                            // Input Username.
     }
 
     @And("new user enter password")
@@ -98,7 +98,7 @@ public class SignUpStepDefinitions {
         Thread.sleep(1000);
         driver.quit();
         System.out.println("TEST USER DATA:");
-        System.out.println("  Username: " + TestData.getUniqueUsernameGC());
+        System.out.println("  Username: " + uniqueUsername);
         System.out.println("  Password: " + PASSWORD);
         System.out.println();
     }
@@ -106,7 +106,7 @@ public class SignUpStepDefinitions {
     @When("new user enter already registered username")
     public void newUserEnterAlreadyRegisteredUsername() {
         WebElement usernameInput = signUpModal.findElement(By.xpath(SIGNUP_USERNAME_LOCATOR));  // Get Username input;
-        usernameInput.sendKeys(uniqueUsernameGC);                                               // Set new Username;
+        usernameInput.sendKeys(uniqueUsername);                                                 // Set new Username;
     }
 
     @Then("alert user already exist appear")
@@ -124,7 +124,7 @@ public class SignUpStepDefinitions {
         Thread.sleep(1000);
         driver.quit();
         System.out.println("TEST USER DATA:");
-        System.out.println("  Username: " + TestData.getUniqueUsernameGC());
+        System.out.println("  Username: " + uniqueUsername);
         System.out.println("  Password: " + PASSWORD);
         System.out.println();
     }
@@ -152,7 +152,7 @@ public class SignUpStepDefinitions {
     @When("new user enter newest username")
     public void newUserEnterNewestUsername() {
         WebElement usernameInput = signUpModal.findElement(By.xpath(SIGNUP_USERNAME_LOCATOR));  // Get Username input;
-        usernameInput.sendKeys(uniqueUsernameGC + "1");                             // Set newest Username;
+        usernameInput.sendKeys(uniqueUsername + "1");                               // Set newest Username;
     }
 
     @And("new user click modal close button")
@@ -183,5 +183,17 @@ public class SignUpStepDefinitions {
                 "Expect title \"Sign up\" but get " + titleSignUp.getText());
         Thread.sleep(1000);
         driver.quit();
+    }
+
+    @When("new user enter username {string}")
+    public void newUserEnterUsername(String username) {
+        WebElement usernameInput = signUpModal.findElement(By.xpath(SIGNUP_USERNAME_LOCATOR));  // Get Username input;
+        usernameInput.sendKeys(username);                                                       // Input Username.
+    }
+
+    @And("new user enter password {string}")
+    public void newUserEnterPassword(String password) {
+        WebElement passwordInput = signUpModal.findElement(By.xpath(SIGNUP_PASSWORD_LOCATOR));  // Get Password input;
+        passwordInput.sendKeys(password);                                                       // Set Password;
     }
 }
