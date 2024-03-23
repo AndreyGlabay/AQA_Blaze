@@ -66,7 +66,8 @@ public class SignUpStepDefinitions {
     @When("new user enter username")
     public void newUserEnterUsername() {
         WebElement usernameInput = signUpModal.findElement(By.xpath(SIGNUP_USERNAME_LOCATOR));  // Get Username input;
-        usernameInput.sendKeys(uniqueUsernameGC);                                               // Set new Username;
+        TestData.setUniqueUsernameGC(uniqueUsernameGC);                             // Put Username value to Test Data;
+        usernameInput.sendKeys(TestData.getUniqueUsernameGC());  // Get Username value from Test Data for set it to input;
     }
 
     @And("new user enter password")
@@ -83,7 +84,6 @@ public class SignUpStepDefinitions {
 
     @Then("alert signup successful appear")
     public void alertSignupSuccessfulAppear() throws InterruptedException {
-        TestData.setUniqueUsernameGC(uniqueUsernameGC);
         wait.until(ExpectedConditions.alertIsPresent());                                        // Wait alert appearance;
         try {
             Alert alert = driver.switchTo().alert();            // Move driver focus to the Browser Alert;
@@ -98,7 +98,7 @@ public class SignUpStepDefinitions {
         Thread.sleep(1000);
         driver.quit();
         System.out.println("TEST USER DATA:");
-        System.out.println("  Username: " + uniqueUsernameGC);
+        System.out.println("  Username: " + TestData.getUniqueUsernameGC());
         System.out.println("  Password: " + PASSWORD);
         System.out.println();
     }
@@ -124,7 +124,7 @@ public class SignUpStepDefinitions {
         Thread.sleep(1000);
         driver.quit();
         System.out.println("TEST USER DATA:");
-        System.out.println("  Username: " + uniqueUsernameGC);
+        System.out.println("  Username: " + TestData.getUniqueUsernameGC());
         System.out.println("  Password: " + PASSWORD);
         System.out.println();
     }
