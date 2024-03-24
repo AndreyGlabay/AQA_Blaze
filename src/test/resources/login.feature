@@ -33,9 +33,6 @@ Background: the registered user open Log In modal
       | ESpc8dds9Y    | R0S0T8wZHc   |
       | kWFUYNaAlc    | vIq3YCdNxi   |
 
-  Scenario: check the title of login modal
-    Then check the title of login modal
-
   Scenario: the authorized user can successfully log out
     When registered user enter valid username
     And registered user enter valid password
@@ -74,3 +71,18 @@ Background: the registered user open Log In modal
   Scenario: check unsuccessful login - missing username & missing password
     When registered user click modal login button
     Then fill out username and password alert appear
+
+  Scenario: discard login by close button
+    When registered user enter valid username
+    And registered user enter valid password
+    And registered user click modal close button
+    Then login modal is not displaying
+
+  Scenario: discard login by cross button
+    When registered user enter valid username
+    And registered user enter valid password
+    And registered user click modal cross button
+    Then login modal is not displaying
+
+  Scenario: check the title of login modal
+    Then check the title of login modal

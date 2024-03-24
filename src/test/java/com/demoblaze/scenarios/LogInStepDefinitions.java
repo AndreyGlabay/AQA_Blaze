@@ -26,10 +26,12 @@ import java.net.URL;
 import java.time.Duration;
 
 import static com.demoblaze.pageobject.LogInModal.LOGIN_BUTTON_LOCATOR;
+import static com.demoblaze.pageobject.LogInModal.LOGIN_CLOSE_LOCATOR;
 import static com.demoblaze.pageobject.LogInModal.LOGIN_MODAL_LOCATOR;
 import static com.demoblaze.pageobject.LogInModal.LOGIN_PASSWORD_LOCATOR;
 import static com.demoblaze.pageobject.LogInModal.LOGIN_TITLE_LOCATOR;
 import static com.demoblaze.pageobject.LogInModal.LOGIN_USERNAME_LOCATOR;
+import static com.demoblaze.pageobject.LogInModal.LOGIN_X_LOCATOR;
 import static com.demoblaze.pageobject.NavBarLoggedUser.LOGOUT_BUTTON_LOCATOR;
 import static com.demoblaze.pageobject.NavBarLoggedUser.WELCOME_BUTTON_LOCATOR;
 import static com.demoblaze.pageobject.SignUpModal.SIGNUP_PASSWORD_LOCATOR;
@@ -228,5 +230,23 @@ public class LogInStepDefinitions {
         } catch (NoAlertPresentException e) {                   // There is no alert present;
             System.out.println("The browser alert is missing");
         }
+    }
+
+    @And("registered user click modal close button")
+    public void registeredUserClickModalCloseButton() {
+        WebElement closeButton = logInModal.findElement(By.xpath(LOGIN_CLOSE_LOCATOR));     // Get "Close" button;
+        closeButton.click();                                                                // Click on the button;
+    }
+
+    @And("registered user click modal cross button")
+    public void registeredUserClickModalCrossButton() {
+        WebElement xButton = logInModal.findElement(By.xpath(LOGIN_X_LOCATOR));             // Get "X" button;
+        xButton.click();                                                                    // Click on the button
+    }
+
+    @Then("login modal is not displaying")
+    public void loginModalIsNotDisplaying() throws InterruptedException {
+        Thread.sleep(500);
+        Assert.assertFalse(logInModal.isDisplayed(), "Log In modal still displayed");
     }
 }
