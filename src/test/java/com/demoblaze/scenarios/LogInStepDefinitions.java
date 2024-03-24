@@ -132,4 +132,17 @@ public class LogInStepDefinitions {
         Thread.sleep(1000);
         driver.quit();
     }
+
+    @When("registered user enter valid username {string}")
+    public void registeredUserEnterValidUsername(String myUsername) {
+        WebElement usernameInput = logInModal.findElement(By.xpath(LOGIN_USERNAME_LOCATOR)); // Find the Username input;
+        usernameInput.sendKeys(myUsername); // Input username from the feature file Examples.
+
+    }
+
+    @And("registered user enter valid password {string}")
+    public void registeredUserEnterValidPassword(String myPassword) {
+        WebElement passwordInput = logInModal.findElement(By.xpath(LOGIN_PASSWORD_LOCATOR)); // Find the Password input;
+        passwordInput.sendKeys(myPassword); // Input username from the feature file Examples.
+    }
 }
