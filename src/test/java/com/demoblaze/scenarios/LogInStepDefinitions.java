@@ -28,6 +28,7 @@ import static com.demoblaze.pageobject.LogInModal.LOGIN_MODAL_LOCATOR;
 import static com.demoblaze.pageobject.LogInModal.LOGIN_PASSWORD_LOCATOR;
 import static com.demoblaze.pageobject.LogInModal.LOGIN_TITLE_LOCATOR;
 import static com.demoblaze.pageobject.LogInModal.LOGIN_USERNAME_LOCATOR;
+import static com.demoblaze.pageobject.NavBarLoggedUser.LOGOUT_BUTTON_LOCATOR;
 import static com.demoblaze.pageobject.NavBarLoggedUser.WELCOME_BUTTON_LOCATOR;
 import static com.demoblaze.pageobject.SignUpModal.SIGNUP_PASSWORD_LOCATOR;
 import static com.demoblaze.pageobject.SignUpModal.SIGNUP_USERNAME_LOCATOR;
@@ -144,5 +145,28 @@ public class LogInStepDefinitions {
     public void registeredUserEnterValidPassword(String myPassword) {
         WebElement passwordInput = logInModal.findElement(By.xpath(LOGIN_PASSWORD_LOCATOR)); // Find the Password input;
         passwordInput.sendKeys(myPassword); // Input username from the feature file Examples.
+    }
+
+    @And("authorized user click logout button")
+    public void authorizedUserClickLogoutButton() {
+        WebElement logOutButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(LOGOUT_BUTTON_LOCATOR)));
+        logOutButton.click();
+    }
+
+    @Then("unauthorized user on home page can see unauthorized nav bar")
+    public void unauthorizedUserOnHomePageCanSeeUnauthorizedNavBar() {
+        HomePage homePageAfterLogout = new HomePage(driver); // New instance of the Home Page after logs out;
+
+        SoftAssert softAssert = new SoftAssert();                   // Add Soft Assertion (too many assertions);
+        softAssert.assertTrue(homePageAfterLogout.isHeaderBrandDisplayed(), "Header Brand is missing");
+        softAssert.assertTrue(homePageAfterLogout.isHeaderLogoDisplayed(), "Header Logo is missing");
+        softAssert.assertTrue(homePageAfterLogout.isNavBarDisplayed(), "Nav Bar is missing");
+        softAssert.assertTrue(homePageAfterLogout.isNavButtonHomeDisplayed(), "Nav Button Home is missing");
+        softAssert.assertTrue(homePageAfterLogout.isNavButtonContactDisplayed(), "Nav Button Contact is missing");
+        softAssert.assertTrue(homePageAfterLogout.isNavButtonAboutUsDisplayed(), "Nav Button About Us is missing");
+        softAssert.assertTrue(homePageAfterLogout.isNavButtonCartDisplayed(), "Nav Button Cart is missing");
+        softAssert.assertTrue(homePageAfterLogout.isNavButtonLogInDisplayed(), "Nav Button Log In is missing");
+        softAssert.assertTrue(homePageAfterLogout.isNavButtonSignUpDisplayed(), "Nav Button Sign Up is missing");
+        softAssert.assertAll();
     }
 }

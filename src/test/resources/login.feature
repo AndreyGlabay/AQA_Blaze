@@ -35,3 +35,10 @@ Background: the registered user open Log In modal
 
   Scenario: check the title of login modal
     Then check the title of login modal
+
+  Scenario: the authorized user can successfully log out
+    When registered user enter valid username
+    And registered user enter valid password
+    And registered user click modal login button
+    And authorized user click logout button
+    Then unauthorized user on home page can see unauthorized nav bar
