@@ -18,14 +18,14 @@ Background: the registered user open Log In modal
     And registered user click modal login button
     Then the correct username is displayed in nav bar
 
-  Scenario Outline: after successful login check correct Username is displayed in Nav Bar
-    When registered user enter valid username "<username>"
-    And registered user enter valid password "<password>"
+  Scenario Outline: after successful login check correct Username is displayed in Nav Bar for multiply users
+    When registered user enter valid username "<myUsername>"
+    And registered user enter valid password "<myPassword>"
     And registered user click modal login button
-    Then the correct username is displayed in nav bar
+    Then the correct username "<myUsername>" is displayed in nav bar for multiply users
 
     Examples:
-      | username      | password     |
+      | myUsername    | myPassword   |
       | JohnJohnson   | Test-12345   |
       | timhce4eNP    | Test-123abc  |
       | x81DfDaelO    | Test-abcde   |

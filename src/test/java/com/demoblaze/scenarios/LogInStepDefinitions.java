@@ -25,6 +25,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
 
+import com.demoblaze.pageobject.LogInModal;
 import static com.demoblaze.pageobject.LogInModal.LOGIN_BUTTON_LOCATOR;
 import static com.demoblaze.pageobject.LogInModal.LOGIN_CLOSE_LOCATOR;
 import static com.demoblaze.pageobject.LogInModal.LOGIN_MODAL_LOCATOR;
@@ -39,6 +40,7 @@ import static com.demoblaze.pageobject.SignUpModal.SIGNUP_USERNAME_LOCATOR;
 import static com.demoblaze.testdata.TestData.BASE_URL;
 import static com.demoblaze.testdata.TestData.GRID_URL;
 import static com.demoblaze.testdata.TestData.PASSWORD;
+import static com.demoblaze.testdata.TestData.USERNAME;
 import static com.demoblaze.testdata.TestData.USERNAME_WRONG;
 
 
@@ -63,31 +65,27 @@ public class LogInStepDefinitions {
     }
 
     @Then("login modal appeared")
-    public void loginModalAppeared() {
-        wait = new WebDriverWait(driver, Duration.ofMillis(10000));         // Initialize WebDriverWait object;
+    public void loginModalAppeared() throws InterruptedException {
+        wait = new WebDriverWait(driver, Duration.ofMillis(1000));         // Initialize WebDriverWait object;
         logInModal = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(LOGIN_MODAL_LOCATOR)));
     }
 
     @When("registered user enter valid username")
     public void registeredUserEnterValidUsername() {
         WebElement usernameInput = logInModal.findElement(By.xpath(LOGIN_USERNAME_LOCATOR)); // Find the Username input;
-        usernameInput.sendKeys(TestData.getValidUsername());                                 // Input username.
+        usernameInput.sendKeys(USERNAME);                                 // TestData.getValidUsername()
     }
 
     @And("registered user enter valid password")
     public void registeredUserEnterValidPassword() {
         WebElement passwordInput = logInModal.findElement(By.xpath(LOGIN_PASSWORD_LOCATOR)); // Find the Password input;
-        passwordInput.sendKeys(TestData.PASSWORD);                                      // Send the password to the input.
+        passwordInput.sendKeys(PASSWORD);                                      // Send the password to the input.
     }
 
     @And("registered user click modal login button")
     public void registeredUserClickModalLoginButton() {
         WebElement logInButton = logInModal.findElement(By.xpath(LOGIN_BUTTON_LOCATOR)); // Find the LogIn button;
         logInButton.click();                                                             // Click on the button.
-        System.out.println("LOGGED IN WITH CREDENTIALS:");
-        System.out.println("  Logged with Username: " + TestData.getValidUsername());
-        System.out.println("  Logged with Password: " + PASSWORD);
-        System.out.println();
     }
 
     @Then("authorized user come to logged in home page")
@@ -119,12 +117,20 @@ public class LogInStepDefinitions {
 
     @Then("the correct username is displayed in nav bar")
     public void theCorrectUsernameIsDisplayedInNavBar() throws InterruptedException {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(10000)); // Initialize WebDriverWait object;
+        wait = new WebDriverWait(driver, Duration.ofMillis(1000)); // Initialize WebDriverWait object;
         WebElement welcomeButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(WELCOME_BUTTON_LOCATOR)));
-        String expectedText = TestData.getValidUsername();
         String actualText = welcomeButton.getText();
-        Assert.assertEquals(actualText, "Welcome " + expectedText, "Welcome Button has wrong username");
+        Assert.assertEquals(actualText, "Welcome " + USERNAME, "Welcome Button has wrong username");
         Thread.sleep(1000);
+        driver.quit();
+    }
+
+    @Then("the correct username {string} is displayed in nav bar for multiply users")
+    public void theCorrectUsernameIsDisplayedInNavBarForMultiplyUsers(String myUsername) {
+        wait = new WebDriverWait(driver, Duration.ofMillis(1000)); // Initialize WebDriverWait object;
+        WebElement welcomeButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(WELCOME_BUTTON_LOCATOR)));
+        String actualText = welcomeButton.getText();
+        Assert.assertEquals(actualText, "Welcome " + myUsername, "Welcome Button has wrong username");
         driver.quit();
     }
 
@@ -159,9 +165,8 @@ public class LogInStepDefinitions {
     }
 
     @Then("unauthorized user on home page can see unauthorized nav bar")
-    public void unauthorizedUserOnHomePageCanSeeUnauthorizedNavBar() {
+    public void unauthorizedUserOnHomePageCanSeeUnauthorizedNavBar() throws InterruptedException {
         HomePage homePageAfterLogout = new HomePage(driver); // New instance of the Home Page after logs out;
-
         SoftAssert softAssert = new SoftAssert();                   // Add Soft Assertion (too many assertions);
         softAssert.assertTrue(homePageAfterLogout.isHeaderBrandDisplayed(), "Header Brand is missing");
         softAssert.assertTrue(homePageAfterLogout.isHeaderLogoDisplayed(), "Header Logo is missing");
@@ -173,6 +178,8 @@ public class LogInStepDefinitions {
         softAssert.assertTrue(homePageAfterLogout.isNavButtonLogInDisplayed(), "Nav Button Log In is missing");
         softAssert.assertTrue(homePageAfterLogout.isNavButtonSignUpDisplayed(), "Nav Button Sign Up is missing");
         softAssert.assertAll();
+        Thread.sleep(500);
+        driver.quit();
     }
 
     @And("registered user enter invalid password")
@@ -182,7 +189,7 @@ public class LogInStepDefinitions {
     }
 
     @Then("wrong password alert appear")
-    public void wrongPasswordAlertAppear() {
+    public void wrongPasswordAlertAppear() throws InterruptedException {
         wait.until(ExpectedConditions.alertIsPresent());        // Wait alert appearance;
         try {
             Alert alert = driver.switchTo().alert();            // Move driver focus to the Browser Alert;
@@ -194,6 +201,8 @@ public class LogInStepDefinitions {
         } catch (NoAlertPresentException e) {                   // There is no alert present;
             System.out.println("The browser alert is missing");
         }
+        Thread.sleep(500);
+        driver.quit();
     }
 
     @When("registered user enter invalid username")
@@ -203,7 +212,7 @@ public class LogInStepDefinitions {
     }
 
     @Then("user does not exist alert appear")
-    public void userDoesNotExistAlertAppear() {
+    public void userDoesNotExistAlertAppear() throws InterruptedException {
         wait.until(ExpectedConditions.alertIsPresent());        // Wait alert appearance;
         try {
             Alert alert = driver.switchTo().alert();            // Move driver focus to the Browser Alert;
@@ -215,10 +224,12 @@ public class LogInStepDefinitions {
         } catch (NoAlertPresentException e) {                   // There is no alert present;
             System.out.println("The browser alert is missing");
         }
+        Thread.sleep(500);
+        driver.quit();
     }
 
     @Then("fill out username and password alert appear")
-    public void fillOutUsernameAndPasswordAlertAppear() {
+    public void fillOutUsernameAndPasswordAlertAppear() throws InterruptedException {
         wait.until(ExpectedConditions.alertIsPresent());        // Wait alert appearance;
         try {
             Alert alert = driver.switchTo().alert();            // Move driver focus to the Browser Alert;
@@ -230,6 +241,8 @@ public class LogInStepDefinitions {
         } catch (NoAlertPresentException e) {                   // There is no alert present;
             System.out.println("The browser alert is missing");
         }
+        Thread.sleep(500);
+        driver.quit();
     }
 
     @And("registered user click modal close button")
@@ -248,5 +261,7 @@ public class LogInStepDefinitions {
     public void loginModalIsNotDisplaying() throws InterruptedException {
         Thread.sleep(500);
         Assert.assertFalse(logInModal.isDisplayed(), "Log In modal still displayed");
+        Thread.sleep(500);
+        driver.quit();
     }
 }
