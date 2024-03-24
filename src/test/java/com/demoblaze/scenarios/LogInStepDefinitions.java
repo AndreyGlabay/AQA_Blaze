@@ -8,7 +8,9 @@ import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -35,6 +37,7 @@ import static com.demoblaze.pageobject.SignUpModal.SIGNUP_USERNAME_LOCATOR;
 import static com.demoblaze.testdata.TestData.BASE_URL;
 import static com.demoblaze.testdata.TestData.GRID_URL;
 import static com.demoblaze.testdata.TestData.PASSWORD;
+import static com.demoblaze.testdata.TestData.USERNAME_WRONG;
 
 
 public class LogInStepDefinitions {
@@ -168,5 +171,62 @@ public class LogInStepDefinitions {
         softAssert.assertTrue(homePageAfterLogout.isNavButtonLogInDisplayed(), "Nav Button Log In is missing");
         softAssert.assertTrue(homePageAfterLogout.isNavButtonSignUpDisplayed(), "Nav Button Sign Up is missing");
         softAssert.assertAll();
+    }
+
+    @And("registered user enter invalid password")
+    public void registeredUserEnterInvalidPassword() {
+        WebElement passwordInput = logInModal.findElement(By.xpath(LOGIN_PASSWORD_LOCATOR));// Find the Password input;
+        passwordInput.sendKeys(TestData.PASSWORD_WRONG);                                    // Send the WRONG password.
+    }
+
+    @Then("wrong password alert appear")
+    public void wrongPasswordAlertAppear() {
+        wait.until(ExpectedConditions.alertIsPresent());        // Wait alert appearance;
+        try {
+            Alert alert = driver.switchTo().alert();            // Move driver focus to the Browser Alert;
+            String alertText = alert.getText();                 // Get text from a Browser Alert and put it to the var;
+            System.out.println("ALERT TEXT: " + alertText);     // Print out alert's content text;
+            Assert.assertTrue(alertText.contains("Wrong password"),
+                    "\"Wrong password\" alert is missing");
+            alert.accept();                                     // Accept the alert (click [OK] button);
+        } catch (NoAlertPresentException e) {                   // There is no alert present;
+            System.out.println("The browser alert is missing");
+        }
+    }
+
+    @When("registered user enter invalid username")
+    public void registeredUserEnterInvalidUsername() {
+        WebElement usernameInput = logInModal.findElement(By.xpath(LOGIN_USERNAME_LOCATOR));// Find the Username input;
+        usernameInput.sendKeys(USERNAME_WRONG);                                             // Send the WRONG username.
+    }
+
+    @Then("user does not exist alert appear")
+    public void userDoesNotExistAlertAppear() {
+        wait.until(ExpectedConditions.alertIsPresent());        // Wait alert appearance;
+        try {
+            Alert alert = driver.switchTo().alert();            // Move driver focus to the Browser Alert;
+            String alertText = alert.getText();                 // Get text from a Browser Alert and put it to the var;
+            System.out.println("ALERT TEXT: " + alertText);     // Print out alert's content text;
+            Assert.assertTrue(alertText.contains("User does not exist"),
+                    "\"User does not exist\" alert is missing");
+            alert.accept();                                     // Accept the alert (click [OK] button);
+        } catch (NoAlertPresentException e) {                   // There is no alert present;
+            System.out.println("The browser alert is missing");
+        }
+    }
+
+    @Then("fill out username and password alert appear")
+    public void fillOutUsernameAndPasswordAlertAppear() {
+        wait.until(ExpectedConditions.alertIsPresent());        // Wait alert appearance;
+        try {
+            Alert alert = driver.switchTo().alert();            // Move driver focus to the Browser Alert;
+            String alertText = alert.getText();                 // Get text from a Browser Alert and put it to the var;
+            System.out.println("ALERT TEXT: " + alertText);     // Print out alert's content text;
+            Assert.assertTrue(alertText.contains("fill out Username and Password"),
+                    "\"fill out Username and Password\" alert is missing");
+            alert.accept();                                     // Accept the alert (click [OK] button);
+        } catch (NoAlertPresentException e) {                   // There is no alert present;
+            System.out.println("The browser alert is missing");
+        }
     }
 }
