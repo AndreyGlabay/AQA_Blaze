@@ -6,14 +6,41 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import static com.demoblaze.testdata.TestData.GRID_URL;
 
 public class ApiCartTest {
     public String addToCartUrl = "https://api.demoblaze.com/addtocart";
     public String viewCartUrl = "https://api.demoblaze.com/viewcart";
+    public String cartUrl = "https://demoblaze.com/cart.html";
+    private WebDriver driver;
+
+    // BEFORE AND AFTER CLASS ANNOTATIONS ARE SET UP FOR API CALL DEMONSTRATION
+    @BeforeClass
+    public void openInstance() throws MalformedURLException {
+        ChromeOptions options = new ChromeOptions();                // New instance for GC browser;
+        driver = new RemoteWebDriver(new URL(GRID_URL), options);   // Driver initialization on SeleniumGrid using GC;
+        driver.get(cartUrl);                                        // Open web page by URL;
+    }
+
+    @AfterClass
+    public void closeInstance() throws InterruptedException {
+        Thread.sleep(5000);
+        driver.quit();
+    }
+
 
     // USING API CALL - METHOD TO ADD ANY ITEM TO THE CART
     private void addItemToCart(String id, int prodId, boolean flag) {
