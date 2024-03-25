@@ -1,12 +1,16 @@
 package com.demoblaze.test;
 
 import com.demoblaze.pageobject.HomePage;
+import com.demoblaze.pageobject.HomePageContent1;
+import com.demoblaze.pageobject.HomePageContent2;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
@@ -14,6 +18,7 @@ import org.testng.asserts.SoftAssert;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.Duration;
 
 import static com.demoblaze.pageobject.HomePage.FOOTER_ABOUT_LOCATOR;
 import static com.demoblaze.pageobject.HomePage.FOOTER_CONTACTS_LOCATOR;
@@ -175,5 +180,91 @@ public class HomePageElementsTests {
                         "Email: demo@blazemeter.com",
                 "Text in the footer's section  \"Get in Touch\" doesn't match the expected text, which is: "
                         + footerContacts.getText());
+    }
+
+    // CHECK THE HOME PAGE CONTENT - PAGE 1 (CHROME BROWSER)
+    @Test (testName = "TC911-A_CheckProductsPage1_GC", priority = 1)
+    public void findProductsPage1Chrome() throws MalformedURLException, InterruptedException {
+        ChromeOptions options = new ChromeOptions();                // New instance for GC browser;
+        driver = new RemoteWebDriver(new URL(gridUrl), options);    // Driver initialization on SeleniumGrid using GC;
+        driver.get(baseUrl);                                        // Open web page by URL;
+        var homePageContent1 = new HomePageContent1(driver);        // Make an instance of web page;
+        Thread.sleep(1000);                                   // Arrange 1 sec delay;
+        SoftAssert softAssert = new SoftAssert();                   // Add Soft Assertion (too many assertions);
+        softAssert.assertTrue(homePageContent1.isLinkProductId1displayed(), "Link product idp_=1 is missing");
+        softAssert.assertTrue(homePageContent1.isLinkProductId2displayed(), "Link product idp_=2 is missing");
+        softAssert.assertTrue(homePageContent1.isLinkProductId3displayed(), "Link product idp_=3 is missing");
+        softAssert.assertTrue(homePageContent1.isLinkProductId4displayed(), "Link product idp_=4 is missing");
+        softAssert.assertTrue(homePageContent1.isLinkProductId5displayed(), "Link product idp_=5 is missing");
+        softAssert.assertTrue(homePageContent1.isLinkProductId6displayed(), "Link product idp_=6 is missing");
+        softAssert.assertTrue(homePageContent1.isLinkProductId7displayed(), "Link product idp_=7 is missing");
+        softAssert.assertTrue(homePageContent1.isLinkProductId8displayed(), "Link product idp_=8 is missing");
+        softAssert.assertAll();
+    }
+
+    // CHECK THE HOME PAGE CONTENT - PAGE 1 (FIREFOX BROWSER)
+    @Test (testName = "TC911-B_CheckProductsPage1_FF", priority = 1)
+    public void findProductsPage1Firefox() throws MalformedURLException, InterruptedException {
+        FirefoxOptions options = new FirefoxOptions();              // New instance for FF browser;
+        driver = new RemoteWebDriver(new URL(gridUrl), options);    // Driver initialization on SeleniumGrid using FF;
+        driver.get(baseUrl);                                        // Open web page by URL;
+        var homePageContent1 = new HomePageContent1(driver);        // Make an instance of web page;
+        Thread.sleep(1000);                                    // Arrange 1 sec delay;
+        SoftAssert softAssert = new SoftAssert();                   // Add Soft Assertion (too many assertions);
+        softAssert.assertTrue(homePageContent1.isLinkProductId1displayed(), "Link product idp_=1 is missing");
+        softAssert.assertTrue(homePageContent1.isLinkProductId2displayed(), "Link product idp_=2 is missing");
+        softAssert.assertTrue(homePageContent1.isLinkProductId3displayed(), "Link product idp_=3 is missing");
+        softAssert.assertTrue(homePageContent1.isLinkProductId4displayed(), "Link product idp_=4 is missing");
+        softAssert.assertTrue(homePageContent1.isLinkProductId5displayed(), "Link product idp_=5 is missing");
+        softAssert.assertTrue(homePageContent1.isLinkProductId6displayed(), "Link product idp_=6 is missing");
+        softAssert.assertTrue(homePageContent1.isLinkProductId7displayed(), "Link product idp_=7 is missing");
+        softAssert.assertTrue(homePageContent1.isLinkProductId8displayed(), "Link product idp_=8 is missing");
+        softAssert.assertAll();
+    }
+
+    // CHECK THE HOME PAGE CONTENT - PAGE 2 (CHROME BROWSER)
+    @Test (testName = "TC912-A_CheckProductsPage2_GC", priority = 1)
+    public void findProductsPage2Chrome() throws MalformedURLException, InterruptedException {
+        ChromeOptions options = new ChromeOptions();                // New instance for GC browser;
+        driver = new RemoteWebDriver(new URL(gridUrl), options);    // Driver initialization on SeleniumGrid using GC;
+        driver.get(baseUrl);                                        // Open web page by URL;
+        var homePage = new HomePage(driver);                        // Make an instance of web page;
+        WebElement nextButton = homePage.getNextButton();           // Get element Next button;
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(1000)); // Wait the Next button appear;
+        wait.until(ExpectedConditions.elementToBeClickable(nextButton)); // Wait, the Next button will be clickable;
+        nextButton.click();                                         // Click the Next button;
+        var homePageContent2 = new HomePageContent2(driver);        // Make an instance of web page;
+        Thread.sleep(1000);                                    // Arrange 0.5 sec delay;
+        SoftAssert softAssert = new SoftAssert();                   // Add Soft Assertion (too many assertions);
+        softAssert.assertTrue(homePageContent2.isLinkProductId10displayed(), "Link product idp_=10 is missing");
+        softAssert.assertTrue(homePageContent2.isLinkProductId11displayed(), "Link product idp_=11 is missing");
+        softAssert.assertTrue(homePageContent2.isLinkProductId12displayed(), "Link product idp_=12 is missing");
+        softAssert.assertTrue(homePageContent2.isLinkProductId13displayed(), "Link product idp_=13 is missing");
+        softAssert.assertTrue(homePageContent2.isLinkProductId14displayed(), "Link product idp_=14 is missing");
+        softAssert.assertTrue(homePageContent2.isLinkProductId15displayed(), "Link product idp_=15 is missing");
+        softAssert.assertAll();
+    }
+
+    // CHECK THE HOME PAGE CONTENT - PAGE 2 (FIREFOX BROWSER)
+    @Test (testName = "TC912-B_CheckProductsPage2_FF", priority = 1)
+    public void findProductsPage2Firefox() throws MalformedURLException, InterruptedException {
+        FirefoxOptions options = new FirefoxOptions();              // New instance for FF browser;
+        driver = new RemoteWebDriver(new URL(gridUrl), options);    // Driver initialization on SeleniumGrid using FF;
+        driver.get(baseUrl);                                        // Open web page by URL;
+        var homePage = new HomePage(driver);                        // Make an instance of web page;
+        WebElement nextButton = homePage.getNextButton();           // Get element Next button;
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(1000)); // Wait the Next button appear;
+        wait.until(ExpectedConditions.elementToBeClickable(nextButton)); // Wait, the Next button will be clickable;
+        nextButton.click();                                         // Click the Next button;
+        var homePageContent2 = new HomePageContent2(driver);        // Make an instance of web page;
+        Thread.sleep(1000);                                    // Arrange 0.5 sec delay;
+        SoftAssert softAssert = new SoftAssert();                   // Add Soft Assertion (too many assertions);
+        softAssert.assertTrue(homePageContent2.isLinkProductId10displayed(), "Link product idp_=10 is missing");
+        softAssert.assertTrue(homePageContent2.isLinkProductId11displayed(), "Link product idp_=11 is missing");
+        softAssert.assertTrue(homePageContent2.isLinkProductId12displayed(), "Link product idp_=12 is missing");
+        softAssert.assertTrue(homePageContent2.isLinkProductId13displayed(), "Link product idp_=13 is missing");
+        softAssert.assertTrue(homePageContent2.isLinkProductId14displayed(), "Link product idp_=14 is missing");
+        softAssert.assertTrue(homePageContent2.isLinkProductId15displayed(), "Link product idp_=15 is missing");
+        softAssert.assertAll();
     }
 }
