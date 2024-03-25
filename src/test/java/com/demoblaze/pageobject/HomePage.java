@@ -6,7 +6,6 @@ import org.openqa.selenium.WebElement;
 
 // Create the test class and implement Page Object for the Home Page
 public class HomePage {
-    private WebDriver driver;
     public static final String BRAND_LOCATOR = "//*[@id=\"nava\"]";
     public static final String LOGO_LOCATOR = "//*[@id=\"nava\"]/img";
     public static final String NAVBAR_LOCATOR = "//*[@id=\"navbarExample\"]";
@@ -30,28 +29,28 @@ public class HomePage {
     public static final String FOOTER_LOGO_LOCATOR = "//*[@id=\"fotcont\"]/div[3]";
     public static final String FOOTER_COPYRIGHT_LOCATOR = "/html/body/footer";
 
-    private WebElement headerBrand;
-    private WebElement headerLogo;
-    private WebElement navBar;
-    private WebElement navButtonHome;
-    private WebElement navButtonContact;
-    private WebElement navButtonAboutUs;
-    private WebElement navButtonCart;
-    private WebElement navButtonLogIn;
-    private WebElement navButtonSignUp;
-    private WebElement carousel;
-    private WebElement categoryMenuArea;
-    private WebElement categoryMenuTitle;
-    private WebElement categoryMenuPhones;
-    private WebElement categoryMenuLaptops;
-    private WebElement categoryMenuMonitors;
-    private WebElement contentArea;
-    private WebElement previousButton;
-    private WebElement nextButton;
-    private WebElement footerAbout;
-    private WebElement footerContacts;
-    private WebElement footerLogo;
-    private WebElement footerCopyright;
+    private final WebElement headerBrand;
+    private final WebElement headerLogo;
+    private final WebElement navBar;
+    private final WebElement navButtonHome;
+    private final WebElement navButtonContact;
+    private final WebElement navButtonAboutUs;
+    private final WebElement navButtonCart;
+    private final WebElement navButtonLogIn;
+    private final WebElement navButtonSignUp;
+    private final WebElement carousel;
+    private final WebElement categoryMenuArea;
+    private final WebElement categoryMenuTitle;
+    private final WebElement categoryMenuPhones;
+    private final WebElement categoryMenuLaptops;
+    private final WebElement categoryMenuMonitors;
+    private final WebElement contentArea;
+    private final WebElement previousButton;
+    private final WebElement nextButton;
+    private final WebElement footerAbout;
+    private final WebElement footerContacts;
+    private final WebElement footerLogo;
+    private final WebElement footerCopyright;
 
     public WebElement getNavButtonHome() {
         return navButtonHome;
@@ -97,8 +96,8 @@ public class HomePage {
         return nextButton;
     }
 
+    // HOME PAGE BASIS (WITHOUT PRODUCT CARDS)
     public HomePage(WebDriver driver) {
-        this.driver = driver;
         headerBrand = driver.findElement(By.xpath(BRAND_LOCATOR));
         headerLogo = driver.findElement(By.xpath(LOGO_LOCATOR));
         navBar = driver.findElement(By.xpath(NAVBAR_LOCATOR));
