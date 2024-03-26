@@ -211,12 +211,20 @@ public class CartStepDefinitions {
         System.out.println("User is redirected to the cart page successfully.");
     }
 
-    @And("user remove the {string} from the cart")
-    public void userRemoveTheFromTheCart(String arg0) {
+    @And("user remove the {string} product from the cart")
+    public void userRemoveTheProductFromTheCart(String productId) {
+        CartPage cartPage = new CartPage(driver);
+        boolean isProductAdded = cartPage.isProductAddedToCart("Product Title", "$Product Price");
+        Assert.assertTrue(isProductAdded, "Product is still in the cart"); // Check the product still is in cart;
+        cartPage.clickDeleteLink();
     }
 
-    @Then("the {string} should be removed from the cart")
-    public void theShouldBeRemovedFromTheCart(String arg0) {
+    @Then("the {string} product should be removed from the cart")
+    public void theProductShouldBeRemovedFromTheCart(String productId) {
+        driver.get(CART_URL);
+        wait = new WebDriverWait(driver, Duration.ofMillis(1000));
+        boolean isProductRemoved = !driver.findElements(By.xpath(CartPage.ROW_1_DELETE)).isEmpty(); // there is no element;
+        Assert.assertFalse(isProductRemoved, "Product is still in the cart"); // Check the product been deleted;
     }
 
     @And("user back to the home page")
