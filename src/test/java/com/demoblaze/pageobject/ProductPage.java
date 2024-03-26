@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
 public class ProductPage {
+    public static final String HOME_BUTTON_LOCATOR = "//*[@id=\"navbarExample\"]/ul/li[1]/a";
     public static final String PRODUCT_TITLE = "//*[@id=\"tbodyid\"]/h2";
     public static final String PRODUCT_PRICE = "//*[@id=\"tbodyid\"]/h3";
     public static final String PRODUCT_DESCRIPTION = "//*[@id=\"more-information\"]/p";
@@ -19,8 +20,12 @@ public class ProductPage {
     private WebElement productDescription;
     private WebElement addToCartButton;
 
+    private final WebDriver driver;
+
+
     // PRODUCT PAGE
     public ProductPage(WebDriver driver) {
+        this.driver = driver;
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(1000));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(PRODUCT_TITLE)));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(PRODUCT_PRICE)));
@@ -62,5 +67,12 @@ public class ProductPage {
 
     public WebElement getAddToCartButton() {
         return addToCartButton;
+    }
+
+    // METHOD TO CLICK ON THE HOME BUTTON
+    public void clickHomeButton() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(1000));
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath(HOME_BUTTON_LOCATOR)));
+        driver.findElement(By.xpath(HOME_BUTTON_LOCATOR)).click();
     }
 }
