@@ -7,6 +7,16 @@ public class TestData {
     // URL CONSTANTS
     public static final String GRID_URL = "http://192.168.0.102:4444";
     public static final String BASE_URL = "https://demoblaze.com/";
+    public static final String CART_URL = "https://demoblaze.com/cart.html";
+    public static final String PRODUCT1_URL = "https://demoblaze.com/prod.html?idp_=1";
+    public static final String PRODUCT2_URL = "https://demoblaze.com/prod.html?idp_=2";
+    public static final String PRODUCT3_URL = "https://demoblaze.com/prod.html?idp_=3";
+    public static final String PRODUCT4_URL = "https://demoblaze.com/prod.html?idp_=4";
+    public static final String PRODUCT5_URL = "https://demoblaze.com/prod.html?idp_=5";
+    public static final String PRODUCT6_URL = "https://demoblaze.com/prod.html?idp_=6";
+    public static final String PRODUCT7_URL = "https://demoblaze.com/prod.html?idp_=7";
+    public static final String PRODUCT8_URL = "https://demoblaze.com/prod.html?idp_=8";
+    public static final String PRODUCT9_URL = "https://demoblaze.com/prod.html?idp_=9";
 
     // USERNAME CONSTANTS
     public static final String USERNAME = "JohnJohnson";
