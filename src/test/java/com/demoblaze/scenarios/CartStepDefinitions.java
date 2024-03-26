@@ -69,7 +69,7 @@ public class CartStepDefinitions {
     public void userOnTheHomePage() throws IOException {
         ChromeOptions options = new ChromeOptions();                // New instance for GC browser;
         driver = new RemoteWebDriver(new URL(GRID_URL), options);   // Driver initialization on SeleniumGrid using GC;
-        driver.get(BASE_URL);                                       // Open web page by URL;productDataMap = ProductPropertiesReader.readProductProperties();
+        driver.get(BASE_URL);                                       // Open web page by URL;
     }
 
     // SCENARIOS
@@ -200,7 +200,7 @@ public class CartStepDefinitions {
 
     @And("user discard checkout")
     public void userDiscardCheckout() {
-        PlaceOrderModal placeOrderModal = new PlaceOrderModal(driver);                                                   // New Cart page;
+        PlaceOrderModal placeOrderModal = new PlaceOrderModal(driver);
         placeOrderModal.discardPlaceOrderByCrossButton();
     }
 
@@ -227,19 +227,277 @@ public class CartStepDefinitions {
         Assert.assertFalse(isProductRemoved, "Product is still in the cart"); // Check the product been deleted;
     }
 
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+    @When("user navigate to the {string} first product page")
+    public void userNavigateToTheFirstProductPage(String firstProduct) {
+        var homePageContent1 = new HomePageContent1(driver);
+        WebElement productLink = null;
+        String productUrl = null;
+        switch (firstProduct) {
+            case "PRODUCT_1":
+                productLink = homePageContent1.getLinkProductId1();
+                productUrl = TestData.PRODUCT1_URL;
+                break;
+            case "PRODUCT_2":
+                productLink = homePageContent1.getLinkProductId2();
+                productUrl = TestData.PRODUCT2_URL;
+                break;
+            case "PRODUCT_3":
+                productLink = homePageContent1.getLinkProductId3();
+                productUrl = TestData.PRODUCT3_URL;
+                break;
+            case "PRODUCT_4":
+                productLink = homePageContent1.getLinkProductId4();
+                productUrl = PRODUCT4_URL;
+                break;
+            case "PRODUCT_5":
+                productLink = homePageContent1.getLinkProductId5();
+                productUrl = TestData.PRODUCT5_URL;
+                break;
+            case "PRODUCT_6":
+                productLink = homePageContent1.getLinkProductId6();
+                productUrl = TestData.PRODUCT6_URL;
+                break;
+            case "PRODUCT_7":
+                productLink = homePageContent1.getLinkProductId7();
+                productUrl = TestData.PRODUCT7_URL;
+                break;
+            case "PRODUCT_8":
+                productLink = homePageContent1.getLinkProductId8();
+                productUrl = TestData.PRODUCT8_URL;
+                break;
+            case "PRODUCT_9":
+                productLink = homePageContent1.getLinkProductId9();
+                productUrl = TestData.PRODUCT9_URL;
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid productId: " + firstProduct);
+        }
+        if (productLink != null) {
+            wait = new WebDriverWait(driver, Duration.ofMillis(1000));
+            WebElement clickableElement = wait.until(ExpectedConditions.elementToBeClickable(productLink));
+            clickableElement.click();
+        } else {
+            throw new IllegalArgumentException("Invalid productId: " + firstProduct);
+        }
+    }
+
+    @And("user see the {string} first product in the cart")
+    public void userSeeTheFirstProductInTheCart(String firstProduct) {
+        ProductData expectedProductData = productDataMap.get(firstProduct);         // Get expected data from the Map;
+        productPage = new ProductPage(driver);                                      // New instance of Product page;
+
+        String actualTitle = productPage.getProductTitle().getText();               // Get actual product's TITLE;
+        String actualPrice = productPage.getProductPrice().getText();               // Get actual product's PRICE;
+        String actualDescription = productPage.getProductDescription().getText();   // Get actual product's DESCRIPTION;
+        System.out.println("actualTitle == " + actualTitle);
+        System.out.println("actualPrice == " + actualPrice);
+        System.out.println("actualDescription == " + actualDescription);
+
+        SoftAssert softAssert = new SoftAssert();
+        // Check sections TITLE, PRICE, DESCRIPTION and ADD TO CART button are displaying;
+        softAssert.assertTrue(productPage.isProductTitleDisplayed(), "TITLE section is missing");
+        softAssert.assertTrue(productPage.isProductPriceDisplayed(), "PRICE section is missing");
+        softAssert.assertTrue(productPage.isProductDescriptionDisplayed(), "DESCRIPTION section is missing");
+        softAssert.assertTrue(productPage.isAddToCartButtonDisplayed(), "ADD TO CART button is missing");
+        // Check TITLE and PRI
+        softAssert.assertEquals(actualTitle, expectedProductData.getTitle(), "TITLE is not as expected");
+        softAssert.assertEquals(actualPrice, expectedProductData.getPrice(), "PRICE is not as expected");
+        softAssert.assertEquals(actualDescription, expectedProductData.getDescription(),
+                "DESCRIPTION is not as expected");
+        softAssert.assertAll();
+    }
+
     @And("user back to the home page")
     public void userBackToTheHomePage() {
+        ProductPage productPage1 = new ProductPage(driver);
+        productPage1.clickHomeButton();
     }
 
-    @Then("the all products should be added to the cart")
+    @And("user navigate to the {string} second product page")
+    public void userNavigateToTheSecondProductPage(String secondProduct) {
+        var homePageContent1 = new HomePageContent1(driver);
+        WebElement productLink = null;
+        String productUrl = null;
+        switch (secondProduct) {
+            case "PRODUCT_1":
+                productLink = homePageContent1.getLinkProductId1();
+                productUrl = TestData.PRODUCT1_URL;
+                break;
+            case "PRODUCT_2":
+                productLink = homePageContent1.getLinkProductId2();
+                productUrl = TestData.PRODUCT2_URL;
+                break;
+            case "PRODUCT_3":
+                productLink = homePageContent1.getLinkProductId3();
+                productUrl = TestData.PRODUCT3_URL;
+                break;
+            case "PRODUCT_4":
+                productLink = homePageContent1.getLinkProductId4();
+                productUrl = PRODUCT4_URL;
+                break;
+            case "PRODUCT_5":
+                productLink = homePageContent1.getLinkProductId5();
+                productUrl = TestData.PRODUCT5_URL;
+                break;
+            case "PRODUCT_6":
+                productLink = homePageContent1.getLinkProductId6();
+                productUrl = TestData.PRODUCT6_URL;
+                break;
+            case "PRODUCT_7":
+                productLink = homePageContent1.getLinkProductId7();
+                productUrl = TestData.PRODUCT7_URL;
+                break;
+            case "PRODUCT_8":
+                productLink = homePageContent1.getLinkProductId8();
+                productUrl = TestData.PRODUCT8_URL;
+                break;
+            case "PRODUCT_9":
+                productLink = homePageContent1.getLinkProductId9();
+                productUrl = TestData.PRODUCT9_URL;
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid productId: " + secondProduct);
+        }
+        if (productLink != null) {
+            wait = new WebDriverWait(driver, Duration.ofMillis(1000));
+            WebElement clickableElement = wait.until(ExpectedConditions.elementToBeClickable(productLink));
+            clickableElement.click();
+        } else {
+            throw new IllegalArgumentException("Invalid productId: " + secondProduct);
+        }
+    }
+
+    @And("user see the {string} second product in the cart")
+    public void userSeeTheSecondProductInTheCart(String secondProduct) {
+        ProductData expectedProductData = productDataMap.get(secondProduct);        // Get expected data from the Map;
+        productPage = new ProductPage(driver);                                      // New instance of Product page;
+
+        String actualTitle = productPage.getProductTitle().getText();               // Get actual product's TITLE;
+        String actualPrice = productPage.getProductPrice().getText();               // Get actual product's PRICE;
+        String actualDescription = productPage.getProductDescription().getText();   // Get actual product's DESCRIPTION;
+        System.out.println("actualTitle == " + actualTitle);
+        System.out.println("actualPrice == " + actualPrice);
+        System.out.println("actualDescription == " + actualDescription);
+
+        SoftAssert softAssert = new SoftAssert();
+        // Check sections TITLE, PRICE, DESCRIPTION and ADD TO CART button are displaying;
+        softAssert.assertTrue(productPage.isProductTitleDisplayed(), "TITLE section is missing");
+        softAssert.assertTrue(productPage.isProductPriceDisplayed(), "PRICE section is missing");
+        softAssert.assertTrue(productPage.isProductDescriptionDisplayed(), "DESCRIPTION section is missing");
+        softAssert.assertTrue(productPage.isAddToCartButtonDisplayed(), "ADD TO CART button is missing");
+        // Check TITLE and PRI
+        softAssert.assertEquals(actualTitle, expectedProductData.getTitle(), "TITLE is not as expected");
+        softAssert.assertEquals(actualPrice, expectedProductData.getPrice(), "PRICE is not as expected");
+        softAssert.assertEquals(actualDescription, expectedProductData.getDescription(),
+                "DESCRIPTION is not as expected");
+        softAssert.assertAll();
+    }
+
+    @And("user navigate to the {string} third product page")
+    public void userNavigateToTheThirdProductPage(String thirdProduct) {
+        var homePageContent1 = new HomePageContent1(driver);
+        WebElement productLink = null;
+        String productUrl = null;
+        switch (thirdProduct) {
+            case "PRODUCT_1":
+                productLink = homePageContent1.getLinkProductId1();
+                productUrl = TestData.PRODUCT1_URL;
+                break;
+            case "PRODUCT_2":
+                productLink = homePageContent1.getLinkProductId2();
+                productUrl = TestData.PRODUCT2_URL;
+                break;
+            case "PRODUCT_3":
+                productLink = homePageContent1.getLinkProductId3();
+                productUrl = TestData.PRODUCT3_URL;
+                break;
+            case "PRODUCT_4":
+                productLink = homePageContent1.getLinkProductId4();
+                productUrl = PRODUCT4_URL;
+                break;
+            case "PRODUCT_5":
+                productLink = homePageContent1.getLinkProductId5();
+                productUrl = TestData.PRODUCT5_URL;
+                break;
+            case "PRODUCT_6":
+                productLink = homePageContent1.getLinkProductId6();
+                productUrl = TestData.PRODUCT6_URL;
+                break;
+            case "PRODUCT_7":
+                productLink = homePageContent1.getLinkProductId7();
+                productUrl = TestData.PRODUCT7_URL;
+                break;
+            case "PRODUCT_8":
+                productLink = homePageContent1.getLinkProductId8();
+                productUrl = TestData.PRODUCT8_URL;
+                break;
+            case "PRODUCT_9":
+                productLink = homePageContent1.getLinkProductId9();
+                productUrl = TestData.PRODUCT9_URL;
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid productId: " + thirdProduct);
+        }
+        if (productLink != null) {
+            wait = new WebDriverWait(driver, Duration.ofMillis(1000));
+            WebElement clickableElement = wait.until(ExpectedConditions.elementToBeClickable(productLink));
+            clickableElement.click();
+        } else {
+            throw new IllegalArgumentException("Invalid productId: " + thirdProduct);
+        }
+    }
+
+    @And("user see the {string} third product in the cart")
+    public void userSeeTheThirdProductInTheCart(String thirdProduct) {
+        ProductData expectedProductData = productDataMap.get(thirdProduct);         // Get expected data from the Map;
+        productPage = new ProductPage(driver);                                      // New instance of Product page;
+
+        String actualTitle = productPage.getProductTitle().getText();               // Get actual product's TITLE;
+        String actualPrice = productPage.getProductPrice().getText();               // Get actual product's PRICE;
+        String actualDescription = productPage.getProductDescription().getText();   // Get actual product's DESCRIPTION;
+        System.out.println("actualTitle == " + actualTitle);
+        System.out.println("actualPrice == " + actualPrice);
+        System.out.println("actualDescription == " + actualDescription);
+
+        SoftAssert softAssert = new SoftAssert();
+        // Check sections TITLE, PRICE, DESCRIPTION and ADD TO CART button are displaying;
+        softAssert.assertTrue(productPage.isProductTitleDisplayed(), "TITLE section is missing");
+        softAssert.assertTrue(productPage.isProductPriceDisplayed(), "PRICE section is missing");
+        softAssert.assertTrue(productPage.isProductDescriptionDisplayed(), "DESCRIPTION section is missing");
+        softAssert.assertTrue(productPage.isAddToCartButtonDisplayed(), "ADD TO CART button is missing");
+        // Check TITLE and PRI
+        softAssert.assertEquals(actualTitle, expectedProductData.getTitle(), "TITLE is not as expected");
+        softAssert.assertEquals(actualPrice, expectedProductData.getPrice(), "PRICE is not as expected");
+        softAssert.assertEquals(actualDescription, expectedProductData.getDescription(),
+                "DESCRIPTION is not as expected");
+        softAssert.assertAll();
+    }
+
+    @And("the all products should be added to the cart")
     public void theAllProductsShouldBeAddedToTheCart() {
+        driver.get(CART_URL);                                                                       // Get Cart page URL;
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(CartPage.ROW_1_TITLE)));  // Wait Table loaded;
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(CartPage.ROW_2_TITLE)));  // Wait Table loaded;
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(CartPage.ROW_3_TITLE)));  // Wait Table loaded;
+        CartPage cartPage = new CartPage(driver);                                                   // New Cart page;
+
+        boolean is1stProductAdded = cartPage.isFirstProductAdded("Product Title", "$Product Price");
+        Assert.assertTrue(is1stProductAdded, "Product is not added to the cart"); // Check the product been added;
+
+        boolean is2ndProductAdded = cartPage.isSecondProductAdded("Product Title", "$Product Price");
+        Assert.assertTrue(is2ndProductAdded, "Product is not added to the cart"); // Check the product been added;
+
+        boolean is3rdProductAdded = cartPage.isThirdProductAdded("Product Title", "$Product Price");
+        Assert.assertTrue(is3rdProductAdded, "Product is not added to the cart"); // Check the product been added;
     }
 
-    @When("user have all products in the cart")
-    public void userHaveAllProductsInTheCart() {
-    }
-
-    @When("user fill in checkout form")
+    @And("user fill in checkout form")
     public void userFillInCheckoutForm() {
     }
 

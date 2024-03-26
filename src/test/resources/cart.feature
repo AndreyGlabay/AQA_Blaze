@@ -70,28 +70,31 @@ Feature: Cart Functionality
 
      ##############################
 
-  Scenario Outline: user can add multiple products to the cart
-    When user navigate to the "<product1>" product page
-    And user add the "<product1>" to the cart
+  Scenario Outline: the user can add several products to the cart and complete the order
+    When user navigate to the "<firstProduct>" first product page
+    And user see the "<firstProduct>" first product in the cart
+    And user add the product to the cart
+    And alert product added appear
     And user back to the home page
-    And user navigate to the "<product2>" product page
-    And user add the "<product2>" to the cart
+    And user navigate to the "<secondProduct>" second product page
+    And user see the "<secondProduct>" second product in the cart
+    And user add the product to the cart
+    And alert product added appear
     And user back to the home page
-    And user navigate to the "<product3>" product page
-    And user add the "<product3>" to the cart
-    Then the all products should be added to the cart
-
-    Examples:
-      | product1        | product2         | product3         |
-      | phone11111      | laptop222222     | monitor11111     |
-      | laptop11111     | monitor22222     | phone4444444     |
-
-  Scenario: user can  proceed to checkout from the cart
-    When user have all products in the cart
+    And user navigate to the "<thirdProduct>" third product page
+    And user see the "<thirdProduct>" third product in the cart
+    And user add the product to the cart
+    And alert product added appear
+    And the all products should be added to the cart
     And user proceed to checkout
-    Then user should be redirected to the checkout page
-
-  Scenario: user can successfully complete checkout
-    When user fill in checkout form
+    And user should be redirected to the checkout page
+    And user fill in checkout form
     And user submit checkout form
     Then checkout should be completed
+
+    Examples:
+      | firstProduct | secondProduct | thirdProduct |
+      | PRODUCT_1    | PRODUCT_2     | PRODUCT_3    |
+      | PRODUCT_6    | PRODUCT_9     | PRODUCT_7    |
+
+
