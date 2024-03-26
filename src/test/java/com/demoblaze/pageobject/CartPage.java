@@ -50,6 +50,27 @@ public class CartPage {
                 !driver.findElements(By.xpath(ROW_1_PRICE)).isEmpty();  // Check if product PRICE is present in the table.
     }
 
+    public boolean isFirstProductAdded(String productName, String productPrice) {
+        String productTitleXPath = "//*[text()='" + productName + "']"; // XPath for the product TITLE in the cart table;
+        String productPriceXPath = "//*[text()='" + productPrice + "']"; // XPath for the product PRICE in the cart table;
+        return !driver.findElements(By.xpath(ROW_1_TITLE)).isEmpty() && // Check if product TITLE is present in the table &&
+                !driver.findElements(By.xpath(ROW_1_PRICE)).isEmpty();  // Check if product PRICE is present in the table.
+    }
+
+    public boolean isSecondProductAdded(String productName, String productPrice) {
+        String productTitleXPath = "//*[text()='" + productName + "']"; // XPath for the product TITLE in the cart table;
+        String productPriceXPath = "//*[text()='" + productPrice + "']"; // XPath for the product PRICE in the cart table;
+        return !driver.findElements(By.xpath(ROW_1_TITLE)).isEmpty() && // Check if product TITLE is present in the table &&
+                !driver.findElements(By.xpath(ROW_1_PRICE)).isEmpty();  // Check if product PRICE is present in the table.
+    }
+
+    public boolean isThirdProductAdded(String productName, String productPrice) {
+        String productTitleXPath = "//*[text()='" + productName + "']"; // XPath for the product TITLE in the cart table;
+        String productPriceXPath = "//*[text()='" + productPrice + "']"; // XPath for the product PRICE in the cart table;
+        return !driver.findElements(By.xpath(ROW_1_TITLE)).isEmpty() && // Check if product TITLE is present in the table &&
+                !driver.findElements(By.xpath(ROW_1_PRICE)).isEmpty();  // Check if product PRICE is present in the table.
+    }
+
     // METHOD FOR CLICK TOTAL VALUE
     public String getTotalValue() {
         return driver.findElement(By.xpath(TOTAL_VALUE)).getText();
