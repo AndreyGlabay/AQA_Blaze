@@ -22,15 +22,18 @@ Feature: Cart Functionality
       | PRODUCT_4    |
       | PRODUCT_5    |
 
-  Scenario Outline: user can  proceed to checkout from the cart
-    When user have "<product>" in the cart
+  Scenario Outline: user can proceed to checkout from the cart
+    When user navigate to the "<productId>" product page
+    And user see the "<productId>" product details
+    And user add the product to the cart
+    And alert product added appear
     And user proceed to checkout
     Then user should be redirected to the checkout page
 
     Examples:
-      | product        |
-      | xxxxxxx        |
-      | yyyyyyy        |
+      | productId    |
+      | PRODUCT_4    |
+      | PRODUCT_5    |
 
   Scenario: user can discard checkout
     When user in checkout modal

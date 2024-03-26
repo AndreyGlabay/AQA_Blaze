@@ -5,6 +5,7 @@ import com.demoblaze.pageobject.HomePage;
 import com.demoblaze.pageobject.HomePageContent1;
 import com.demoblaze.pageobject.HomePageLoggedIn;
 import com.demoblaze.pageobject.NavBarLoggedUser;
+import com.demoblaze.pageobject.PlaceOrderModal;
 import com.demoblaze.pageobject.ProductPage;
 import com.demoblaze.testdata.ProductData;
 import com.demoblaze.testdata.TestData;
@@ -183,16 +184,18 @@ public class CartStepDefinitions {
         Assert.assertTrue(isProductAdded, "Product is not added to the cart"); // Check the product been added;
     }
 
-    @When("user have {string} in the cart")
-    public void userHaveInTheCart(String arg0) {
-    }
-
     @And("user proceed to checkout")
     public void userProceedToCheckout() {
+        driver.get(CART_URL);                                                                       // Get Cart page URL;
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(CartPage.ROW_1_TITLE)));  // Wait Table loaded;
+        CartPage cartPage = new CartPage(driver);                                                   // New Cart page;
+        cartPage.placeOrder();                                                               // Method for click button.
     }
 
     @Then("user should be redirected to the checkout page")
     public void userShouldBeRedirectedToTheCheckoutPage() {
+        boolean isModalDisplayed = PlaceOrderModal.isModalDisplayed(driver);            // Method for modal appearance;
+        Assert.assertTrue(isModalDisplayed, "Place order modal is missing");    // Modal appearance assertion.
     }
 
     @When("user in checkout modal")
