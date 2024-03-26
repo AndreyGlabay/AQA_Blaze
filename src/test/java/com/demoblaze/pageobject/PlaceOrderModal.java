@@ -2,6 +2,7 @@ package com.demoblaze.pageobject;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -20,8 +21,13 @@ public class PlaceOrderModal {
     public static final String PLACE_ORDER_YEAR_INPUT = "//*[@id=\"year\"]";
     public static final String PLACE_ORDER_CLOSE_BUTTON = "//*[@id=\"orderModal\"]/div/div/div[3]/button[1]";
     public static final String PLACE_ORDER_PURCHASE_BUTTON = "//*[@id=\"orderModal\"]/div/div/div[3]/button[2]";
+    private final WebDriver driver;
 
-    // METHOD FOR CHECK - PLACE ORDER MODAL APPEARS
+    public PlaceOrderModal(WebDriver driver) {
+        this.driver = driver;
+    }
+
+    // METHOD FOR CHECK THAT PLACE ORDER MODAL APPEARS
     public static boolean isModalDisplayed(WebDriver driver) {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(1000));                    // Wait 1 sec max;
         try {
@@ -30,5 +36,12 @@ public class PlaceOrderModal {
         } catch (Exception e) {
             return false;                                                                           // Modal not appears;
         }
+    }
+
+    // METHOD FOR DISCARD PLACE ORDER MODAL BY X BUTTON
+    public void discardPlaceOrderByCrossButton() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(5000));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(PLACE_ORDER_X_BUTTON)));
+        driver.findElement(By.xpath(PLACE_ORDER_X_BUTTON)).click();
     }
 }
