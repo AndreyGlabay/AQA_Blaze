@@ -9,15 +9,18 @@ Feature: Cart Functionality
 
   Background: user on the home page
     Given user on the home page
+    Then product properties loaded
 
   Scenario Outline: user can add a product to the cart
-    When user navigate to the "<product>" product page
-    And user add the "<product>" to the cart
-    Then the "<product>" been added to the cart
+    When user navigate to the "<productId>" product page
+    And user see the "<productId>" product details
+    And user add the product to the cart
+    Then alert product added appear
+    And the "<productId>" product been added to the cart
 
     Examples:
-      | product        |
-      | xxxxxxx        |
+      | productId |
+      | idp_4    |
 
   Scenario Outline: user can  proceed to checkout from the cart
     When user have "<product>" in the cart
@@ -68,4 +71,4 @@ Feature: Cart Functionality
   Scenario: user can successfully complete checkout
     When user fill in checkout form
     And user submit checkout form
-    Then chekout should be completed
+    Then checkout should be completed
