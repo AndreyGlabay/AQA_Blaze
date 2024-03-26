@@ -2,6 +2,10 @@ package com.demoblaze.pageobject;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class CartPage {
     public static final String TABLE_TITLE = "//*[@id=\"page-wrapper\"]/div/div[1]/h2";
@@ -52,6 +56,8 @@ public class CartPage {
     }
 
     public void placeOrder() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(5000));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(PLACE_ORDER_BUTTON)));
         driver.findElement(By.xpath(PLACE_ORDER_BUTTON)).click();
     }
 
