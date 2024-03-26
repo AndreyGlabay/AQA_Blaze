@@ -35,10 +35,22 @@ Feature: Cart Functionality
       | PRODUCT_4    |
       | PRODUCT_5    |
 
-  Scenario: user can discard checkout
-    When user in checkout modal
+  Scenario Outline: user can discard checkout
+    When user navigate to the "<productId>" product page
+    And user see the "<productId>" product details
+    And user add the product to the cart
+    And alert product added appear
+    And user proceed to checkout
     And user discard checkout
     Then user should be redirected to the cart page
+    And the "<productId>" product been added to the cart
+
+    Examples:
+      | productId    |
+      | PRODUCT_4    |
+      | PRODUCT_5    |
+
+    ##############################
 
   Scenario Outline: user can remove a product from the cart
     When user have "<product>" in the cart

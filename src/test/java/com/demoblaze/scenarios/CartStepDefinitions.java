@@ -198,16 +198,17 @@ public class CartStepDefinitions {
         Assert.assertTrue(isModalDisplayed, "Place order modal is missing");    // Modal appearance assertion.
     }
 
-    @When("user in checkout modal")
-    public void userInCheckoutModal() {
-    }
-
     @And("user discard checkout")
     public void userDiscardCheckout() {
+        PlaceOrderModal placeOrderModal = new PlaceOrderModal(driver);                                                   // New Cart page;
+        placeOrderModal.discardPlaceOrderByCrossButton();
     }
 
     @Then("user should be redirected to the cart page")
     public void userShouldBeRedirectedToTheCartPage() {
+        String currentUrl = driver.getCurrentUrl();
+        Assert.assertEquals(currentUrl, CART_URL, "User is not redirected to the cart page.");
+        System.out.println("User is redirected to the cart page successfully.");
     }
 
     @And("user remove the {string} from the cart")
