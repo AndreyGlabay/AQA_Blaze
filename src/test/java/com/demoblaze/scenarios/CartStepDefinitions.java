@@ -9,6 +9,7 @@ import com.demoblaze.pageobject.ProductPage;
 import com.demoblaze.testdata.ProductData;
 import com.demoblaze.testdata.TestData;
 import com.demoblaze.utilities.ProductPropertiesReader;
+import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -54,6 +55,12 @@ public class CartStepDefinitions {
     @Before
     public void setUp() throws IOException {
         productDataMap = ProductPropertiesReader.readProductProperties();
+    }
+
+    @After
+    public void scenarioFinish() throws InterruptedException {
+        Thread.sleep(1000);
+        driver.quit();
     }
 
     // BACKGROUND
@@ -174,9 +181,6 @@ public class CartStepDefinitions {
 
         boolean isProductAdded = cartPage.isProductAddedToCart("Product Title", "$Product Price");
         Assert.assertTrue(isProductAdded, "Product is not added to the cart"); // Check the product been added;
-
-        Thread.sleep(1000);
-        driver.quit();
     }
 
     @When("user have {string} in the cart")
