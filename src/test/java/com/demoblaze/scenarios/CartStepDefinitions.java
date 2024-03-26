@@ -9,6 +9,7 @@ import com.demoblaze.pageobject.ProductPage;
 import com.demoblaze.testdata.ProductData;
 import com.demoblaze.testdata.TestData;
 import com.demoblaze.utilities.ProductPropertiesReader;
+import io.cucumber.java.Before;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
@@ -44,23 +45,23 @@ import static com.demoblaze.testdata.TestData.PASSWORD;
 import static com.demoblaze.testdata.TestData.PRODUCT4_URL;
 
 public class CartStepDefinitions {
+    private static CartStepDefinitions instance;
     WebDriver driver;
     WebDriverWait wait;
-
     private ProductPage productPage;
     private Map<String, ProductData> productDataMap;
 
-    // BACKGROUND
-    @Given("user on the home page")
-    public void userOnTheHomePage() throws MalformedURLException {
-        ChromeOptions options = new ChromeOptions();                // New instance for GC browser;
-        driver = new RemoteWebDriver(new URL(GRID_URL), options);   // Driver initialization on SeleniumGrid using GC;
-        driver.get(BASE_URL);                                       // Open web page by URL;
+    @Before
+    public void setUp() throws IOException {
+        productDataMap = ProductPropertiesReader.readProductProperties();
     }
 
-    @Then("product properties loaded")
-    public void productPropertiesLoaded() throws IOException {
-        productDataMap = ProductPropertiesReader.readProductProperties();
+    // BACKGROUND
+    @Given("user on the home page")
+    public void userOnTheHomePage() throws IOException {
+        ChromeOptions options = new ChromeOptions();                // New instance for GC browser;
+        driver = new RemoteWebDriver(new URL(GRID_URL), options);   // Driver initialization on SeleniumGrid using GC;
+        driver.get(BASE_URL);                                       // Open web page by URL;productDataMap = ProductPropertiesReader.readProductProperties();
     }
 
     // SCENARIOS
@@ -70,39 +71,39 @@ public class CartStepDefinitions {
         WebElement productLink = null;
         String productUrl = null;
         switch (productId) {
-            case "idp_1":
+            case "PRODUCT_1":
                 productLink = homePageContent1.getLinkProductId1();
                 productUrl = TestData.PRODUCT1_URL;
                 break;
-            case "idp_2":
+            case "PRODUCT_2":
                 productLink = homePageContent1.getLinkProductId2();
                 productUrl = TestData.PRODUCT2_URL;
                 break;
-            case "idp_3":
+            case "PRODUCT_3":
                 productLink = homePageContent1.getLinkProductId3();
                 productUrl = TestData.PRODUCT3_URL;
                 break;
-            case "idp_4":
+            case "PRODUCT_4":
                 productLink = homePageContent1.getLinkProductId4();
                 productUrl = PRODUCT4_URL;
                 break;
-            case "idp_5":
+            case "PRODUCT_5":
                 productLink = homePageContent1.getLinkProductId5();
                 productUrl = TestData.PRODUCT5_URL;
                 break;
-            case "idp_6":
+            case "PRODUCT_6":
                 productLink = homePageContent1.getLinkProductId6();
                 productUrl = TestData.PRODUCT6_URL;
                 break;
-            case "idp_7":
+            case "PRODUCT_7":
                 productLink = homePageContent1.getLinkProductId7();
                 productUrl = TestData.PRODUCT7_URL;
                 break;
-            case "idp_8":
+            case "PRODUCT_8":
                 productLink = homePageContent1.getLinkProductId8();
                 productUrl = TestData.PRODUCT8_URL;
                 break;
-            case "idp_9":
+            case "PRODUCT_9":
                 productLink = homePageContent1.getLinkProductId9();
                 productUrl = TestData.PRODUCT9_URL;
                 break;
@@ -113,25 +114,22 @@ public class CartStepDefinitions {
             wait = new WebDriverWait(driver, Duration.ofMillis(1000));
             WebElement clickableElement = wait.until(ExpectedConditions.elementToBeClickable(productLink));
             clickableElement.click();
-            wait.until(ExpectedConditions.urlContains(productUrl)); // Wait until redirected URL appear;
-            System.out.println("CHECKPOINT");
         } else {
-            throw new IllegalArgumentException("Invalid productId: " + productId); // Handle invalid productId
+            throw new IllegalArgumentException("Invalid productId: " + productId);
         }
     }
 
     @And("user see the {string} product details")
     public void userSeeTheProductDetails(String productId) {
-        ProductData expectedProductData = productDataMap.get(productId);
-        productPage = new ProductPage(driver);
+        ProductData expectedProductData = productDataMap.get(productId);            // Get expected data from the Map;
+        productPage = new ProductPage(driver);                                      // New instance of Product page;
 
-        System.out.println("Before retrieving actual product details");
-
-        String actualTitle = productPage.getProductTitle().getText();
-        String actualPrice = productPage.getProductPrice().getText();
-        String actualDescription = productPage.getProductDescription().getText();
-
-        System.out.println("After retrieving actual product details");
+        String actualTitle = productPage.getProductTitle().getText();               // Get actual product's TITLE;
+        String actualPrice = productPage.getProductPrice().getText();               // Get actual product's PRICE;
+        String actualDescription = productPage.getProductDescription().getText();   // Get actual product's DESCRIPTION;
+        System.out.println("actualTitle == " + actualTitle);
+        System.out.println("actualPrice == " + actualPrice);
+        System.out.println("actualDescription == " + actualDescription);
 
         SoftAssert softAssert = new SoftAssert();
         // Check sections TITLE, PRICE, DESCRIPTION and ADD TO CART button are displaying;
@@ -144,9 +142,6 @@ public class CartStepDefinitions {
         softAssert.assertEquals(actualPrice, expectedProductData.getPrice(), "PRICE is not as expected");
         softAssert.assertEquals(actualDescription, expectedProductData.getDescription(),
                 "DESCRIPTION is not as expected");
-
-        System.out.println("After performing soft assertions");
-
         softAssert.assertAll();
     }
 
@@ -173,19 +168,12 @@ public class CartStepDefinitions {
 
     @And("the {string} product been added to the cart")
     public void theProductBeenAddedToTheCart(String productId) throws InterruptedException {
-        driver.get(CART_URL);
-        wait = new WebDriverWait(driver, Duration.ofMillis(2000));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(CartPage.ROW_1_TITLE)));
-        CartPage cartPage = new CartPage(driver);
+        driver.get(CART_URL);                                                                       // Get Cart page URL;
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(CartPage.ROW_1_TITLE)));  // Wait Table loaded;
+        CartPage cartPage = new CartPage(driver);                                                   // New Cart page;
 
-        // Verify that the product has been added to the cart
         boolean isProductAdded = cartPage.isProductAddedToCart("Product Title", "$Product Price");
-        Assert.assertTrue(isProductAdded, "Product is not added to the cart");
-
-        // Perform further actions as needed, such as getting the total value or placing the order
-        String totalValue = cartPage.getTotalValue();
-        System.out.println("Total value in cart: " + totalValue);
-        cartPage.placeOrder();
+        Assert.assertTrue(isProductAdded, "Product is not added to the cart"); // Check the product been added;
 
         Thread.sleep(1000);
         driver.quit();

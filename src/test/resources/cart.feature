@@ -9,7 +9,6 @@ Feature: Cart Functionality
 
   Background: user on the home page
     Given user on the home page
-    Then product properties loaded
 
   Scenario Outline: user can add a product to the cart
     When user navigate to the "<productId>" product page
@@ -19,8 +18,9 @@ Feature: Cart Functionality
     And the "<productId>" product been added to the cart
 
     Examples:
-      | productId |
-      | idp_4    |
+      | productId    |
+      | PRODUCT_4    |
+      | PRODUCT_5    |
 
   Scenario Outline: user can  proceed to checkout from the cart
     When user have "<product>" in the cart
