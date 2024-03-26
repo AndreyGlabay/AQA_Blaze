@@ -39,6 +39,36 @@ public class HomePageContent1 {
         PageFactory.initElements(driver, this);
     }
 
+    // Accessors
+    public WebElement getLinkProductId1() {
+        return linkProductId1;
+    }
+    public WebElement getLinkProductId2() {
+        return linkProductId2;
+    }
+    public WebElement getLinkProductId3() {
+        return linkProductId3;
+    }
+    public WebElement getLinkProductId4() {
+        return linkProductId4;
+    }
+    public WebElement getLinkProductId5() {
+        return linkProductId5;
+    }
+    public WebElement getLinkProductId6() {
+        return linkProductId6;
+    }
+    public WebElement getLinkProductId7() {
+        return linkProductId7;
+    }
+    public WebElement getLinkProductId8() {
+        return linkProductId8;
+    }
+    public WebElement getLinkProductId9() {
+        return linkProductId9;
+    }
+
+
     // Methods to check if links are displayed
     public boolean isLinkProductId1displayed() {
         return linkProductId1.isDisplayed();
