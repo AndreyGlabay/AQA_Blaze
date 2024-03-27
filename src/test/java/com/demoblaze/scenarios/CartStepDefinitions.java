@@ -51,11 +51,11 @@ public class CartStepDefinitions {
         productDataMap = ProductPropertiesReader.readProductProperties();
     }
 
-    @After
-    public void scenarioFinish() throws InterruptedException {
-        Thread.sleep(1000);
-        driver.quit();
-    }
+//    @After
+//    public void scenarioFinish() throws InterruptedException {
+//        Thread.sleep(1000);
+//        driver.quit();
+//    }
 
     // BACKGROUND
     @Given("user on the home page")
