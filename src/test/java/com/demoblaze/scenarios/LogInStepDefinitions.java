@@ -4,6 +4,7 @@ import com.demoblaze.pageobject.HomePage;
 import com.demoblaze.pageobject.HomePageLoggedIn;
 import com.demoblaze.pageobject.NavBarLoggedUser;
 import com.demoblaze.testdata.TestData;
+import io.cucumber.java.After;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
@@ -49,6 +50,7 @@ public class LogInStepDefinitions {
     WebDriverWait wait;
     WebElement logInModal;
 
+    // BACKGROUND
     @Given("registered user on the home page")
     public void registeredUserOnTheHomePage() throws MalformedURLException {
         ChromeOptions options = new ChromeOptions();                // New instance for GC browser;
@@ -56,6 +58,7 @@ public class LogInStepDefinitions {
         driver.get(BASE_URL);                                        // Open web page by URL;
     }
 
+    // SCENARIOS
     @When("registered user click nav bar login button")
     public void registeredUserClickNavBarLoginButton() {
         HomePage homePage = new HomePage(driver);                           // Create an instance of Home page;
@@ -111,6 +114,7 @@ public class LogInStepDefinitions {
         softAssert.assertTrue(homePageLoggedIn.isCategoryMenuLaptopsDisplayed(), "Category Laptops is missing");
         softAssert.assertTrue(homePageLoggedIn.isCategoryMenuMonitorsDisplayed(), "Category Monitors is missing");
         softAssert.assertAll();
+
         Thread.sleep(1000);
         driver.quit();
     }
@@ -121,6 +125,7 @@ public class LogInStepDefinitions {
         WebElement welcomeButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(WELCOME_BUTTON_LOCATOR)));
         String actualText = welcomeButton.getText();
         Assert.assertEquals(actualText, "Welcome " + USERNAME, "Welcome Button has wrong username");
+
         Thread.sleep(1000);
         driver.quit();
     }
@@ -131,6 +136,7 @@ public class LogInStepDefinitions {
         WebElement welcomeButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(WELCOME_BUTTON_LOCATOR)));
         String actualText = welcomeButton.getText();
         Assert.assertEquals(actualText, "Welcome " + myUsername, "Welcome Button has wrong username");
+
         driver.quit();
     }
 
@@ -141,6 +147,7 @@ public class LogInStepDefinitions {
         WebElement titleLogIn = logInModal.findElement(By.xpath(LOGIN_TITLE_LOCATOR));       // Get the modal's title;
         Assert.assertEquals(titleLogIn.getText(), "Log in",
                 "Expect title \"Log in\" but get " + titleLogIn.getText());
+
         Thread.sleep(1000);
         driver.quit();
     }
@@ -178,6 +185,7 @@ public class LogInStepDefinitions {
         softAssert.assertTrue(homePageAfterLogout.isNavButtonLogInDisplayed(), "Nav Button Log In is missing");
         softAssert.assertTrue(homePageAfterLogout.isNavButtonSignUpDisplayed(), "Nav Button Sign Up is missing");
         softAssert.assertAll();
+
         Thread.sleep(500);
         driver.quit();
     }
