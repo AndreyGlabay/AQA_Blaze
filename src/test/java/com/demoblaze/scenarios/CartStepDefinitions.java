@@ -1,10 +1,8 @@
 package com.demoblaze.scenarios;
 
 import com.demoblaze.pageobject.CartPage;
-import com.demoblaze.pageobject.HomePage;
 import com.demoblaze.pageobject.HomePageContent1;
-import com.demoblaze.pageobject.HomePageLoggedIn;
-import com.demoblaze.pageobject.NavBarLoggedUser;
+import com.demoblaze.pageobject.OrderCompleteModal;
 import com.demoblaze.pageobject.PlaceOrderModal;
 import com.demoblaze.pageobject.ProductPage;
 import com.demoblaze.testdata.PlaceOrderFormData;
@@ -20,12 +18,10 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -33,20 +29,14 @@ import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
 import java.util.Map;
 import java.util.Properties;
 
-import static com.demoblaze.pageobject.LogInModal.LOGIN_BUTTON_LOCATOR;
-import static com.demoblaze.pageobject.ProductPage.ADD_TO_CART_BUTTON;
-import static com.demoblaze.pageobject.SignUpModal.SIGNUP_MODAL_LOCATOR;
-import static com.demoblaze.pageobject.SignUpModal.SIGNUP_USERNAME_LOCATOR;
 import static com.demoblaze.testdata.TestData.BASE_URL;
 import static com.demoblaze.testdata.TestData.CART_URL;
 import static com.demoblaze.testdata.TestData.GRID_URL;
-import static com.demoblaze.testdata.TestData.PASSWORD;
 import static com.demoblaze.testdata.TestData.PRODUCT4_URL;
 
 public class CartStepDefinitions {
@@ -235,12 +225,6 @@ public class CartStepDefinitions {
         boolean isProductRemoved = !driver.findElements(By.xpath(CartPage.ROW_1_DELETE)).isEmpty(); // there is no element;
         Assert.assertFalse(isProductRemoved, "Product is still in the cart"); // Check the product been deleted;
     }
-
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
 
     @When("user navigate to the {string} first product page")
     public void userNavigateToTheFirstProductPage(String firstProduct) {
@@ -553,8 +537,19 @@ public class CartStepDefinitions {
 
     @Then("checkout should be completed")
     public void checkoutShouldBeCompleted() {
+        OrderCompleteModal orderCompleteModal = new OrderCompleteModal(driver); // Instance of the Order Complete Modal;
+
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertTrue(orderCompleteModal.isOrderCompleteModalDisplayed(), "Order Complete modal missing");
+        softAssert.assertTrue(orderCompleteModal.isOrderCompleteSignDisplayed(), "Order Complete sign missing");
+        softAssert.assertEquals(orderCompleteModal.getOrderCompleteThanksText(), "Thank you for your purchase!");
+        softAssert.assertAll();
+
+        System.out.println("ORDER COMPLETE MODAL MESSAGE: ");
+        System.out.println(orderCompleteModal.getOrderCompleteThanksText());
+        System.out.println(orderCompleteModal.getOrderCompleteDataText());
+        System.out.println();
+
+        orderCompleteModal.submitOrderCompleteByOkButton();                 // Click the OK button to close the modal;
     }
-
-
-
 }

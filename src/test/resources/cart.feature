@@ -67,9 +67,6 @@ Feature: Cart Functionality
       | PRODUCT_4    |
       | PRODUCT_5    |
 
-
-     ##############################
-
   Scenario Outline: the user can add several products to the cart and complete the order
     When user navigate to the "<firstProduct>" first product page
     And user see the "<firstProduct>" first product in the cart
@@ -96,5 +93,3 @@ Feature: Cart Functionality
       | firstProduct | secondProduct | thirdProduct |
       | PRODUCT_1    | PRODUCT_2     | PRODUCT_3    |
       | PRODUCT_5    | PRODUCT_4     | PRODUCT_7    |
-
-
