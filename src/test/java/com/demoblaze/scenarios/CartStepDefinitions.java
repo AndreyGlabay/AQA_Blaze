@@ -7,8 +7,10 @@ import com.demoblaze.pageobject.HomePageLoggedIn;
 import com.demoblaze.pageobject.NavBarLoggedUser;
 import com.demoblaze.pageobject.PlaceOrderModal;
 import com.demoblaze.pageobject.ProductPage;
+import com.demoblaze.testdata.PlaceOrderFormData;
 import com.demoblaze.testdata.ProductData;
 import com.demoblaze.testdata.TestData;
+import com.demoblaze.utilities.PlaceOrderPropertiesReader;
 import com.demoblaze.utilities.ProductPropertiesReader;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -35,6 +37,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
 import java.util.Map;
+import java.util.Properties;
 
 import static com.demoblaze.pageobject.LogInModal.LOGIN_BUTTON_LOCATOR;
 import static com.demoblaze.pageobject.ProductPage.ADD_TO_CART_BUTTON;
@@ -499,6 +502,22 @@ public class CartStepDefinitions {
 
     @And("user fill in checkout form")
     public void userFillInCheckoutForm() {
+        try {
+            Properties properties = PlaceOrderPropertiesReader
+                    .readPropertiesFile("src/test/resources/placeorder.properties"); // Read properties from file;
+            PlaceOrderFormData formData1 = new PlaceOrderFormData(              // Create Place Order Form Data instance;
+                    properties.getProperty("NAME_1"),                           // Get property for the Name;
+                    properties.getProperty("COUNTRY_1"),                        // Get property for the Country;
+                    properties.getProperty("CITY_1"),                           // Get property for the City;
+                    properties.getProperty("CARD_1"),                           // Get property for the Credit Card;
+                    properties.getProperty("MONTH_1"),                          // Get property for the Month;
+                    properties.getProperty("YEAR_1")                            // Get property for the Year;
+            );
+            PlaceOrderModal placeOrderModal = new PlaceOrderModal(driver); // New instance of the Place Order modal form;
+            placeOrderModal.fillPlaceOrderForm(formData1); // Filling the form using method from Place Order modal;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @And("user submit checkout form")

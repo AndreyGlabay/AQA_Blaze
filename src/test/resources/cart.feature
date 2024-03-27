@@ -95,6 +95,6 @@ Feature: Cart Functionality
     Examples:
       | firstProduct | secondProduct | thirdProduct |
       | PRODUCT_1    | PRODUCT_2     | PRODUCT_3    |
-      | PRODUCT_6    | PRODUCT_9     | PRODUCT_7    |
+      | PRODUCT_5    | PRODUCT_4     | PRODUCT_7    |
 
 
