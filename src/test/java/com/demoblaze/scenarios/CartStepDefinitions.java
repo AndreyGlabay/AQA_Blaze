@@ -138,9 +138,12 @@ public class CartStepDefinitions {
         String actualTitle = productPage.getProductTitle().getText();               // Get actual product's TITLE;
         String actualPrice = productPage.getProductPrice().getText();               // Get actual product's PRICE;
         String actualDescription = productPage.getProductDescription().getText();   // Get actual product's DESCRIPTION;
-        System.out.println("actualTitle == " + actualTitle);
-        System.out.println("actualPrice == " + actualPrice);
-        System.out.println("actualDescription == " + actualDescription);
+
+        System.out.println("PRODUCT IN THE CART: ");
+        System.out.println("- Title: " + actualTitle);
+        System.out.println("- Price: " + actualPrice);
+        System.out.println("- Description: " + actualDescription);
+        System.out.println();
 
         SoftAssert softAssert = new SoftAssert();
         // Check sections TITLE, PRICE, DESCRIPTION and ADD TO CART button are displaying;
@@ -169,6 +172,7 @@ public class CartStepDefinitions {
             Alert alert = driver.switchTo().alert();            // Move driver focus to the Browser Alert;
             String alertText = alert.getText();                 // Get text from a Browser Alert and put it to the var;
             System.out.println("ALERT TEXT: " + alertText);     // Print out alert's content text;
+            System.out.println();
             Assert.assertTrue(alertText.contains("Product added"),
                     "\"Product added\" alert is missing");
             alert.accept();                                     // Accept the alert (click [OK] button);
@@ -211,7 +215,9 @@ public class CartStepDefinitions {
     public void userShouldBeRedirectedToTheCartPage() {
         String currentUrl = driver.getCurrentUrl();
         Assert.assertEquals(currentUrl, CART_URL, "User is not redirected to the cart page.");
+
         System.out.println("User is redirected to the cart page successfully.");
+        System.out.println();
     }
 
     @And("user remove the {string} product from the cart")
@@ -298,9 +304,12 @@ public class CartStepDefinitions {
         String actualTitle = productPage.getProductTitle().getText();               // Get actual product's TITLE;
         String actualPrice = productPage.getProductPrice().getText();               // Get actual product's PRICE;
         String actualDescription = productPage.getProductDescription().getText();   // Get actual product's DESCRIPTION;
-        System.out.println("actualTitle == " + actualTitle);
-        System.out.println("actualPrice == " + actualPrice);
-        System.out.println("actualDescription == " + actualDescription);
+
+        System.out.println("PRODUCT IN THE CART: ");
+        System.out.println("- Title: " + actualTitle);
+        System.out.println("- Price: " + actualPrice);
+        System.out.println("- Description: " + actualDescription);
+        System.out.println();
 
         SoftAssert softAssert = new SoftAssert();
         // Check sections TITLE, PRICE, DESCRIPTION and ADD TO CART button are displaying;
@@ -384,9 +393,12 @@ public class CartStepDefinitions {
         String actualTitle = productPage.getProductTitle().getText();               // Get actual product's TITLE;
         String actualPrice = productPage.getProductPrice().getText();               // Get actual product's PRICE;
         String actualDescription = productPage.getProductDescription().getText();   // Get actual product's DESCRIPTION;
-        System.out.println("actualTitle == " + actualTitle);
-        System.out.println("actualPrice == " + actualPrice);
-        System.out.println("actualDescription == " + actualDescription);
+
+        System.out.println("PRODUCT IN THE CART: ");
+        System.out.println("- Title: " + actualTitle);
+        System.out.println("- Price: " + actualPrice);
+        System.out.println("- Description: " + actualDescription);
+        System.out.println();
 
         SoftAssert softAssert = new SoftAssert();
         // Check sections TITLE, PRICE, DESCRIPTION and ADD TO CART button are displaying;
@@ -464,9 +476,12 @@ public class CartStepDefinitions {
         String actualTitle = productPage.getProductTitle().getText();               // Get actual product's TITLE;
         String actualPrice = productPage.getProductPrice().getText();               // Get actual product's PRICE;
         String actualDescription = productPage.getProductDescription().getText();   // Get actual product's DESCRIPTION;
-        System.out.println("actualTitle == " + actualTitle);
-        System.out.println("actualPrice == " + actualPrice);
-        System.out.println("actualDescription == " + actualDescription);
+
+        System.out.println("PRODUCT IN THE CART: ");
+        System.out.println("- Title: " + actualTitle);
+        System.out.println("- Price: " + actualPrice);
+        System.out.println("- Description: " + actualDescription);
+        System.out.println();
 
         SoftAssert softAssert = new SoftAssert();
         // Check sections TITLE, PRICE, DESCRIPTION and ADD TO CART button are displaying;
@@ -515,6 +530,16 @@ public class CartStepDefinitions {
             );
             PlaceOrderModal placeOrderModal = new PlaceOrderModal(driver); // New instance of the Place Order modal form;
             placeOrderModal.fillPlaceOrderForm(formData1); // Filling the form using method from Place Order modal;
+
+            System.out.println("PLACE ORDER FORM HAS BEEN FILLED WITH DATA:");
+            System.out.println("- Name: " + formData1.getName());
+            System.out.println("- Country: " + formData1.getCountry());
+            System.out.println("- City: " + formData1.getCity());
+            System.out.println("- Card: " + formData1.getCard());
+            System.out.println("- Month: " + formData1.getMonth());
+            System.out.println("- Year: " + formData1.getYear());
+            System.out.println();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -522,6 +547,8 @@ public class CartStepDefinitions {
 
     @And("user submit checkout form")
     public void userSubmitCheckoutForm() {
+        PlaceOrderModal placeOrderModal = new PlaceOrderModal(driver);
+        placeOrderModal.submitPlaceOrderByPurchaseButton();
     }
 
     @Then("checkout should be completed")
