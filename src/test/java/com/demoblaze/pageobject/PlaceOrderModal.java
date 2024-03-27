@@ -1,5 +1,6 @@
 package com.demoblaze.pageobject;
 
+import com.demoblaze.testdata.PlaceOrderFormData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -43,5 +44,18 @@ public class PlaceOrderModal {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(5000));
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(PLACE_ORDER_X_BUTTON)));
         driver.findElement(By.xpath(PLACE_ORDER_X_BUTTON)).click();
+    }
+
+    // METHOD FOR FILLING THE PLACE ORDER FORM
+    public void fillPlaceOrderForm(PlaceOrderFormData formData) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(5000));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(PLACE_ORDER_NAME_INPUT)));
+
+        driver.findElement(By.xpath(PLACE_ORDER_NAME_INPUT)).sendKeys(formData.getName());
+        driver.findElement(By.xpath(PLACE_ORDER_COUNTRY_INPUT)).sendKeys(formData.getCountry());
+        driver.findElement(By.xpath(PLACE_ORDER_CITY_INPUT)).sendKeys(formData.getCity());
+        driver.findElement(By.xpath(PLACE_ORDER_CREDIT_CARD_INPUT)).sendKeys(formData.getCard());
+        driver.findElement(By.xpath(PLACE_ORDER_MONTH_INPUT)).sendKeys(formData.getMonth());
+        driver.findElement(By.xpath(PLACE_ORDER_YEAR_INPUT)).sendKeys(formData.getYear());
     }
 }
