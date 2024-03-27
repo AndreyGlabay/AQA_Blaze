@@ -58,4 +58,11 @@ public class PlaceOrderModal {
         driver.findElement(By.xpath(PLACE_ORDER_MONTH_INPUT)).sendKeys(formData.getMonth());
         driver.findElement(By.xpath(PLACE_ORDER_YEAR_INPUT)).sendKeys(formData.getYear());
     }
+
+    // METHOD FOR SUBMIT PLACE ORDER MODAL BY PURCHASE BUTTON
+    public void submitPlaceOrderByPurchaseButton() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofMillis(1000));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(PLACE_ORDER_PURCHASE_BUTTON)));
+        driver.findElement(By.xpath(PLACE_ORDER_PURCHASE_BUTTON)).click();
+    }
 }
