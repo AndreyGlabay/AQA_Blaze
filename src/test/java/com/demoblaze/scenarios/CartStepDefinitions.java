@@ -33,6 +33,8 @@ import java.net.URL;
 import java.time.Duration;
 import java.util.Map;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static com.demoblaze.testdata.TestData.BASE_URL;
 import static com.demoblaze.testdata.TestData.CART_URL;
@@ -40,15 +42,16 @@ import static com.demoblaze.testdata.TestData.GRID_URL;
 import static com.demoblaze.testdata.TestData.PRODUCT4_URL;
 
 public class CartStepDefinitions {
-    private static CartStepDefinitions instance;
     WebDriver driver;
     WebDriverWait wait;
     private ProductPage productPage;
     private Map<String, ProductData> productDataMap;
+    private static final Logger logger = Logger.getLogger(SignUpStepDefinitions.class.getName());//Logger initialization;
+    private static final String FILE_NAME = "product.properties";
 
     @Before
     public void setUp() throws IOException {
-        productDataMap = ProductPropertiesReader.readProductProperties();
+        productDataMap = ProductPropertiesReader.readProductProperties(); // Map reads product properties from file;
     }
 
 //    @After
@@ -68,6 +71,14 @@ public class CartStepDefinitions {
     // SCENARIOS
     @When("user navigate to the {string} product page")
     public void userNavigateToTheProductPage(String productId) {
+
+        String configFilename = System.getenv("CONFIG_FILENAME");
+        System.out.println("CONFIG_FILENAME: " + configFilename);
+
+        System.setProperty("java.util.logging.config.file", System.getenv("CONFIG_FILENAME")); // Set log property.
+        logger.setLevel(Level.CONFIG); // Set logger level before BEGIN and END markers;
+        logger.log(Level.CONFIG, "Going to read data from file \"" + FILE_NAME + "\""); // BEGIN logging marker;
+
         var homePageContent1 = new HomePageContent1(driver);
         WebElement productLink = null;
         String productUrl = null;
@@ -75,38 +86,47 @@ public class CartStepDefinitions {
             case "PRODUCT_1":
                 productLink = homePageContent1.getLinkProductId1();
                 productUrl = TestData.PRODUCT1_URL;
+                logger.log(Level.INFO, "Product " + productId + " URL: " + productUrl);
                 break;
             case "PRODUCT_2":
                 productLink = homePageContent1.getLinkProductId2();
                 productUrl = TestData.PRODUCT2_URL;
+                logger.log(Level.INFO, "Product " + productId + " URL: " + productUrl);
                 break;
             case "PRODUCT_3":
                 productLink = homePageContent1.getLinkProductId3();
                 productUrl = TestData.PRODUCT3_URL;
+                logger.log(Level.INFO, "Product " + productId + " URL: " + productUrl);
                 break;
             case "PRODUCT_4":
                 productLink = homePageContent1.getLinkProductId4();
                 productUrl = PRODUCT4_URL;
+                logger.log(Level.INFO, "Product " + productId + " URL: " + productUrl);
                 break;
             case "PRODUCT_5":
                 productLink = homePageContent1.getLinkProductId5();
                 productUrl = TestData.PRODUCT5_URL;
+                logger.log(Level.INFO, "Product " + productId + " URL: " + productUrl);
                 break;
             case "PRODUCT_6":
                 productLink = homePageContent1.getLinkProductId6();
                 productUrl = TestData.PRODUCT6_URL;
+                logger.log(Level.INFO, "Product " + productId + " URL: " + productUrl);
                 break;
             case "PRODUCT_7":
                 productLink = homePageContent1.getLinkProductId7();
                 productUrl = TestData.PRODUCT7_URL;
+                logger.log(Level.INFO, "Product " + productId + " URL: " + productUrl);
                 break;
             case "PRODUCT_8":
                 productLink = homePageContent1.getLinkProductId8();
                 productUrl = TestData.PRODUCT8_URL;
+                logger.log(Level.INFO, "Product " + productId + " URL: " + productUrl);
                 break;
             case "PRODUCT_9":
                 productLink = homePageContent1.getLinkProductId9();
                 productUrl = TestData.PRODUCT9_URL;
+                logger.log(Level.INFO, "Product " + productId + " URL: " + productUrl);
                 break;
             default:
                 throw new IllegalArgumentException("Invalid productId: " + productId);
@@ -118,6 +138,7 @@ public class CartStepDefinitions {
         } else {
             throw new IllegalArgumentException("Invalid productId: " + productId);
         }
+        logger.log(Level.CONFIG, "Finished reading data from file \"" + FILE_NAME + "\""); // END logging marker;
     }
 
     @And("user see the {string} product details")
@@ -157,6 +178,9 @@ public class CartStepDefinitions {
 
     @Then("alert product added appear")
     public void alertProductAddedAppear() {
+        logger.setLevel(Level.INFO); // Set logger level before BEGIN and END markers;
+        logger.log(Level.INFO, "Alert text logging start");// BEGIN logging marker;
+
         wait.until(ExpectedConditions.alertIsPresent());        // Wait alert appearance;
         try {
             Alert alert = driver.switchTo().alert();            // Move driver focus to the Browser Alert;
@@ -169,6 +193,7 @@ public class CartStepDefinitions {
         } catch (NoAlertPresentException e) {                   // There is no alert present;
             System.out.println("The browser alert is missing");
         }
+        logger.log(Level.INFO, "Alert text logging start");// END logging marker;
     }
 
     @And("the {string} product been added to the cart")
