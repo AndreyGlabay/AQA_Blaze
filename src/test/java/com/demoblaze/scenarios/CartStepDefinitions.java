@@ -76,8 +76,8 @@ public class CartStepDefinitions {
         System.out.println("CONFIG_FILENAME: " + configFilename);
 
         System.setProperty("java.util.logging.config.file", System.getenv("CONFIG_FILENAME")); // Set log property.
-        logger.setLevel(Level.CONFIG); // Set logger level before BEGIN and END markers;
-        logger.log(Level.CONFIG, "Going to read data from file \"" + FILE_NAME + "\""); // BEGIN logging marker;
+        logger.setLevel(Level.INFO); // Set logger level before BEGIN and END markers;
+        logger.log(Level.INFO, "Going to read data from file \"" + FILE_NAME + "\""); // BEGIN logging marker;
 
         var homePageContent1 = new HomePageContent1(driver);
         WebElement productLink = null;
@@ -138,7 +138,7 @@ public class CartStepDefinitions {
         } else {
             throw new IllegalArgumentException("Invalid productId: " + productId);
         }
-        logger.log(Level.CONFIG, "Finished reading data from file \"" + FILE_NAME + "\""); // END logging marker;
+        logger.log(Level.INFO, "Finished reading data from file \"" + FILE_NAME + "\""); // END logging marker;
     }
 
     @And("user see the {string} product details")
@@ -193,7 +193,7 @@ public class CartStepDefinitions {
         } catch (NoAlertPresentException e) {                   // There is no alert present;
             System.out.println("The browser alert is missing");
         }
-        logger.log(Level.INFO, "Alert text logging start");// END logging marker;
+        logger.log(Level.INFO, "Alert text logging stop");// END logging marker;
     }
 
     @And("the {string} product been added to the cart")
